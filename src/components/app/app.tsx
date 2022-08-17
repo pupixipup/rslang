@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Link, Route, Router, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import logo from '../../assets/img/6_1.jpg';
 import Auth from '../auth/auth';
 import Home from '../home/home';
 import Words from '../words/words';
-import './app.css';
+import './app.scss';
 
 enum MENU_ITEMS{
   HOME = 'home',
