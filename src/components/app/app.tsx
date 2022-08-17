@@ -1,10 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import logo from '../../assets/img/6_1.jpg';
+
 import Auth from '../auth/auth';
 import Home from '../home/home';
 import Words from '../words/words';
 import './app.scss';
+import Footer from '../footer/footer';
+import Header from '../header/header';
 
 enum MENU_ITEMS{
   HOME = 'home',
@@ -68,67 +70,6 @@ class MenuItem extends React.Component <MenuItemProps>{
   }
 }
 
-class Header extends React.Component{
-  render() {
-    return (
-      <header className="header">
-        <div className="wrapper header-wrapper">
-        <img src={logo} className="logo" alt="logo" />
-        <h1>
-          RS-Lang
-        </h1>
-        <h5>
-          учим английские слова  
-        </h5>        
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        </div>
-      </header>
-    );
-  }  
-}
-class Footer extends React.Component{
-  render() {
-    return (
-      <footer className="footer">
-      <div className="wrapper footer-wrapper">
-        <a 
-          className="footer-logo" 
-          href="https://rs.school/js/" 
-          target="_blank"
-          rel="noopener noreferrer">            
-        </a>
-        <p>2022</p>
-        <div className="footer-team">
-          <p className="copyright">
-              GH <a 
-              href="https://github.com/pupixipup" 
-              target="_blank"
-              rel="noopener noreferrer">pupixipup</a>
-          </p> 
-          <p className="copyright">
-              GH <a 
-              href="https://github.com/BlueOwll" 
-              target="_blank"
-              rel="noopener noreferrer">BlueOwll</a>
-          </p>       
-          <p className="copyright">
-              GH <a 
-              href="https://github.com/vpuzyrevich" 
-              target="_blank"
-              rel="noopener noreferrer">vpuzyrevich</a>
-          </p> 
-        </div>
-      </div>
-    </footer>
-    );
-  }
-}
+
 
 export default App;

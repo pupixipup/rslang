@@ -1,71 +1,22 @@
 @import "./../style/abstract";
 @import "./../style/base";
+@import "./../style/layouts";
 
 
-$header-height: 100px;
-$footer-height: 60px;
+
 
 a {
   color: $light-color;
 }
 
-.wrapper {
-  max-width: $max-width-desktop;
-  margin: 0 auto;
-}
 
-.logo {
-  height: 100px;
-  pointer-events: none;
-}
 
-.header {
-  background-color: $main-bg-color;
-  height: $header-height;
- 
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-.header-wrapper{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
 
 .main {
   min-height: calc(100vh - $header-height - $footer-height);  
 }
-.footer {
-  background-color: $main-bg-color;
-  height: $footer-height;  
-  color: $light-color;
-  display: flex;
-  flex-direction: column;  
-  justify-content:center;
-}
-.footer-wrapper {
-  margin: auto;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  
-}
-.footer-logo {
-  display: block;
-  background-color: $light-bg-color;
-  background-image: url("../../assets/icon/rs-school-js.svg");
-  width:70px;
-  height: 30px;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.footer-team {
-  display:flex;
-  justify-content: flex-end;
-  gap: 15px;
-}
+
 .menu {
   background-color: $main-bg-color;
   display: flex;
