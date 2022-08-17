@@ -1,7 +1,7 @@
 :root {
   --main-bg-color: rgb(86, 86, 166);
   --light-bg-color:rgb(201, 201, 246);
-  --light-color: :rgb(201, 201, 246);
+  --light-color: rgb(201, 201, 246);
   --header-height: 100px;
   --footer-height: 60px;
   --max-width-desktop: 1200px;
@@ -14,7 +14,7 @@ html{
 }
 body{
   font-size: 1.6rem;
-  font-family: Georgia, serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif, serif;
   margin: 0;
   padding: 0;
 }
@@ -60,10 +60,8 @@ a {
 }
 .footer {
   background-color: var(--main-bg-color);
-  height: var(--footer-height);
-  
-  font-size: calc(10px + 2vmin);
-  color: white;  
+  height: var(--footer-height);  
+  color: var(--light-color);
   display: flex;
   flex-direction: column;  
   justify-content:center;
@@ -85,4 +83,28 @@ a {
   background-position: center;
   background-repeat: no-repeat;
 }
+.footer-team {
+  display:flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+.menu {
+  background-color: var(--main-bg-color);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
 
+}
+.menu-item {
+  display: block;  
+  padding: 5 px;
+  margin: 5px 20px;
+  text-align: center;
+  color: var(--light-color);
+  text-decoration: none;
+  
+}
+.menu-item:hover {
+  font-weight: 700;  
+}
