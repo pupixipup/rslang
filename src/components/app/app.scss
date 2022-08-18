@@ -5,9 +5,7 @@
 
 
 
-a {
-  color: $light-color;
-}
+
 
 
 
@@ -15,25 +13,6 @@ a {
 
 .main {
   min-height: calc(100vh - $header-height - $footer-height);  
-}
-
-.menu {
-  background-color: $main-bg-color;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-
-}
-.menu-item {
-  display: block;  
-  padding: 5 px;
-  margin: 5px 20px;
-  text-align: center;
-  color: $light-color;
-  text-decoration: none;
-  &:hover {
-    font-weight: 700;  
-  }  
 }
 
