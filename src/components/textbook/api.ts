@@ -1,3 +1,5 @@
+import constants from "../../constants";
+
 export interface IWord {
   id: string,
   group: number,
@@ -21,7 +23,7 @@ export class API {
     };
   baseUrl: string;
   constructor() {
-    this.baseUrl = 'http://localhost:5500'
+    this.baseUrl = constants.baseUrl;
     if (typeof API.instance === 'object') {
       return API.instance;
     }
