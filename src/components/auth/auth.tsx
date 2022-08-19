@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
-import { Context } from "..";
+import { Context } from "../..";
 
-export function LoginForm () {
+export function Auth () {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const {userData} = useContext(Context);

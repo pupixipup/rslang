@@ -1,5 +1,6 @@
 import { UserData } from "./userData";
 
+
 export type Path = {
   newUser: string,
   signin: string;
