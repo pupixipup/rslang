@@ -1,9 +1,10 @@
 import React from 'react';
 
+import '../../style/normalize.scss';
 import './app.scss';
-import Footer from '../footer/footer';
-import Header from '../header/header';
-import AppRouter from '../approuter/approuter';
+import Footer from '../footer/Footer';
+import Header from '../header/Header';
+import AppRouter from '../approuter/Approuter';
 
 
 
