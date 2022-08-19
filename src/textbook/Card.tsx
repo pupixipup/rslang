@@ -1,4 +1,5 @@
 import React from 'react';
+import './Card.css';
 import WordAudio from './WordAudio';
 import { IWord, API } from './api';
 interface wordProps {
