@@ -3,7 +3,7 @@ import {createSectionsArray, Section} from './Section';
 import {IWord, API } from './api';
 import ReactPaginate from 'react-paginate'
 import Card from './Card';
-import './Textbook.css';
+import './Textbook.scss';
 
 function Textbook() {
   const wordsLocation = JSON.parse(window.localStorage.getItem('wordsLocation') as string) || [0, 0];
