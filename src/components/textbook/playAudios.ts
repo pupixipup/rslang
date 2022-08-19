@@ -5,9 +5,9 @@ const playAudios = (sounds: (string | undefined)[], setState: React.Dispatch<Rea
   let audio = new Audio();
   audio.src = `${api.baseUrl}/${sounds[index]}`;
   audio.play();
-    audio.onended = () => { 
-    index += 1;
-    if (index < sounds.length) {
+  audio.onended = () => { 
+  index += 1;
+  if (index < sounds.length) {
     audio.src = `${api.baseUrl}/${sounds[index]}`;
     audio.play();
   } else {
