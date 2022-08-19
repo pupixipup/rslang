@@ -1,4 +1,4 @@
-import { createUser, loginUser } from "../api/Api";
+import { createUser, loginUser } from "../api/api";
 import { User } from "./types";
 
 export class UserData {

@@ -1,10 +1,10 @@
 import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { UserData } from './models/UserData';
 import { IUserData } from './models/types';
+import { UserData } from './models/userData';
+import App from './app';
 
 
 const userData = new UserData();

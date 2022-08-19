@@ -1,4 +1,4 @@
-import { UserData } from "./UserData";
+import { UserData } from "./userData";
 
 export type Path = {
   newUser: string,
