@@ -27,7 +27,6 @@ function Card(props: wordProps) {
         <div className="word__example-eng">{props.word?.textExample}</div>
         <div className="word__example-ru">{props.word?.textExampleTranslate}</div>
       </div>
-      <div>{}</div>
       <img src={`${api.baseUrl}/${props.word?.image}`} alt={props.word?.word} />
     </div>
   )
