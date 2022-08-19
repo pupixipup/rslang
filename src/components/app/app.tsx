@@ -1,5 +1,6 @@
 import React from 'react';
 
+import '../../style/normalize.scss';
 import './app.scss';
 import Footer from '../footer/footer';
 import Header from '../header/header';
