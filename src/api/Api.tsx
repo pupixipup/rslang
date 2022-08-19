@@ -11,7 +11,7 @@ export const createUser = async (user: User) => {
     body: JSON.stringify(user)
   }).catch();
   if (response.status === 417) {
-    alert('Такой пользователь уже зарегистрировался');
+    alert('Такой пользователь уже зарегистрирован');
   }
   if (response.status === 422) {
     alert('Некорректный E-mail или пароль');

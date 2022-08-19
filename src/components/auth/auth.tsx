@@ -1,10 +1,12 @@
 import { useContext, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import { Context } from "../..";
 
 export function Auth () {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const {userData} = useContext(Context);
+  let navigate = useNavigate();
   
   return (
     <div>
@@ -17,9 +19,25 @@ export function Auth () {
         <input onChange={(e) => setPassword(e.target.value)} type="password" value={password} placeholder='Пароль' id='password' />
       </label>
       <div>
-        <button onClick={() => userData.login(email, password)}>Войти</button>
-        <button onClick={() => userData.registerUser(email, password)}>Регистрация</button>
-      </div>
+        <button onClick={() => {
+          userData.login(email, password);
+          navigate("/", { replace: true });
+          console.log(userData.user);
+          
+          }}>Войти</button>
+        <button onClick={() => {
+          const isAuth = localStorage.getItem('isAuth') === 'true';
+          console.log(isAuth);
+          if(!isAuth) {
+            userData.registerUser(email, password);
+            navigate("/", { replace: true });
+          }
+        }}>Регистрация</button>
+        <button onClick={() => {
+          userData.logout();
+          // navigate("/auth", { replace: true });
+          }}>Выйти</button>
+      </div> 
     </div>
   )
 }
