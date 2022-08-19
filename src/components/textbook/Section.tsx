@@ -17,9 +17,9 @@ function Section(props: {location: number[], sectionId: number, setPage: (arr: n
   }
   
   return (
-    <div onClick={() => setPage([0, sectionId])} className={`${isSectionOn(sectionId) 
+    <div onClick={() => setPage([0, sectionId])} className={isSectionOn(sectionId) 
       ? 'sections__section --active'
-      : 'sections__section'}`}>{ sectionId + 1 }</div>
+      : 'sections__section'}>{ sectionId + 1 }</div>
   )
 }
 
