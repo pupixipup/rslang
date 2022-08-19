@@ -1,0 +1,30 @@
+@import "./../style/abstract";
+@import "./../style/base";
+@import "./../style/layouts";
+
+.menu {
+    gap: 10px;
+    & li {
+      list-style-type: none;
+    }
+    & ul {
+      margin-left: 0;
+      padding-left: 0;
+    }
+  
+}
+.menu__item {
+  display: block;  
+  padding: 5 px;
+  margin: 5px 20px;
+  text-align: center;
+  color: $light-color;
+  text-decoration: none;
+
+  &:hover {
+    font-weight: 700;  
+  }  
+}
+.content {
+  flex-grow: 1;
+}

@@ -1,0 +1,23 @@
+@import "./../style/abstract";
+@import "./../style/base";
+@import "./../style/layouts";
+
+.header__logo {
+    height: 100px;
+    pointer-events: none;
+  }
+  
+  .header {
+    background-color: $main-bg-color;
+    height: $header-height;
+   
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  .header__wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+  }
+  
