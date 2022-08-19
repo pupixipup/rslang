@@ -24,7 +24,7 @@ export interface IUserReg {
 export interface IUser {
     email: string,
     id: string,
-    name: string,
+    name?: string,
 }
 
 export interface IUserToken {
@@ -36,17 +36,22 @@ export interface IUserToken {
       
 }
 
-export interface IUserWord  {
+export interface IUserWordOptions  {
     difficulty: string,
-    optional: {}
+    optional?: {}
   }
+export interface IUserWord {
+    id: string, 
+    difficulty: string, 
+    wordId: string
+}
 
 export interface IUserStatistics {
         learnedWords: 0,
-        optional: {}
+        optional?: {}
 }
 
 export interface IUserSettings {
         wordsPerDay: 0,
-        optional: {}
+        optional?: {}
 }
