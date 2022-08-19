@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import constants from '../../constants';
 import {createSectionsArray, Section} from './Section';
 import {IWord, API } from './api';
 import ReactPaginate from 'react-paginate'
@@ -32,7 +33,7 @@ function Textbook() {
     <div className="words">
       {
         data?.map((word, ndx) => {
-          return <Card word={word} key={ndx}/>
+          return <Card link={`${constants.baseUrl}/${word?.image}`} word={word} key={ndx}/>
         })
       }
      </div>
