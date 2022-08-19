@@ -1,0 +1,34 @@
+@import "./../style/abstract";
+@import "./../style/base";
+@import "./../style/layouts";
+
+.footer {
+    background-color: $main-bg-color;
+    height: $footer-height;  
+    color: $light-color;
+    display: flex;
+    flex-direction: column;  
+    justify-content:center;
+  }
+  .footer__wrapper {
+    margin: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+  }
+  .footer__logo {
+    display: block;
+    background-color: $light-bg-color;
+    background-image: url("../../assets/icon/rs-school-js.svg");
+    width:70px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .footer__team {
+    display:flex;
+    justify-content: flex-end;
+    gap: 15px;
+  }
