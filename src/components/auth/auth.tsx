@@ -19,11 +19,9 @@ export function Auth () {
         <input onChange={(e) => setPassword(e.target.value)} type="password" value={password} placeholder='Пароль' id='password' />
       </label>
       <div>
-        <button onClick={() => {
-          userData.login(email, password);
+        <button onClick={ async () => {
+          await userData.login(email, password);
           navigate("/", { replace: true });
-          console.log(userData.user);
-          
           }}>Войти</button>
         <button onClick={() => {
           const isAuth = localStorage.getItem('isAuth') === 'true';
