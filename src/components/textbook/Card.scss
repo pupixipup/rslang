@@ -20,3 +20,10 @@
   display: flex;
   flex-direction: column;
 }
+
+.words {
+  max-width: 550px; 
+}
+.word__image {
+  max-width: 100%;
+}
