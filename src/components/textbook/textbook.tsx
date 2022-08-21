@@ -13,7 +13,6 @@ function Textbook() {
   const [numbers, setNumbers] = useState(wordsLocation);
   const [data, updateData] = useState<IWord[]>();
 
-  const userId = "62ff6bcfcc435732dceada8b";
   const totalSections = 6;
   const sectionsArray: number[] = createSectionsArray(totalSections);
 
@@ -23,6 +22,7 @@ function Textbook() {
   });
 
   let pagination;
+  let sectionDisplayer = <div className={`section-displayer section-${numbers.section}`}/>;
 
   if (numbers.section !== 6) {
     pagination = (
@@ -58,6 +58,7 @@ function Textbook() {
 
   return (
     <div>
+      { sectionDisplayer }
       <div className="textbook">
         <div className="words">
           {data?.map((word, ndx) => {

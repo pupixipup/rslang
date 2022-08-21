@@ -22,7 +22,7 @@ function Section(props: {location: INumbers, sectionId: number, setNumbers: (arr
   return (
     <div onClick={() => setNumbers({page: 0, section: sectionId})} className={isSectionOn(sectionId) 
       ? 'sections__section --active'
-      : 'sections__section'}>{ sectionId + 1 }</div>
+      : 'sections__section section-' + sectionId}>{ sectionId + 1 }</div>
   )
 }
 
