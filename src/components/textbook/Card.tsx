@@ -1,4 +1,5 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
 import './Card.scss';
 import WordAudio from './WordAudio';
 import { IWord } from './api';
@@ -21,14 +22,14 @@ function Card(props: wordProps) {
         />
       </div>
       <div className="word__meaning">
-        <div className="word__meaning-eng">{word?.textMeaning}</div>
+        <div className="word__meaning-eng" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(word?.textMeaning as string)}}/>
         <div className="word__meaning-ru">{word?.textMeaningTranslate}</div>
       </div>
       <div className="word__example">
-        <div className="word__example-eng">{word?.textExample}</div>
+        <div className="word__example-eng" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(word?.textExample as string)}} />
         <div className="word__example-ru">{word?.textExampleTranslate}</div>
       </div>
-      <img src={link} alt={word?.word} />
+      <img className="word__image" src={link} alt={word?.word} />
     </div>
   )
 }
