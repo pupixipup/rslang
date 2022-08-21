@@ -1,7 +1,7 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import Auth from "../auth/auth";
-import Home from "../home/home";
-import Textbook from "../textbook/textbook";
+import Home from "../home/Home";
+import Textbook from "../textbook/Textbook";
 import "./approuter.scss";
 
 
