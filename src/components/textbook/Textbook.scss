@@ -112,3 +112,26 @@
 .section-displayer.section-6, .section-6 { 
   background: #ff9a8e;
 }
+
+.textbook {
+  padding: 0 16px;
+}
+@media (max-width: 700px) {
+  .sections__section {
+    border-radius: 10px;
+    padding: 4px 8px;
+  }
+  .textbook {
+    flex-direction: column-reverse;
+  }
+  .sections {
+    justify-content: start;
+    margin-left: 10px;
+    position: static;
+    top: 0;
+    margin-top: 0;
+    display: flex;
+    width: 100%;
+    gap: 10px;
+  }
+}
