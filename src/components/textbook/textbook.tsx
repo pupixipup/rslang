@@ -17,7 +17,6 @@ function Textbook() {
   const sectionsArray: number[] = createSectionsArray(totalSections);
 
   window.addEventListener("beforeunload", () => {
-    console.log("Unloading page");
     window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
   });
 
@@ -45,7 +44,6 @@ function Textbook() {
   useEffect(() => {
     const api = new API();
     if (numbers.section === 6) {
-      alert("there must be difficult words");
       api.getWords(1, 5).then((words) => {
         updateData(words);
       });
