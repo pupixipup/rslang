@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import './app.scss';
 import Footer from '../footer/footer';
 import Header from '../header/header';
@@ -7,15 +7,16 @@ import { Context } from '../..';
 
 
 
-function App() {
+function App () {
+
   const {userData} = useContext(Context);
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      userData.refreshToken();
-    }
-    console.log(userData.isAuth);
-    console.log(userData.user);
-  }, [userData]);
+
+  if (localStorage.getItem('userData')) {
+    userData.refreshToken();
+  }
+
+  console.log(userData.isAuth);
+  console.log(userData.user);
   return (
     <div className="App">
       <Header />

@@ -3,7 +3,7 @@ import { IAuth } from "./types";
 
 export class UserData {
   user: IAuth;
-  isAuth: boolean
+  isAuth: boolean;
 
   constructor() {
     this.user = localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData') as string) : {};
@@ -39,7 +39,6 @@ export class UserData {
       return null;
     }
     const jwt = JSON.parse(atob(this.user.token.split('.')[1]));
-    console.log(jwt);
     
     return (jwt && jwt.exp && jwt.exp * 1000) || null;
   }
@@ -53,12 +52,17 @@ export class UserData {
     if (!this.user || !this.user.token) {
       return null;
     }
+    console.log(this.isExpired(this.getExpirationDateToken(this.user.token)));
     
     if (this.isExpired(this.getExpirationDateToken(this.user.token))) {
-      await getToken(this.user.userId, this.user.token).then((resp) => {
+      await getToken(this.user.userId, this.user.refreshToken).then((resp) => {
         this.user.token = resp.token;
         this.user.refreshToken = resp.refreshToken;
         this.setAuth(true);
+        console.log(this.user);
+        localStorage.setItem('userData', JSON.stringify(this.user));
+        console.log(JSON.parse(localStorage.getItem('userData') as string));
+        localStorage.setItem('isAuth', 'true');
       });
     }
 
