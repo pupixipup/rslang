@@ -8,16 +8,19 @@ const createSectionsArray = (number: number) => {
   }
   return sectionsArray;
 }
+interface INumbers {
+  page: number, section: number
+}
 
-function Section(props: {location: number[], sectionId: number, setNumbers: (arr: number[]) => void}) {
+function Section(props: {location: INumbers, sectionId: number, setNumbers: (arr: INumbers) => void}) {
   const { location, sectionId, setNumbers } = props;
   const isSectionOn = (id: number) => {
-    const currentSection = location[1];
+    const currentSection = location.section;
     return id === currentSection;
   }
   
   return (
-    <div onClick={() => setNumbers([0, sectionId])} className={isSectionOn(sectionId) 
+    <div onClick={() => setNumbers({page: 0, section: sectionId})} className={isSectionOn(sectionId) 
       ? 'sections__section --active'
       : 'sections__section'}>{ sectionId + 1 }</div>
   )
