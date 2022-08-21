@@ -9,15 +9,15 @@ const createSectionsArray = (number: number) => {
   return sectionsArray;
 }
 
-function Section(props: {location: number[], sectionId: number, setPage: (arr: number[]) => void}) {
-  const { location, sectionId, setPage } = props;
+function Section(props: {location: number[], sectionId: number, setNumbers: (arr: number[]) => void}) {
+  const { location, sectionId, setNumbers } = props;
   const isSectionOn = (id: number) => {
     const currentSection = location[1];
     return id === currentSection;
   }
   
   return (
-    <div onClick={() => setPage([0, sectionId])} className={isSectionOn(sectionId) 
+    <div onClick={() => setNumbers([0, sectionId])} className={isSectionOn(sectionId) 
       ? 'sections__section --active'
       : 'sections__section'}>{ sectionId + 1 }</div>
   )

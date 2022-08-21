@@ -14,18 +14,17 @@ function Textbook() {
   const totalSections = 5;
   const sectionsArray: number[] = createSectionsArray(totalSections);
 
+  window.addEventListener('beforeunload', () => {
+    console.log('Unloading page');
+    window.localStorage.setItem('wordsLocation', JSON.stringify(numbers));
+  });
+
   useEffect(() => {
     const api = new API();
     api.getWords(numbers[0], numbers[1]).then((words) => {
       updateData(words);
     });
   }, [numbers]);
-
-  function setPage(arr: number[]) {
-    window.localStorage.setItem('wordsLocation', JSON.stringify(arr));
-    setNumbers(arr);
-  }
-
 
   return (
     <div>
@@ -40,7 +39,7 @@ function Textbook() {
       <div className="sections">
         {
       sectionsArray.map((number) => {
-        return <Section location={numbers} key={number} sectionId={number} setPage={setPage} />
+        return <Section location={numbers} key={number} sectionId={number} setNumbers={setNumbers} />
       })
       }
       </div>
@@ -52,9 +51,9 @@ function Textbook() {
       pageCount={30}
       forcePage={numbers[0]}
       onPageChange={ ({selected}) => {
-        setPage([
+        setNumbers([
           selected,
-          JSON.parse(window.localStorage.getItem('wordsLocation') as string)[1]]);
+          numbers[1]]);
       }}
       />
   </div>
