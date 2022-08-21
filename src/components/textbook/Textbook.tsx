@@ -55,7 +55,7 @@ function Textbook() {
   }, [numbers]);
 
   return (
-    <div>
+    <div className="textbook-wrapper">
       { sectionDisplayer }
       <div className="textbook">
         <div className="words">

@@ -2,9 +2,10 @@ import React from 'react';
 
 import '../../style/normalize.scss';
 import './app.scss';
+import '../../style/fonts.scss';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
-import AppRouter from '../approuter/Approuter';
+import Approuter from '../approuter/Approuter';
 
 
 
@@ -13,7 +14,7 @@ function App() {
     <div className="App">
       <Header />
       <main className="main">
-        <AppRouter />     
+        <Approuter />
       </main>
       <Footer />
     </div>
