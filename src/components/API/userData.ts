@@ -9,10 +9,10 @@ export class UserData {
     this.isAuth = this.isAuth = localStorage.getItem('isAuth') ? !!localStorage.getItem('isAuth') : false;
   }
 
-  setUser (user: IUserSignin) {
+  setUser (user: IUserSignin): void {
     this.user = user;
   }
-  setAuth (bool: boolean) {
+  setAuth (bool: boolean): void {
     this.isAuth = bool;
   }
 }

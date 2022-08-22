@@ -5,12 +5,10 @@ import AppRouter from '../approuter/approuter';
 import { createContext } from 'react';
 import { API } from '../API/api';
 import { UserData } from '../API/userData';
+import { IUserData } from '../../common/interfaces';
 
-interface IUserState {
-  userData: UserData;
-}
 const userData = new UserData();
-export const Context = createContext<IUserState>({userData});
+export const Context = createContext<IUserData>({userData});
 
 
 function App () {

@@ -1,4 +1,4 @@
-import { UserApi } from "../components/API/userApi"
+import { UserData } from "../components/API/userData"
 
 export interface IWord {
   id: string,
@@ -63,5 +63,5 @@ export interface IUserSettings {
 }
 
 export interface IUserData {
-  userData: UserApi,
+  userData: UserData,
 }

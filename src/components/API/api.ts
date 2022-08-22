@@ -259,14 +259,14 @@ export class API {
     return (jwt && jwt.exp && jwt.exp * 1000) || null;
   }
 
-  static isExpired(exp?: number | null) {
+  static isExpired(exp?: number | null): boolean {
     if (!exp) {
       return false;
     }
     return Date.now() > exp;
   }
 
-  static async getRefreshToken () {
+  static async getRefreshToken (): Promise<null | undefined> {
     const userData = new UserData();
     console.log(API.userToken);
     if(!API.userToken) {
@@ -284,8 +284,7 @@ export class API {
         localStorage.setItem('userData', JSON.stringify(userData.user));
         localStorage.setItem('isAuth', 'true');
         userData.setAuth(true);
-      })
+      }).catch((e) => console.log(e));
     }
-
   }
 }

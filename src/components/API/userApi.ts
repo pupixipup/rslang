@@ -10,7 +10,7 @@ export class UserApi {
   }
 
   async registerUser(email: string, password: string): Promise<void> {
-    await API.createUser(email, password);
+    await API.createUser(email, password).catch((e) => console.log(e));
     await this.login(email, password);
   }
   async login(email: string, password: string): Promise<void>  {
@@ -19,7 +19,7 @@ export class UserApi {
         this.user.setUser(data);
         this.user.setAuth(true);
         localStorage.setItem('isAuth', 'true');
-      });
+      }).catch((e) => console.log(e));
   }
   logout(): void  {
     this.user.setUser({} as IUserSignin);
