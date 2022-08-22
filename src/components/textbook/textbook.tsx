@@ -3,7 +3,9 @@ import React from "react";
 class Textbook extends React.Component{
   render(): React.ReactNode {
     return (
-      <p>WORDS</p>
+      <React.StrictMode>
+          <p>WORDS</p>
+      </React.StrictMode>
     );
   }    
 }

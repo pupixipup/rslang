@@ -1,12 +1,12 @@
-import { useContext, useState } from "react"
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../..";
+import { UserApi } from "../API/userApi";
 
 export function Auth () {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const {userData} = useContext(Context);
   let navigate = useNavigate();
+  const userApi = new UserApi();
   
   return (
     <div>
@@ -20,20 +20,16 @@ export function Auth () {
       </label>
       <div>
         <button onClick={ async () => {
-          await userData.login(email, password);
+          await userApi.login(email, password);
           navigate("/", { replace: true });
           }}>Войти</button>
         <button onClick={() => {
-          const isAuth = localStorage.getItem('isAuth') === 'true';
-          console.log(isAuth);
-          if(!isAuth) {
-            userData.registerUser(email, password);
-            navigate("/", { replace: true });
-          }
+          userApi.registerUser(email, password);
+          navigate("/", { replace: true });
         }}>Регистрация</button>
         <button onClick={() => {
-          userData.logout();
-          // navigate("/auth", { replace: true });
+          userApi.logout();
+          navigate("/", { replace: true });
           }}>Выйти</button>
       </div> 
     </div>

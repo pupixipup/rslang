@@ -1,8 +1,2 @@
-import { Path } from "../models/types";
-
-export const URL = 'http://localhost:8000/';
-
-export const PATH: Path = {
-  newUser: `${URL}users`,
-  signin: `${URL}signin`,
-}
+export const BASELINK = "http://localhost";
+export const PORT = "5500";

@@ -1,30 +1,35 @@
-import React, { useContext } from 'react';
 import './app.scss';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import AppRouter from '../approuter/approuter';
-import { Context } from '../..';
+import { createContext } from 'react';
+import { API } from '../API/api';
+import { UserData } from '../API/userData';
 
+interface IUserState {
+  userData: UserData;
+}
+const userData = new UserData();
+export const Context = createContext<IUserState>({userData});
 
 
 function App () {
 
-  const {userData} = useContext(Context);
-
   if (localStorage.getItem('userData')) {
-    userData.refreshToken();
+    API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string))
+    API.getRefreshToken();
   }
 
-  console.log(userData.isAuth);
-  console.log(userData.user);
   return (
-    <div className="App">
-      <Header />
-      <main className="main">
-        <AppRouter />     
-      </main>
-      <Footer />
-    </div>
+    <Context.Provider value={{userData}}>
+      <div className="App">
+        <Header />
+        <main className="main">
+          <AppRouter />     
+        </main>
+        <Footer />
+      </div>
+    </Context.Provider>
   );
 }
 
