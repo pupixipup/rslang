@@ -1,11 +1,12 @@
 import './app.scss';
-import Footer from '../footer/footer';
-import Header from '../header/header';
-import AppRouter from '../approuter/approuter';
 import { createContext } from 'react';
 import { API } from '../API/api';
 import { UserData } from '../API/userData';
 import { IUserData } from '../../common/interfaces';
+import Header from '../header/Header';
+import AppRouter from '../approuter/Approuter';
+import Footer from '../footer/Footer';
+
 
 const userData = new UserData();
 export const Context = createContext<IUserData>({userData});
