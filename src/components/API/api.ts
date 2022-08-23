@@ -74,7 +74,7 @@ export class API {
   }
 /**
  * create user
- * @getWordById
+ * @createUser
  * @param {string} email - user email
  * @param {string} password - user password
  * @returns {Promise<IUser>} user info
