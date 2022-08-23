@@ -1,5 +1,5 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import Auth from "../auth/Auth";
+import { Auth } from "../auth/Auth";
 import Home from "../home/Home";
 import Textbook from "../textbook/Textbook";
 import "./approuter.scss";
@@ -28,17 +28,17 @@ function AppRouter() {
       </li>
     )
     return (
-        <BrowserRouter>        
+        <BrowserRouter>
           <div className="menu">
             <ul className="menu__list">{listItems}</ul>
           </div>
           <section className="content">
             <Routes>
-              <Route path="/" element ={<Home />}/>             
+              <Route path="/" element ={<Home />}/>
               <Route path={'/' + MENUITEMS[1].link} element ={<Auth />}/>
               <Route path={'/' + MENUITEMS[2].link} element ={<Textbook />}/>
             </Routes>
-          </section>                       
+          </section>
           </BrowserRouter>
         
       );

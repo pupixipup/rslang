@@ -1,23 +1,34 @@
-import React from 'react';
-
-import '../../style/normalize.scss';
 import './app.scss';
-import '../../style/fonts.scss';
-import Footer from '../footer/Footer';
+import { createContext } from 'react';
+import { API } from '../API/api';
+import { UserData } from '../API/userData';
+import { IUserData } from '../../common/interfaces';
 import Header from '../header/Header';
-import Approuter from '../approuter/Approuter';
+import AppRouter from '../approuter/Approuter';
+import Footer from '../footer/Footer';
 
 
+const userData = new UserData();
+export const Context = createContext<IUserData>({userData});
 
-function App() {
+
+function App () {
+
+  if (localStorage.getItem('userData')) {
+    API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string))
+    API.getRefreshToken();
+  }
+
   return (
-    <div className="App">
-      <Header />
-      <main className="main">
-        <Approuter />
-      </main>
-      <Footer />
-    </div>
+    <Context.Provider value={{userData}}>
+      <div className="App">
+        <Header />
+        <main className="main">
+          <AppRouter />     
+        </main>
+        <Footer />
+      </div>
+    </Context.Provider>
   );
 }
 

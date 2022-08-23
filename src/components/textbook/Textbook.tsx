@@ -55,6 +55,7 @@ function Textbook() {
   }, [numbers]);
 
   return (
+    <React.StrictMode>
     <div className="textbook-wrapper">
       { sectionDisplayer }
       <div className="textbook">
@@ -84,6 +85,7 @@ function Textbook() {
       </div>
       <div>{pagination}</div>
     </div>
+  </React.StrictMode>
   );
 }
 
