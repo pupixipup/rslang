@@ -1,5 +1,5 @@
 import { UserData } from './userData';
-import { BASELINK, PORT } from "../../common/constants";
+import { BASELINK, PORT, RESERVE_TIME } from "../../common/constants";
 import { IUser, IUserSignin, IUserToken, IUserWord, IUserWordOptions, IWord } from "../../common/interfaces";
 
 
@@ -263,7 +263,7 @@ export class API {
     if (!exp) {
       return false;
     }
-    return Date.now() > exp;
+    return Date.now() > (exp - RESERVE_TIME);
   }
 
   static async getRefreshToken (): Promise<null | undefined> {
