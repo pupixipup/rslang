@@ -6,7 +6,7 @@ export class UserData {
 
   constructor() {
     this.user = localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData') as string) : {};
-    this.isAuth = this.isAuth = localStorage.getItem('isAuth') ? !!localStorage.getItem('isAuth') : false;
+    this.isAuth = localStorage.getItem('isAuth') ? !!JSON.parse(localStorage.getItem('isAuth') as string) : false;
   }
 
   setUser (user: IUserSignin): void {
