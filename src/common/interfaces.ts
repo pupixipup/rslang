@@ -42,18 +42,22 @@ export interface IUserToken {
   refreshToken: string,
 }
 
-export interface IUserWordOptions  {
+export interface IUserWordOptions {
   difficulty: string,
-  optional?: {}
+  optional?: {
+          learnt?: boolean,
+          correctAnswers?: number,
+          wrongAnswers?: number
+  }
 }
-export interface IUserWord {
-  id: string, 
-  difficulty: string, 
+
+export interface IUserWordInfo extends IUserWordOptions{
+  id: string, // id of record
   wordId: string
 }
 
 export interface IUserStatistics {
-      learnedWords: 0,
+      learntWords: 0,
       optional?: {}
 }
 
@@ -64,4 +68,13 @@ export interface IUserSettings {
 
 export interface IUserData {
   userData: UserData,
+}
+
+export interface IAggrResp{
+  paginatedResults:[],
+  totalCount: []
+}
+
+export interface IUserWord extends IWord{
+  userWord?: IUserWordOptions;
 }

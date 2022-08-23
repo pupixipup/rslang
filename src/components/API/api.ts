@@ -1,6 +1,6 @@
 import { UserData } from './userData';
 import { BASELINK, PORT, RESERVE_TIME } from "../../common/constants";
-import { IUser, IUserSignin, IUserToken, IUserWord, IUserWordOptions, IWord } from "../../common/interfaces";
+import { IAggrResp, IUser, IUserSignin, IUserToken, IUserWord, IUserWordOptions, IWord } from "../../common/interfaces";
 
 
 const enum METHODS {
@@ -13,7 +13,8 @@ const enum ENDPOINTS {
   words = "words",
   users = "users",
   signin = "signin",
-  tokens = "tokens"
+  tokens = "tokens",
+  aggwords = "aggregatedWords"
 }
 
 export class API {
@@ -28,6 +29,10 @@ export class API {
     API.userToken = "";
     API.userId = "";
   })();*/
+
+  static isAuth(){
+    return !!API.userId;
+  }
 
   static loadAuthData(token: IUserSignin){
     API.userToken = token.token;
@@ -192,6 +197,26 @@ export class API {
       .then((data) => data as IUserWord[])
       .catch((err: Error) => {throw new Error(err.message)});
   }
+
+   /**
+   * getAggregatedUserWords
+   * @getAggregatedUserWords
+   * @returns {Promise<IUserWord[]>} array of words with info
+   */ 
+    static async getAggregatedUserWords(group?: number,page?: number, wordsPerPage?:number,filter?: string) {
+      let link = `${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.aggwords}?`;      
+      if(group !== undefined) link += `group=${group}&`;
+      if(page !== undefined) link += `page=${page}&`;
+      if(wordsPerPage!== undefined) link += `wordsPerPage=${wordsPerPage}&`;
+      if(filter !== undefined)link += `filter=${filter}&`;
+      link = link.slice(0,-1);
+      return API.authFetch(link)
+        .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
+        .then((res) => res.json())
+        .then((data:IAggrResp[]) => {console.log(data[0]); return data[0]})
+        .then((data: IAggrResp) => {console.log(data.paginatedResults); return data.paginatedResults as IUserWord[]})
+        .catch((err: Error) => {throw new Error(err.message)});
+    }
  /**
    * update User
    * @updateUser
@@ -214,6 +239,22 @@ export class API {
       .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
   }
 
+   /**
+   * delete UserWord
+   * @deleteUserWord
+   * @param {string} wordId - word ID
+   * @returns {Promise<IUser>} user info
+   */ 
+static async deleteUserWord(wordId: string) {    
+    return API.authFetch(
+      `${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`,
+      {
+        method: METHODS.delete,        
+      })
+      .then((res) => API.errorHandler(res))  
+      .then(()=> {})
+      .catch((err: Error) => {throw new Error(err.message)}); //Error 
+  }
 
 
 // https://www.codementor.io/@obabichev/react-token-auth-12os8txqo1
