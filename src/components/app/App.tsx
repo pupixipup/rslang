@@ -6,7 +6,7 @@ import { IUserData } from '../../common/interfaces';
 import Header from '../header/Header';
 import AppRouter from '../approuter/Approuter';
 import Footer from '../footer/Footer';
-
+import '../../style/fonts.scss';
 
 const userData = new UserData();
 export const Context = createContext<IUserData>({userData});
