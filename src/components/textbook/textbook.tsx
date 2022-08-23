@@ -28,36 +28,38 @@ function Textbook() {
 
 
   return (
-    <div>
-    <div className="textbook">
-    <div className="words">
-      {
-        data?.map((word, ndx) => {
-          return <Card link={`${constants.baseUrl}/${word?.image}`} word={word} key={ndx}/>
-        })
-      }
-     </div>
-      <div className="sections">
+    <React.StrictMode>
+      <div>
+      <div className="textbook">
+      <div className="words">
         {
-      sectionsArray.map((number) => {
-        return <Section location={numbers} key={number} sectionId={number} setPage={setPage} />
-      })
-      }
+          data?.map((word, ndx) => {
+            return <Card link={`${constants.baseUrl}/${word?.image}`} word={word} key={ndx}/>
+          })
+        }
       </div>
-     </div>
-     <ReactPaginate
-      className="pagination"
-      previousLabel={"<"}
-      nextLabel={">"}
-      pageCount={30}
-      forcePage={numbers[0]}
-      onPageChange={ ({selected}) => {
-        setPage([
-          selected,
-          JSON.parse(window.localStorage.getItem('wordsLocation') as string)[1]]);
-      }}
-      />
-  </div>
+        <div className="sections">
+          {
+        sectionsArray.map((number) => {
+          return <Section location={numbers} key={number} sectionId={number} setPage={setPage} />
+        })
+        }
+        </div>
+      </div>
+      <ReactPaginate
+        className="pagination"
+        previousLabel={"<"}
+        nextLabel={">"}
+        pageCount={30}
+        forcePage={numbers[0]}
+        onPageChange={ ({selected}) => {
+          setPage([
+            selected,
+            JSON.parse(window.localStorage.getItem('wordsLocation') as string)[1]]);
+        }}
+        />
+      </div>
+    </React.StrictMode>
   )
 }
 
