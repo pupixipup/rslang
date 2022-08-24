@@ -13,7 +13,7 @@ interface wordProps {
 }
 function Card(props: wordProps) {
   const { word, link, isLoggedIn, hardWords } = props;
-  let [btnClass, setBtnClass] = useState(hardWords.includes(word!.word) ? 'words__interact-hard markedAsHard' : 'words__interact-hard');
+  let [btnClass, setBtnClass] = useState('words__interact-hard');
   let buttons = <div></div>;
 
     useEffect(() => {
@@ -28,10 +28,8 @@ function Card(props: wordProps) {
                 onClick={() => {
                     API.createUserWord(word!.id, { difficulty: 'hard' })
                         .catch((err) => {
-                            console.log(err.message)
                             if (err.message === 'Error 417: such user word already exists') {
                                 API.updateUserWord(word!.id, { difficulty: 'hard'})
-                                console.log('Word was updated!')
                             }
                         })
                     setBtnClass('words__interact-hard markedAsHard')

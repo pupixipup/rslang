@@ -49,14 +49,14 @@ function Textbook() {
       let words: IAggregatedUserWord[] | undefined | IWord[];
       if (numbers.section === 6) {
         words = await API.getWords(1, 5);
-      }
+      } else {
       words = await API.getWords(numbers.page, numbers.section);
+      }
       updateData(words);
 
       const hardWordsRaw = await API.getHardWords(0, 500);
       const hardWords: IAggregatedUserWord[] | IWord[] = hardWordsRaw[0].paginatedResults;
       const hardWordsIds = hardWords.map((element: IWord) => element.word);
-      console.log(hardWordsIds);
       setHardWords(hardWordsIds);
     }
     fetchData();
@@ -64,13 +64,6 @@ function Textbook() {
 
   useEffect( () => {
     const fetchData = async () => {
-      // let words: IAggregatedUserWord[] | undefined | IWord[];
-      // if (numbers.section === 6) {
-      //   words = await API.getWords(1, 5);
-      // }
-      // words = await API.getWords(numbers.page, numbers.section);
-      // updateData(words);
-
       const hardWordsRaw = await API.getHardWords(0, 500);
       const hardWords: IAggregatedUserWord[] | IWord[] = hardWordsRaw[0].paginatedResults;
       const hardWordsIds = hardWords.map((element: IWord) => element.word);
