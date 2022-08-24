@@ -16,3 +16,6 @@
   a {
     color: $light-color;
   }
+  button:active {
+    transform: scale(0.8);
+  }
