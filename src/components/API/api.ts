@@ -219,6 +219,7 @@ export class API {
       .then((res) => API.errorHandler(res))  // 
       .then((res) => res.json())
       .then((data) => data as IUserWord)
+        .then(data => console.log(data))
       .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
   }
 
@@ -235,6 +236,7 @@ export class API {
             .then((res) => API.errorHandler(res))  //
             .then((res) => res.json())
             .then((data) => data as IUserWord)
+            .then(data => console.log(data))
             .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
     }
 
@@ -245,6 +247,20 @@ export class API {
         link += `?page=${page}`;
         link += `&wordsPerPage=${wordsPerPage}`;
         link += '&filter={"userWord.difficulty":"hard"}';
+        if (group) link += `&group=${group}`;
+        return API.authFetch(link)
+            .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
+            .then((res) => res.json())
+            .then((data) => data as IAggregatedWord[])   // {id: string, email: string}
+    }
+
+    static async getLearntWords(page: number, wordsPerPage: number, group?: number) {
+        let link = `${API.baseUrl}/${ENDPOINTS.users}/`;
+        link += `${API.userId}/`;
+        link += 'aggregatedWords';
+        link += `?page=${page}`;
+        link += `&wordsPerPage=${wordsPerPage}`;
+        link += '&filter={"userWord.optional.isLearnt":"true"}';
         if (group) link += `&group=${group}`;
         return API.authFetch(link)
             .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
