@@ -1,15 +1,19 @@
-import { API } from './api';
+import { API } from '../API/api';
+
 const playAudios = (sounds: (string | undefined)[], setState: React.Dispatch<React.SetStateAction<boolean>>) => {
-  const api = new API();
   let index = 0;
   let audio = new Audio();
-  audio.src = `${api.baseUrl}/${sounds[index]}`;
-  audio.play();
+  audio.src = `${API.baseUrl}/${sounds[index]}`;
+  audio.play().catch((err) => {
+    console.log(err);
+  });
   audio.onended = () => { 
   index += 1;
   if (index < sounds.length) {
-    audio.src = `${api.baseUrl}/${sounds[index]}`;
-    audio.play();
+    audio.src = `${API.baseUrl}/${sounds[index]}`;
+    audio.play().catch((err) => {
+      console.log(err);
+    });
   } else {
     audio.pause();
     setState(false);
