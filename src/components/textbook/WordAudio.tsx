@@ -16,11 +16,11 @@ function WordAudio(props: linkProps) {
   return (
     <div>
       <button onClick={() => {
-        if (isPlaying === false) {
+        if (!isPlaying) {
           setPlaying(!isPlaying); 
           playAudios(sounds, setPlaying);
         }
-        }}> <img className="sound-icon" src={ icon }/> </button>
+        }}> <img className="sound-icon" alt={'play sound'} src={ icon }/> </button>
   </div>
   )
 }
