@@ -137,3 +137,10 @@ background-color: #36a736;
 .words__interact-learnt.isLearnt:hover {
   opacity: .5;
 }
+
+.markedAsLearnt {
+  opacity: .5;
+}
+button:disabled {
+  opacity: .2 !important;
+}
