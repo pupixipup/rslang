@@ -15,6 +15,7 @@ function Textbook() {
   const [data, updateData] = useState<IWord[]>();
   const [isLoggedIn] = useState<boolean>(API.isAuth());
   const [hardArray, setHardWords] = useState([] as string[]);
+  const [learntArray, setLearntWords] = useState([] as string[]);
 
   const totalSections = 6;
   const sectionsArray: number[] = createSectionsArray(totalSections);
@@ -53,11 +54,6 @@ function Textbook() {
       words = await API.getWords(numbers.page, numbers.section);
       }
       updateData(words);
-
-      const hardWordsRaw = await API.getHardWords(0, 500);
-      const hardWords: IAggregatedUserWord[] | IWord[] = hardWordsRaw[0].paginatedResults;
-      const hardWordsIds = hardWords.map((element: IWord) => element.word);
-      setHardWords(hardWordsIds);
     }
     fetchData();
   }, [numbers]);
@@ -67,10 +63,17 @@ function Textbook() {
       const hardWordsRaw = await API.getHardWords(0, 500);
       const hardWords: IAggregatedUserWord[] | IWord[] = hardWordsRaw[0].paginatedResults;
       const hardWordsIds = hardWords.map((element: IWord) => element.word);
+      console.log('Hard words:', hardWordsIds)
       setHardWords(hardWordsIds);
+
+      const learntWordsRaw = await API.getLearntWords(0, 500);
+      const learntWords: IAggregatedUserWord[] | IWord[] = learntWordsRaw[0].paginatedResults;
+      const learntWordsIds = learntWords.map((element: IWord) => element.word);
+      console.log('Learnt words:', learntWordsIds)
+      setLearntWords((learntWordsIds));
     }
     fetchData();
-  }, []);
+  }, [numbers]);
 
   return (
     <React.StrictMode>
@@ -82,6 +85,8 @@ function Textbook() {
             return (
               <Card
                 hardWords={hardArray}
+                learntWords={learntArray}
+                numbers={numbers}
                 link={`${API.baseUrl}/${word?.image}`}
                 isLoggedIn={ isLoggedIn }
                 key={word.id}
