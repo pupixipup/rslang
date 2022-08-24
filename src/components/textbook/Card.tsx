@@ -1,14 +1,46 @@
-import React from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import DOMPurify from 'dompurify';
+import {API} from "../API/api";
 import './Card.scss';
 import WordAudio from './WordAudio';
-import { IWord } from './api';
+import { IWord } from "../../common/interfaces";
+
 interface wordProps {
   word: IWord | undefined,
-  link: string
+  link: string,
+  isLoggedIn: boolean,
+  hardWords: string[]
 }
 function Card(props: wordProps) {
-  const { word, link } = props;
+  const { word, link, isLoggedIn, hardWords } = props;
+  let [btnClass, setBtnClass] = useState(hardWords.includes(word!.word) ? 'words__interact-hard markedAsHard' : 'words__interact-hard');
+  let buttons = <div></div>;
+
+    useEffect(() => {
+        if (hardWords.includes(word!.word)) {
+            setBtnClass('words__interact-hard markedAsHard');
+        }
+    }, [hardWords]);
+
+    if (isLoggedIn) {
+        buttons = <div className="word__interact">
+            <button
+                onClick={() => {
+                    API.createUserWord(word!.id, { difficulty: 'hard' })
+                        .catch((err) => {
+                            console.log(err.message)
+                            if (err.message === 'Error 417: such user word already exists') {
+                                API.updateUserWord(word!.id, { difficulty: 'hard'})
+                                console.log('Word was updated!')
+                            }
+                        })
+                    setBtnClass('words__interact-hard markedAsHard')
+                }}
+                className={ btnClass }>Mark as difficult</button>
+            <button className="words__interact-learnt">Mark as learnt</button>
+        </div>
+    }
+
   return (
     <div className="word">
         <div className="word__desc">
@@ -30,6 +62,7 @@ function Card(props: wordProps) {
         <div className="word__example-eng" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(word?.textExample as string)}} />
         <div className="word__example-ru">{word?.textExampleTranslate}</div>
       </div>
+            { buttons }
         </div>
       <img className="word__image" src={link} alt={word?.word} />
     </div>

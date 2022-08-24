@@ -96,3 +96,44 @@
     margin-bottom: 25px;
   }
 }
+
+.markedAsHard {
+  opacity: .5;
+  background-color: pink;
+}
+.words__interact-hard.markedAsHard:hover {
+  opacity: .5;
+}
+
+.word__interact {
+  display: flex;
+  margin-top: 15px;
+  gap: 15px;
+}
+
+.words__interact-hard, .words__interact-learnt {
+  padding: 5px 10px;
+  font-family: 'Roboto', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.words__interact-hard:hover, .words__interact-learnt:hover {
+opacity: .7;
+  transition: .3s;
+}
+.words__interact-hard {
+  background-color: #ff9a8e;
+  color: #2f2f2f;
+}
+.words__interact-learnt {
+background-color: #36a736;
+  color: #e4f3ff;
+}
+.words__interact-learnt.isLearnt {
+  opacity: .5;
+}
+.words__interact-learnt.isLearnt:hover {
+  opacity: .5;
+}

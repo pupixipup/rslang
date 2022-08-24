@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import constants from "../../constants";
+import { API } from '../API/api';
+import {IAggregatedUserWord, IWord} from "../../common/interfaces";
 import { createSectionsArray, Section } from "./Section";
-import { IWord, API } from "./api";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
 import "./Textbook.scss";
@@ -10,8 +10,11 @@ function Textbook() {
   const wordsLocation = JSON.parse(
     window.localStorage.getItem("wordsLocation") as string
   ) || { page: 0, section: 0 };
+
   const [numbers, setNumbers] = useState(wordsLocation);
   const [data, updateData] = useState<IWord[]>();
+  const [isLoggedIn] = useState<boolean>(API.isAuth());
+  const [hardArray, setHardWords] = useState([] as string[]);
 
   const totalSections = 6;
   const sectionsArray: number[] = createSectionsArray(totalSections);
@@ -41,18 +44,40 @@ function Textbook() {
     );
   }
 
-  useEffect(() => {
-    const api = new API();
-    if (numbers.section === 6) {
-      api.getWords(1, 5).then((words) => {
-        updateData(words);
-      });
-      return;
-    }
-    api.getWords(numbers.page, numbers.section).then((words) => {
+  useEffect( () => {
+    const fetchData = async () => {
+      let words: IAggregatedUserWord[] | undefined | IWord[];
+      if (numbers.section === 6) {
+        words = await API.getWords(1, 5);
+      }
+      words = await API.getWords(numbers.page, numbers.section);
       updateData(words);
-    });
+
+      const hardWordsRaw = await API.getHardWords(0, 500);
+      const hardWords: IAggregatedUserWord[] | IWord[] = hardWordsRaw[0].paginatedResults;
+      const hardWordsIds = hardWords.map((element: IWord) => element.word);
+      console.log(hardWordsIds);
+      setHardWords(hardWordsIds);
+    }
+    fetchData();
   }, [numbers]);
+
+  useEffect( () => {
+    const fetchData = async () => {
+      // let words: IAggregatedUserWord[] | undefined | IWord[];
+      // if (numbers.section === 6) {
+      //   words = await API.getWords(1, 5);
+      // }
+      // words = await API.getWords(numbers.page, numbers.section);
+      // updateData(words);
+
+      const hardWordsRaw = await API.getHardWords(0, 500);
+      const hardWords: IAggregatedUserWord[] | IWord[] = hardWordsRaw[0].paginatedResults;
+      const hardWordsIds = hardWords.map((element: IWord) => element.word);
+      setHardWords(hardWordsIds);
+    }
+    fetchData();
+  }, []);
 
   return (
     <React.StrictMode>
@@ -63,9 +88,11 @@ function Textbook() {
           {data?.map((word, ndx) => {
             return (
               <Card
-                link={`${constants.baseUrl}/${word?.image}`}
+                hardWords={hardArray}
+                link={`${API.baseUrl}/${word?.image}`}
+                isLoggedIn={ isLoggedIn }
+                key={word.id}
                 word={word}
-                key={ndx}
               />
             );
           })}
