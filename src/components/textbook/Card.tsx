@@ -3,24 +3,35 @@ import DOMPurify from 'dompurify';
 import {API} from "../API/api";
 import './Card.scss';
 import WordAudio from './WordAudio';
-import { IWord } from "../../common/interfaces";
+import { IWord, IUserWordOptions } from "../../common/interfaces";
 
 interface wordProps {
   word: IWord | undefined,
   link: string,
+  numbers: { page: number, section: number },
   isLoggedIn: boolean,
-  hardWords: string[]
+  hardWords: string[],
+  learntWords: string[]
 }
 function Card(props: wordProps) {
-  const { word, link, isLoggedIn, hardWords } = props;
-  let [btnClass, setBtnClass] = useState('words__interact-hard');
+  const { word, link, isLoggedIn, hardWords, learntWords, numbers } = props;
+  let [btnHardClass, setBtnHardClass] = useState('words__interact-hard');
+  let [btnLearntClass, setBtnLearntClass] = useState('words__interact-learnt');
   let buttons = <div></div>;
 
     useEffect(() => {
         if (hardWords.includes(word!.word)) {
-            setBtnClass('words__interact-hard markedAsHard');
+            setBtnHardClass('words__interact-hard markedAsHard');
+            console.log(word!.word)
         }
-    }, [hardWords]);
+    }, [hardWords, numbers]);
+
+    useEffect(() => {
+        if (learntWords.includes(word!.word)) {
+            setBtnLearntClass('words__interact-learnt markedAsLearnt');
+            console.log(word!.word)
+        }
+    }, [numbers, learntWords]);
 
     if (isLoggedIn) {
         buttons = <div className="word__interact">
@@ -28,14 +39,22 @@ function Card(props: wordProps) {
                 onClick={() => {
                     API.createUserWord(word!.id, { difficulty: 'hard' })
                         .catch((err) => {
-                            if (err.message === 'Error 417: such user word already exists') {
-                                API.updateUserWord(word!.id, { difficulty: 'hard'})
-                            }
+                                API.updateUserWord(word!.id, { difficulty: 'hard', optional: word?.userWord?.optional})
                         })
-                    setBtnClass('words__interact-hard markedAsHard')
+                    setBtnHardClass('words__interact-hard markedAsHard')
                 }}
-                className={ btnClass }>Mark as difficult</button>
-            <button className="words__interact-learnt">Mark as learnt</button>
+                disabled={((btnHardClass === 'words__interact-hard') ? false : true)}
+                className={ btnHardClass }>Отметить как сложное</button>
+            <button
+                onClick={() => {
+                    API.createUserWord(word!.id, { difficulty: 'easy', optional: {isLearnt: 'true'} })
+                        .catch((err) => {
+                            API.updateUserWord(word!.id, { difficulty: word?.userWord?.difficulty as string, optional: {isLearnt: 'true'} })
+
+                        })
+                    setBtnLearntClass('words__interact-learnt markedAsLearnt')
+                }}
+                className={ btnLearntClass }>Отметить как изученное</button>
         </div>
     }
 
