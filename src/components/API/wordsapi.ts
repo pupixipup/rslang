@@ -31,7 +31,7 @@ export class WordsApi {
  * @getWords
  * @param {number} page - page
  * @param {number} group - group
- * @returns {Promise<IUserWord[]>} array of words
+ * @returns {Promise<IWord[]>} array of words
  */
   static getWords(page?: number, group?: number) {
     if (page === undefined) page = 0;

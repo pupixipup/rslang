@@ -1,21 +1,8 @@
 import { UserData } from "../components/API/userData"
 
-export interface IWord {
-  id: string,
-  group: number,
-  page: number,
-  word: string,
-  image: string,
-  audio: string,
-  audioMeaning: string,
-  audioExample: string,
-  textMeaning: string,
-  textExample: string,
-  transcription: string,
-  wordTranslate: string,
-  textMeaningTranslate: string,
-  textExampleTranslate: string
-}
+
+
+
 
 export interface IUserReg {
   name?: string,
@@ -75,6 +62,30 @@ export interface IAggrResp{
   totalCount: []
 }
 
-export interface IUserWord extends IWord{
-  userWord?: IUserWordOptions;
+export interface IWordDescription{
+  group: number,
+  page: number,
+  word: string,
+  image: string,
+  audio: string,
+  audioMeaning: string,
+  audioExample: string,
+  textMeaning: string,
+  textExample: string,
+  transcription: string,
+  wordTranslate: string,
+  textMeaningTranslate: string,
+  textExampleTranslate: string
+}
+
+export interface IWord extends IWordDescription {
+  id: string,  
+}
+
+export interface IPagenatedResult extends IWordDescription{
+  _id: string,
+}
+
+export interface IUserWord extends IPagenatedResult{
+  userWord?: IUserWordOptions,
 }

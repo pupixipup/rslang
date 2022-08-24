@@ -215,6 +215,7 @@ export class API {
         .then((res) => res.json())
         .then((data:IAggrResp[]) => {console.log(data[0]); return data[0]})
         .then((data: IAggrResp) => {console.log(data.paginatedResults); return data.paginatedResults as IUserWord[]})
+        .then((data: IUserWord[]) => {console.log("полеid = " + data[0]._id); return data;})
         .catch((err: Error) => {throw new Error(err.message)});
     }
  /**
