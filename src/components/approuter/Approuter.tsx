@@ -2,7 +2,7 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { Auth } from "../auth/Auth";
 import Home from "../home/Home";
 import Textbook from "../textbook/Textbook";
-import "./approuter.scss";
+import "./Approuter.scss";
 
 
 const MENUITEMS =[

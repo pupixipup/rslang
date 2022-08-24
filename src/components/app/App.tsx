@@ -1,4 +1,4 @@
-import './app.scss';
+import './App.scss';
 import { createContext } from 'react';
 import { API } from '../API/api';
 import { UserData } from '../API/userData';

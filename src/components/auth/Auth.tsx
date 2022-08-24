@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserApi } from "../API/userApi";
-import './auth.scss';
+import './Auth.scss';
 
 export function Auth () {
   const [email, setEmail] = useState<string>('');
