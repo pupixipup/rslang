@@ -47,7 +47,7 @@ export interface IUserWordOptions  {
   optional?: {}
 }
 export interface IUserWord {
-  id: string, 
+  id: string,
   difficulty: string, 
   wordId: string
 }
@@ -64,4 +64,15 @@ export interface IUserSettings {
 
 export interface IUserData {
   userData: UserData,
+}
+
+export interface IAggregatedWord {
+  paginatedResults: IWord[],
+  totalCount: Number[]
+}
+
+export interface IAggregatedUserWord {
+  _id: string,
+  word: string,
+  wordTranslate: string,
 }

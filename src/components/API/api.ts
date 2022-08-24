@@ -1,6 +1,14 @@
 import { UserData } from './userData';
 import { BASELINK, PORT, RESERVE_TIME } from "../../common/constants";
-import { IUser, IUserSignin, IUserToken, IUserWord, IUserWordOptions, IWord } from "../../common/interfaces";
+import {
+    IAggregatedWord,
+    IUser,
+    IUserSignin,
+    IUserToken,
+    IUserWord,
+    IUserWordOptions,
+    IWord
+} from "../../common/interfaces";
 
 
 const enum METHODS {
@@ -230,18 +238,18 @@ export class API {
             .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
     }
 
-    async getHardWords(userId: string, page: number, wordsPerPage: number, group?: number) {
+    static async getHardWords(page: number, wordsPerPage: number, group?: number) {
         let link = `${API.baseUrl}/${ENDPOINTS.users}/`;
-        link += `${userId}/`;
+        link += `${API.userId}/`;
         link += 'aggregatedWords';
         link += `?page=${page}`;
         link += `&wordsPerPage=${wordsPerPage}`;
-        link += '{"userWord.difficulty":"hard"}';
+        link += '&filter={"userWord.difficulty":"hard"}';
         if (group) link += `&group=${group}`;
         return API.authFetch(link)
             .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
             .then((res) => res.json())
-            .then((data) => data as IUser)   // {id: string, email: string}
+            .then((data) => data as IAggregatedWord[])   // {id: string, email: string}
     }
 
 
