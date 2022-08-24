@@ -18,7 +18,7 @@ const enum ENDPOINTS {
 
 export class API {
  // static instance: API;
-  private static baseUrl = BASELINK + ":" + PORT;
+  static baseUrl = BASELINK + ":" + PORT;
   private static userToken = "";
   private static userId = "";
   private static refreshToken ="";
@@ -214,6 +214,35 @@ export class API {
       .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
   }
 
+    static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
+        return API.authFetch(
+            `${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`,
+            {
+                method: METHODS.put,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(wordOptions)
+            })
+            .then((res) => API.errorHandler(res))  //
+            .then((res) => res.json())
+            .then((data) => data as IUserWord)
+            .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
+    }
+
+    async getHardWords(userId: string, page: number, wordsPerPage: number, group?: number) {
+        let link = `${API.baseUrl}/${ENDPOINTS.users}/`;
+        link += `${userId}/`;
+        link += 'aggregatedWords';
+        link += `?page=${page}`;
+        link += `&wordsPerPage=${wordsPerPage}`;
+        link += '{"userWord.difficulty":"hard"}';
+        if (group) link += `&group=${group}`;
+        return API.authFetch(link)
+            .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
+            .then((res) => res.json())
+            .then((data) => data as IUser)   // {id: string, email: string}
+    }
 
 
 // https://www.codementor.io/@obabichev/react-token-auth-12os8txqo1
@@ -259,7 +288,11 @@ export class API {
     return (jwt && jwt.exp && jwt.exp * 1000) || null;
   }
 
-  static isExpired(exp?: number | null): boolean {
+  static isAuth(){
+      return !!API.userId;
+  }
+
+    static isExpired(exp?: number | null): boolean {
     if (!exp) {
       return false;
     }
