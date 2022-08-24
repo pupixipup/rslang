@@ -20,7 +20,7 @@ function App () {
     API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string))
     API.getRefreshToken();
   }
- 
+
   return (
     <Context.Provider value={{userData}}>
       <div className="App">
