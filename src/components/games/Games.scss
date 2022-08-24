@@ -1,0 +1,32 @@
+@import '../../style/abstract';
+
+.games-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  margin-top: 100px;
+}
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 300px;
+  border-radius: 20px;
+  box-shadow: rgb(0 0 0 / 20%) 0px 0px 30px;
+  color: $text-color;
+  font-size: 46px;
+}
+.game:hover {
+  box-shadow: rgb(0 0 0 / 35%) 0px 0px 30px;
+  cursor: pointer;
+}
+.game-sprint {
+  background-image: url(../../assets/img/sprint-bg.png);
+  background-size: cover;
+}
+.game-audio {
+  background-image: url(../../assets/img/audio-game-bg.jpeg);
+  background-size: cover;
+}
