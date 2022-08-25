@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './Sprint.scss';
 import star from '../../../assets/icon/star.svg';
+import { GameMenu } from '../gameMenu/GameMenu';
+import { useLocation } from 'react-router-dom';
 
 export function Sprint () {
+  let {state} = useLocation() as {state: {gameMenu: boolean}};
   const [points, setPoints] = useState(10);
   const [english, setEnglish] = useState('english');
   const [russian, setRussian] = useState('russian');
 
-  return (
+  return state.gameMenu ? (
+      <GameMenu/>
+    ) : (
     <div className='sprint-wrapper'>
       <div className='sprint-timer'>
         <div className='sprint-time'>59</div>
@@ -39,5 +44,5 @@ export function Sprint () {
         </div>
       </div>
     </div>
-  )
+    )
 }

@@ -34,6 +34,10 @@ const ROUTEITEMS = [
     value: 'Audio',
     link: 'audio'
   },
+  {
+    value: 'GameMenu',
+    link: 'level'
+  },
 ]
 
   
