@@ -6,15 +6,17 @@ import WordAudio from './WordAudio';
 import { IWord } from "../../common/interfaces";
 
 interface wordProps {
+  wordsArray: IWord[],
   word: IWord | undefined,
   link: string,
+  updateWords: (arr: IWord[]) => void,
   numbers: { page: number, section: number },
   isLoggedIn: boolean,
   hardWords: string[],
   learntWords: string[]
 }
 function Card(props: wordProps) {
-  const { word, link, isLoggedIn, hardWords, learntWords, numbers } = props;
+  const { word, link, isLoggedIn, hardWords, learntWords, numbers, wordsArray, updateWords } = props;
   let [btnHardClass, setBtnHardClass] = useState('words__interact-hard');
   let [btnLearntClass, setBtnLearntClass] = useState('words__interact-learnt');
   let buttons = <div></div>;
@@ -42,7 +44,8 @@ function Card(props: wordProps) {
                     setBtnHardClass('words__interact-hard markedAsHard')
                     } );
                     } else {
-                        removeHardWord(word)
+                        removeHardWord(word);
+                        updateWords(wordsArray.filter((el: IWord) => el.word !== word?.word));
                     }
                 }}
                 disabled={((btnHardClass === 'words__interact-hard' || numbers.section === 6) ? false : true)}

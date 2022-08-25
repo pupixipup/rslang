@@ -95,6 +95,9 @@ function Textbook() {
           {data?.map((word, ndx) => {
             return (
               <Card
+                // to-do words splicing
+                wordsArray={data}
+                updateWords={updateData}
                 hardWords={hardArray}
                 learntWords={learntArray}
                 numbers={numbers}
