@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { API } from '../API/api';
-import { IUserWord } from "../../common/interfaces";
+import { WordsApi } from "../API/wordsapi";
+import { IUserWord, IWord } from "../../common/interfaces";
 import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
@@ -46,15 +47,16 @@ function Textbook() {
   }
 
   useEffect( () => {
-    const fetchData = async () => {
+    const fetchData = async () => { 
       let words: IUserWord[];
       if (numbers.section === 6) {
         // toFix
-        words = await API.getAggregatedUserWords(numbers.page, 0, 20);
+        words = await WordsApi.getDifficultWords();
       } else {
       words = await API.getAggregatedUserWords(numbers.page, numbers.section, 20);
       }
       updateData(words);
+      console.log(words);
     }
     fetchData();
   }, [numbers]);
@@ -76,7 +78,6 @@ function Textbook() {
           {data?.map((word, ndx) => {
             return (
               <Card
-                // to-do words splicing
                 wordsArray={data}
                 updateWords={updateData}
                 numbers={numbers}

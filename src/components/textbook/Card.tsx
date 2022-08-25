@@ -14,33 +14,19 @@ interface wordProps {
   isLoggedIn: boolean
 }
 function Card(props: wordProps) {
-  const { word, link, isLoggedIn, numbers, wordsArray, updateWords } = props;
-  let [btnHardClass, setBtnHardClass] = useState('words__interact-hard');
-  let [btnLearntClass, setBtnLearntClass] = useState('words__interact-learnt');
+  const { word, link, isLoggedIn, numbers} = props;
   let buttons = <div></div>;
 
     if (isLoggedIn) {
         buttons = <div className="word__interact">
             <button
-                onClick={() => {
-                    if (numbers.section !== 6) {
-                    addHardWord(word).then(() => {
-                    setBtnHardClass('words__interact-hard markedAsHard')
-                    } );
-                    } else {
-                        removeHardWord(word);
-                        updateWords(wordsArray.filter((el: IUserWord) => el.word !== word?.word));
-                    }
-                }}
-                disabled={((btnHardClass === 'words__interact-hard' || numbers.section === 6) ? false : true)}
-                className={ btnHardClass }>{ numbers.section === 6 ? 'Убрать из сложных' : 'Отметить как сложное'}</button>
+                className='words__interact-hard'>
+                  { word.userWord?.difficulty === 'hard' ? 'Убрать из сложных' : 'Отметить как сложное'}
+                </button>
             <button
-                onClick={() => {
-                    addLearntWord(word).then(() => {
-                    setBtnLearntClass('words__interact-learnt markedAsLearnt')
-                    })
-                }}
-                className={ btnLearntClass }>Отметить как изученное</button>
+                className='words__interact-learnt'>
+                  { word.userWord?.optional?.learnt === true ? 'Убрать из изученных' : 'Отметить как изученное'}
+                </button>
         </div>
     }
 
