@@ -1,6 +1,6 @@
 import { UserData } from './userData';
 import { BASELINK, PORT, RESERVE_TIME } from "../../common/constants";
-import { IAggrResp, IUser, IUserSignin, IUserToken, IUserWord, IUserWordOptions, IWord } from "../../common/interfaces";
+import { IAggrResp, IUser, IUserSignin, IUserToken, IUserWord,  IUserWordOptions, IUserWordRecord, IWord } from "../../common/interfaces";
 
 
 const enum METHODS {
@@ -194,9 +194,22 @@ export class API {
     return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}`)
       .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
       .then((res) => res.json())
-      .then((data) => data as IUserWord[])
+      .then((data) => data as IUserWordRecord[])
       .catch((err: Error) => {throw new Error(err.message)});
   }
+
+    /**
+   * getUserWord
+   * @getUserWords
+   * @returns {Promise<IUserWordRecord>}  wordID with info
+   */ 
+     static async getUserWord(wordId: string) {
+      return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`)
+        .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
+        .then((res) => res.json())
+        .then((data) => data as IUserWordRecord)
+        .catch((err: Error) => {throw new Error(err.message)});
+    }
 
    /**
    * getAggregatedUserWords
@@ -218,10 +231,11 @@ export class API {
         .catch((err: Error) => {throw new Error(err.message)});
     }
  /**
-   * update User
-   * @updateUser
+   * create UserWord
+   * @createUserWord
    * @param {string} wordId - word ID
-   * @returns {Promise<IUser>} user info
+   * @param {IUserWordOptions} - wordOptions
+   * @returns {Promise<IUserWordRecord>} user info
    */ 
   static async createUserWord(wordId: string, wordOptions: IUserWordOptions) {    
     return API.authFetch(
@@ -235,15 +249,29 @@ export class API {
       })
       .then((res) => API.errorHandler(res))  // 
       .then((res) => res.json())
-      .then((data) => data as IUserWord)
+      .then((data) => data as IUserWordRecord)
       .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
   }
+
+  static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
+    return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`,
+        {
+            method: METHODS.put,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(wordOptions)
+        })
+        .then((res) => API.errorHandler(res))  //
+        .then((res) => res.json())
+        .then((data) => data as IUserWordRecord)
+        .catch((err: Error) => {throw new Error(err.message)}); 
+}
 
    /**
    * delete UserWord
    * @deleteUserWord
    * @param {string} wordId - word ID
-   * @returns {Promise<IUser>} user info
    */ 
 static async deleteUserWord(wordId: string) {    
     return API.authFetch(

@@ -29,19 +29,7 @@ export interface IUserToken {
   refreshToken: string,
 }
 
-export interface IUserWordOptions {
-  difficulty: string,
-  optional?: {
-          learnt?: boolean,
-          correctAnswers?: number,
-          wrongAnswers?: number
-  }
-}
 
-export interface IUserWordInfo extends IUserWordOptions{
-  id: string, // id of record
-  wordId: string
-}
 
 export interface IUserStatistics {
       learntWords: 0,
@@ -60,6 +48,20 @@ export interface IUserData {
 export interface IAggrResp{
   paginatedResults:[],
   totalCount: []
+}
+
+export interface IUserWordOptions {
+  difficulty: string,
+  optional?: {
+          learnt?: boolean,
+          correctAnswers?: number,
+          wrongAnswers?: number
+  }
+}
+
+export interface IUserWordRecord extends IUserWordOptions{
+  id: string, // id of record
+  wordId: string
 }
 
 export interface IWordDescription{
@@ -88,4 +90,9 @@ export interface IPagenatedResult extends IWordDescription{
 
 export interface IUserWord extends IPagenatedResult{
   userWord?: IUserWordOptions,
+}
+
+export interface IUserWordUpload{
+  wordId: string,
+  wordOptions: IUserWordOptions
 }
