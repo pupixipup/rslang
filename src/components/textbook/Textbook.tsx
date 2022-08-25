@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { API } from '../API/api';
 import {IAggregatedUserWord, IWord} from "../../common/interfaces";
 import { createSectionsArray, Section } from "./Section";
@@ -17,6 +18,7 @@ function Textbook() {
   const [hardArray, setHardWords] = useState([] as string[]);
   const [learntArray, setLearntWords] = useState([] as string[]);
 
+  let navigate = useNavigate();
   const totalSections = 6;
   const sectionsArray: number[] = createSectionsArray(totalSections);
 
@@ -76,6 +78,14 @@ function Textbook() {
     <React.StrictMode>
     <div className="textbook-wrapper">
       { sectionDisplayer }
+      <div className="textbook__games">
+        <div className="textbook__games-game game-sprint" onClick={() => navigate('/games/sprint', { replace: true })}>
+          Спринт
+        </div>
+        <div className="textbook__games-game game-audio" onClick={() => navigate('/games/games/audio', { replace: true })}>
+          Аудиовызов
+        </div>
+      </div>
       <div className="textbook">
         <div className="words">
           {data?.map((word, ndx) => {
