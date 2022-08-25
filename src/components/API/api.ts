@@ -19,7 +19,7 @@ const enum ENDPOINTS {
 
 export class API {
  // static instance: API;
-  private static baseUrl = BASELINK + ":" + PORT;
+  static baseUrl = BASELINK + ":" + PORT;
   private static userToken = "";
   private static userId = "";
   private static refreshToken ="";
@@ -255,6 +255,23 @@ static async deleteUserWord(wordId: string) {
       .then(()=> {})
       .catch((err: Error) => {throw new Error(err.message)}); //Error 
   }
+
+  static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
+    return API.authFetch(
+        `${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`,
+        {
+            method: METHODS.put,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(wordOptions)
+        })
+        .then((res) => API.errorHandler(res))  //
+        .then((res) => res.json())
+        .then((data) => data as IUserWord)
+        .then(data => console.log(data))
+        .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
+}
 
 
 // https://www.codementor.io/@obabichev/react-token-auth-12os8txqo1

@@ -3,37 +3,21 @@ import DOMPurify from 'dompurify';
 import {addHardWord, addLearntWord, removeHardWord} from "./wordapi";
 import './Card.scss';
 import WordAudio from './WordAudio';
-import { IWord } from "../../common/interfaces";
+import { IUserWord } from "../../common/interfaces";
 
 interface wordProps {
-  wordsArray: IWord[],
-  word: IWord | undefined,
+  wordsArray: IUserWord[],
+  word: IUserWord,
   link: string,
-  updateWords: (arr: IWord[]) => void,
+  updateWords: (arr: IUserWord[]) => void,
   numbers: { page: number, section: number },
-  isLoggedIn: boolean,
-  hardWords: string[],
-  learntWords: string[]
+  isLoggedIn: boolean
 }
 function Card(props: wordProps) {
-  const { word, link, isLoggedIn, hardWords, learntWords, numbers, wordsArray, updateWords } = props;
+  const { word, link, isLoggedIn, numbers, wordsArray, updateWords } = props;
   let [btnHardClass, setBtnHardClass] = useState('words__interact-hard');
   let [btnLearntClass, setBtnLearntClass] = useState('words__interact-learnt');
   let buttons = <div></div>;
-
-    useEffect(() => {
-        // toFix (there should be one general array, not two separated)
-        if (hardWords.includes(word!.word) && numbers.section !== 6) {
-            setBtnHardClass('words__interact-hard markedAsHard');
-        }
-    }, [hardWords, numbers]);
-
-    useEffect(() => {
-        // toFix (there should be one general array, not two separated)
-        if (learntWords.includes(word!.word)) {
-            setBtnLearntClass('words__interact-learnt markedAsLearnt');
-        }
-    }, [numbers, learntWords]);
 
     if (isLoggedIn) {
         buttons = <div className="word__interact">
@@ -45,7 +29,7 @@ function Card(props: wordProps) {
                     } );
                     } else {
                         removeHardWord(word);
-                        updateWords(wordsArray.filter((el: IWord) => el.word !== word?.word));
+                        updateWords(wordsArray.filter((el: IUserWord) => el.word !== word?.word));
                     }
                 }}
                 disabled={((btnHardClass === 'words__interact-hard' || numbers.section === 6) ? false : true)}

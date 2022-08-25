@@ -1,23 +1,23 @@
 import { API } from "../API/api";
-import { IWord } from "../../common/interfaces";
+import { IUserWord } from "../../common/interfaces";
 
-export async function addHardWord(word:  IWord | undefined) {
-    API.createUserWord(word!.id, { difficulty: 'hard' })
+export async function addHardWord(word: IUserWord) {
+    API.createUserWord(word!._id, { difficulty: 'hard' })
         .catch((err) => {
             console.log(word)
-            API.updateUserWord(word!.id, { difficulty: 'hard', optional: word?.userWord?.optional})
+            API.updateUserWord(word!._id, { difficulty: 'hard', optional: {learnt: false}})
         })
 }
 
-export async function removeHardWord(word:  IWord | undefined) {
+export async function removeHardWord(word: IUserWord) {
     console.log(word)
     await API.updateUserWord((word as any)!['_id'], {difficulty: 'easy', optional: word?.userWord?.optional})
 }
 
-export async function addLearntWord(word:  IWord | undefined) {
-    API.createUserWord(word!.id, { difficulty: 'easy', optional: {isLearnt: 'true'} })
+export async function addLearntWord(word:  IUserWord) {
+    API.createUserWord(word!._id, { difficulty: 'easy', optional: {learnt: true} })
         .catch((err) => {
-            API.updateUserWord(word!.id, { difficulty: word?.userWord?.difficulty as string, optional: {isLearnt: 'true'} })
+            API.updateUserWord(word!._id, { difficulty: word?.userWord?.difficulty as string, optional: {learnt: true} })
         })
 }
 

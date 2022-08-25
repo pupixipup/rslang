@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { API } from '../API/api';
-import {IAggregatedUserWord, IWord} from "../../common/interfaces";
+import { IUserWord } from "../../common/interfaces";
 import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
@@ -13,10 +13,8 @@ function Textbook() {
   ) || { page: 0, section: 0 };
 
   const [numbers, setNumbers] = useState(wordsLocation);
-  const [data, updateData] = useState<IWord[]>();
+  const [data, updateData] = useState<IUserWord[]>();
   const [isLoggedIn] = useState<boolean>(API.isAuth());
-  const [hardArray, setHardWords] = useState([] as string[]);
-  const [learntArray, setLearntWords] = useState([] as string[]);
 
   let navigate = useNavigate();
   const totalSections = 6;
@@ -49,31 +47,14 @@ function Textbook() {
 
   useEffect( () => {
     const fetchData = async () => {
-      let words: IWord[];
+      let words: IUserWord[];
       if (numbers.section === 6) {
         // toFix
-        words = (await API.getHardWords(0, 500))[0].paginatedResults;
+        words = await API.getAggregatedUserWords(numbers.page, 0, 20);
       } else {
-      words = await API.getWords(numbers.page, numbers.section);
+      words = await API.getAggregatedUserWords(numbers.page, numbers.section, 20);
       }
       updateData(words);
-    }
-    fetchData();
-  }, [numbers]);
-
-  useEffect( () => {
-    const fetchData = async () => {
-      // toFix
-      const hardWordsRaw = await API.getHardWords(0, 500);
-      const hardWords: IAggregatedUserWord[] | IWord[] = hardWordsRaw[0].paginatedResults;
-      const hardWordsIds = hardWords.map((element: IWord) => element.word);
-      setHardWords(hardWordsIds);
-
-      // toFix
-      const learntWordsRaw = await API.getLearntWords(0, 500);
-      const learntWords: IAggregatedUserWord[] | IWord[] = learntWordsRaw[0].paginatedResults;
-      const learntWordsIds = learntWords.map((element: IWord) => element.word);
-      setLearntWords((learntWordsIds));
     }
     fetchData();
   }, [numbers]);
@@ -98,8 +79,6 @@ function Textbook() {
                 // to-do words splicing
                 wordsArray={data}
                 updateWords={updateData}
-                hardWords={hardArray}
-                learntWords={learntArray}
                 numbers={numbers}
                 link={`${API.baseUrl}/${word?.image}`}
                 isLoggedIn={ isLoggedIn }

@@ -1,5 +1,5 @@
 import './app.scss';
-import { createContext, useEffect } from 'react';
+import { createContext } from 'react';
 import { API } from '../API/api';
 import { UserData } from '../API/userData';
 import { IUserData } from '../../common/interfaces';
@@ -7,7 +7,6 @@ import Header from '../header/Header';
 import AppRouter from '../approuter/Approuter';
 import Footer from '../footer/Footer';
 
-import { testAPI } from './../API/testapi';
 
 
 const userData = new UserData();
