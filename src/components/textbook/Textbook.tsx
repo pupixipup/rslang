@@ -51,6 +51,7 @@ function Textbook() {
     const fetchData = async () => {
       let words: IWord[];
       if (numbers.section === 6) {
+        // toFix
         words = (await API.getHardWords(0, 500))[0].paginatedResults;
       } else {
       words = await API.getWords(numbers.page, numbers.section);
@@ -62,10 +63,13 @@ function Textbook() {
 
   useEffect( () => {
     const fetchData = async () => {
+      // toFix
       const hardWordsRaw = await API.getHardWords(0, 500);
       const hardWords: IAggregatedUserWord[] | IWord[] = hardWordsRaw[0].paginatedResults;
       const hardWordsIds = hardWords.map((element: IWord) => element.word);
       setHardWords(hardWordsIds);
+
+      // toFix
       const learntWordsRaw = await API.getLearntWords(0, 500);
       const learntWords: IAggregatedUserWord[] | IWord[] = learntWordsRaw[0].paginatedResults;
       const learntWordsIds = learntWords.map((element: IWord) => element.word);
