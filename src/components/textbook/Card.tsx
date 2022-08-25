@@ -23,7 +23,7 @@ function Card(props: wordProps) {
 
     useEffect(() => {
         // toFix (there should be one general array, not two separated)
-        if (hardWords.includes(word!.word)) {
+        if (hardWords.includes(word!.word) && numbers.section !== 6) {
             setBtnHardClass('words__interact-hard markedAsHard');
         }
     }, [hardWords, numbers]);
