@@ -96,7 +96,7 @@ function Textbook() {
                 numbers={numbers}
                 link={`${API.baseUrl}/${word?.image}`}
                 isLoggedIn={ isLoggedIn }
-                key={word.id}
+                key={`${word.word}-${numbers.section}`}
                 word={word}
               />
             );
