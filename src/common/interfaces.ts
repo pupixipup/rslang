@@ -1,21 +1,8 @@
 import { UserData } from "../components/API/userData"
 
-export interface IWord {
-  id: string,
-  group: number,
-  page: number,
-  word: string,
-  image: string,
-  audio: string,
-  audioMeaning: string,
-  audioExample: string,
-  textMeaning: string,
-  textExample: string,
-  transcription: string,
-  wordTranslate: string,
-  textMeaningTranslate: string,
-  textExampleTranslate: string
-}
+
+
+
 
 export interface IUserReg {
   name?: string,
@@ -42,18 +29,22 @@ export interface IUserToken {
   refreshToken: string,
 }
 
-export interface IUserWordOptions  {
+export interface IUserWordOptions {
   difficulty: string,
-  optional?: {}
+  optional?: {
+          learnt?: boolean,
+          correctAnswers?: number,
+          wrongAnswers?: number
+  }
 }
-export interface IUserWord {
-  id: string, 
-  difficulty: string, 
+
+export interface IUserWordInfo extends IUserWordOptions{
+  id: string, // id of record
   wordId: string
 }
 
 export interface IUserStatistics {
-      learnedWords: 0,
+      learntWords: 0,
       optional?: {}
 }
 
@@ -64,4 +55,37 @@ export interface IUserSettings {
 
 export interface IUserData {
   userData: UserData,
+}
+
+export interface IAggrResp{
+  paginatedResults:[],
+  totalCount: []
+}
+
+export interface IWordDescription{
+  group: number,
+  page: number,
+  word: string,
+  image: string,
+  audio: string,
+  audioMeaning: string,
+  audioExample: string,
+  textMeaning: string,
+  textExample: string,
+  transcription: string,
+  wordTranslate: string,
+  textMeaningTranslate: string,
+  textExampleTranslate: string
+}
+
+export interface IWord extends IWordDescription {
+  id: string,  
+}
+
+export interface IPagenatedResult extends IWordDescription{
+  _id: string,
+}
+
+export interface IUserWord extends IPagenatedResult{
+  userWord?: IUserWordOptions,
 }
