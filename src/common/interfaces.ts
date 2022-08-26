@@ -2,7 +2,7 @@ import { UserData } from "../components/API/userData"
 
 
 
-
+export type wordsList = IUserWord[] | IWord[];
 
 export interface IUserReg {
   name?: string,

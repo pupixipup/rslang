@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { API } from '../API/api';
 import { WordsApi } from "../API/wordsapi";
-import { IUserWord, IWord } from "../../common/interfaces";
+import { IUserWord, IWord, wordsList } from "../../common/interfaces";
 import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
@@ -14,7 +14,7 @@ function Textbook() {
   ) || { page: 0, section: 0 };
 
   const [numbers, setNumbers] = useState(wordsLocation);
-  const [data, updateData] = useState<IUserWord[] | IWord[]>();
+  const [data, updateData] = useState<wordsList>();
   const [isLoggedIn] = useState<boolean>(API.isAuth());
 
   let navigate = useNavigate();
@@ -27,6 +27,7 @@ function Textbook() {
 
   let pagination;
   let sectionDisplayer = <div className={`section-displayer section-${numbers.section}`}/>;
+  const loginWindow = <div className="textbook__login">Войдите, чтобы увидеть добавленные сложные слова</div>
 
   if (numbers.section !== 6) {
     pagination = (
@@ -48,15 +49,17 @@ function Textbook() {
 
   useEffect( () => {
     const fetchData = async () => { 
-      let words: IUserWord[] | IWord[];
+      let words: wordsList;
       if (numbers.section === 6) {
-        // toFix
-        words = await WordsApi.getDifficultWords();
+        if (API.isAuth()) {
+          words = await WordsApi.getDifficultWords();
+        } else {
+          words = [];
+        }
       } else {
         if (API.isAuth()) {
           words = await API.getAggregatedUserWords(numbers.page, numbers.section, 20);
         } else {
-          // IWord[]
           words = await API.getWords(numbers.page, numbers.section);
         }
       }
@@ -79,6 +82,7 @@ function Textbook() {
         </div>
       </div>
       <div className="textbook">
+      { !API.isAuth() && numbers.section === 6 ? loginWindow : '' }
         <div className="words">
           {data?.map((word, ndx) => {
             return (
