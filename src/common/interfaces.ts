@@ -10,6 +10,11 @@ export interface IUserReg {
   password: string
 }
 
+export interface localWord {
+  _id: string,
+  userWord: IUserWordOptions
+}
+
 export interface IUser {
   email: string,
   id: string,

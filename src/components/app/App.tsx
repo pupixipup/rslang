@@ -1,5 +1,6 @@
 import './app.scss';
 import '../../style/normalize.scss';
+import '../../style/fonts.scss';
 import { createContext } from 'react';
 import { API } from '../API/api';
 import { UserData } from '../API/userData';
@@ -33,8 +34,6 @@ function App () {
     </Context.Provider>
   );
 }
-
-
 
 
 export default App;

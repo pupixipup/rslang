@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { API } from '../API/api';
 import { WordsApi } from "../API/wordsapi";
-import { IUserWord, IWord, wordsList } from "../../common/interfaces";
+import { IUserWord, IWord, wordsList, localWord } from "../../common/interfaces";
+import { sendLocalWords } from "./wordapi";
 import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
@@ -15,6 +16,7 @@ function Textbook() {
 
   const [numbers, setNumbers] = useState(wordsLocation);
   const [data, updateData] = useState<wordsList>();
+  const [localWords, updateLocalWords] = useState<localWord[]>([]);
   const [isLoggedIn] = useState<boolean>(API.isAuth());
 
   let navigate = useNavigate();
@@ -49,6 +51,8 @@ function Textbook() {
 
   useEffect( () => {
     const fetchData = async () => { 
+      await sendLocalWords(localWords);
+      updateLocalWords([]);
       let words: wordsList;
       if (numbers.section === 6) {
         if (API.isAuth()) {
@@ -64,7 +68,6 @@ function Textbook() {
         }
       }
       updateData(words);
-      console.log(words);
     }
     fetchData();
   }, [numbers]);
@@ -87,6 +90,8 @@ function Textbook() {
           {data?.map((word, ndx) => {
             return (
               <Card
+                localWords={localWords}
+                updateLocalWords={updateLocalWords}
                 wordsArray={data}
                 updateWords={updateData}
                 numbers={numbers}
