@@ -3,6 +3,7 @@ import { SprintApi } from "../../API/sprintApi";
 import star from '../../../assets/icon/star.svg';
 import './SprintGame.scss';
 import { useNavigate } from "react-router-dom";
+import { Timer } from "../timer/Timer";
 
 export function SprintGame () {
   let navigate = useNavigate();
@@ -17,15 +18,13 @@ export function SprintGame () {
     setEnglish(SprintApi.wordsEn[index]);
     setRussian(SprintApi.wordsRu[index]);
     if(SprintApi.wordsEn.length === index) {
-      navigate('/games/results')
+      navigate('/games/results');
     }
   }
 
   return (
     <div className='sprint-wrapper'>
-      <div className='sprint-timer'>
-        <div className='sprint-time'>59</div>
-      </div>
+      <Timer/>
       <div className='sprint-card'>
         <div className="card-header">
           <div className="circle-block">
