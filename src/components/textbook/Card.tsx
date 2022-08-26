@@ -3,11 +3,11 @@ import DOMPurify from 'dompurify';
 import {addHardWord, addLearntWord, removeHardWord} from "./wordapi";
 import './Card.scss';
 import WordAudio from './WordAudio';
-import { IUserWord } from "../../common/interfaces";
+import { IUserWord, IWord } from "../../common/interfaces";
 
 interface wordProps {
-  wordsArray: IUserWord[],
-  word: IUserWord,
+  wordsArray: IUserWord[] | IWord[],
+  word: IUserWord | IWord,
   link: string,
   updateWords: (arr: IUserWord[]) => void,
   numbers: { page: number, section: number },
@@ -21,11 +21,11 @@ function Card(props: wordProps) {
         buttons = <div className="word__interact">
             <button
                 className='words__interact-hard'>
-                  { word.userWord?.difficulty === 'hard' ? 'Убрать из сложных' : 'Отметить как сложное'}
+                  { (word as IUserWord).userWord?.difficulty === 'hard' ? 'Убрать из сложных' : 'Отметить как сложное'}
                 </button>
             <button
                 className='words__interact-learnt'>
-                  { word.userWord?.optional?.learnt === true ? 'Убрать из изученных' : 'Отметить как изученное'}
+                  { (word as IUserWord).userWord?.optional?.learnt === true ? 'Убрать из изученных' : 'Отметить как изученное'}
                 </button>
         </div>
     }

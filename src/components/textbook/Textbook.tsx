@@ -14,7 +14,7 @@ function Textbook() {
   ) || { page: 0, section: 0 };
 
   const [numbers, setNumbers] = useState(wordsLocation);
-  const [data, updateData] = useState<IUserWord[]>();
+  const [data, updateData] = useState<IUserWord[] | IWord[]>();
   const [isLoggedIn] = useState<boolean>(API.isAuth());
 
   let navigate = useNavigate();
@@ -48,12 +48,17 @@ function Textbook() {
 
   useEffect( () => {
     const fetchData = async () => { 
-      let words: IUserWord[];
+      let words: IUserWord[] | IWord[];
       if (numbers.section === 6) {
         // toFix
         words = await WordsApi.getDifficultWords();
       } else {
-      words = await API.getAggregatedUserWords(numbers.page, numbers.section, 20);
+        if (API.isAuth()) {
+          words = await API.getAggregatedUserWords(numbers.page, numbers.section, 20);
+        } else {
+          // IWord[]
+          words = await API.getWords(numbers.page, numbers.section);
+        }
       }
       updateData(words);
       console.log(words);
