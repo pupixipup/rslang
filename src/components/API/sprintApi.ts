@@ -4,7 +4,7 @@ import { API } from "./api";
 
 export class SprintApi {
 
-  private static wordsAll: IWord[] = [];
+  static wordsAll: IWord[] = [];
   static wordsEn: string[] = [];
   static wordsRu: string[] = [];
   private static group = 0;
@@ -32,17 +32,13 @@ export class SprintApi {
       await API.getWords(this.getRandomPage(), this.group).then((data) => this.setWords(data));
     });
 
-    this.mix(this.wordsEn);
     this.mix(this.wordsRu);
 
     console.log(this.wordsEn);
     console.log(this.wordsRu);
   }
   static mix(array: string[]) {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
+    array.sort(() => Math.random() - 0.5);
   }
 
   static clearWords () {

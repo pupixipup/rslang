@@ -1,25 +1,33 @@
 @import '../../../style/abstract';
 .sprint {
   &-wrapper {
-    padding-top: 30px;
-    padding-left: 30px;
+    padding: 30px;
     height: 100%;
     background-image: url(../../../assets/img/sprint-bg.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: bottom;
   }
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   &-timer {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     border-radius: 100%;
     border: 1px solid #ffffff;
   }
   &-time {
-    font-size: 52px;
+    font-size: 36px;
+    color: $text-color;
+  }
+  &-total {
+    font-size: 54px;
     color: $text-color;
   }
   &-card {
@@ -129,5 +137,11 @@
   bottom: -5px;
   right: 55px;
   filter: invert(85%) sepia(0%) saturate(0%) hue-rotate(285deg) brightness(87%) contrast(85%);
+}
+.active-circle {
+  background-color: rgb(95, 202, 149);
+}
+.active-star {
+  filter: invert(100%) sepia(59%) saturate(1691%) hue-rotate(0deg) brightness(84%) contrast(86%);
 }
 
