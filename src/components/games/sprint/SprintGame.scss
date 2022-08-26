@@ -27,7 +27,7 @@
     width: 600px;
     height: 500px;
     border-radius: 15px;
-    background: rgba(255, 255, 255, 0.1);
+    background: $bg-transparent;
     border: 1px solid #ffffff;
   }
 }
@@ -68,7 +68,7 @@
     filter: invert(85%) sepia(4%) saturate(147%) hue-rotate(314deg) brightness(92%) contrast(86%);
   }
   &-words {
-    height: 220px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -85,12 +85,12 @@
     align-items: center;
     border-top: 30px;
     gap: 100px;
-    height: 100px;
+    height: 120px;
     border-top: 2px dotted #ffffff;
   }
 }
 .word-ru {
-  color: #c6c3c3;
+  color: #d1c9c9;
 }
 .button {
   padding-bottom: 20px;
