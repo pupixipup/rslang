@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from 'react-router-dom';
 import { API } from '../API/api';
-import { WordsApi } from "../API/wordsapi";
+import { WordsApi } from "../API/wordsapi"
 import { IUserWord, IWord, wordsList, localWord } from "../../common/interfaces";
+
 import { sendLocalWords } from "./wordapi";
 import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
 import "./Textbook.scss";
 
+
 function Textbook() {
   const wordsLocation = JSON.parse(
     window.localStorage.getItem("wordsLocation") as string
   ) || { page: 0, section: 0 };
+
 
   const [numbers, setNumbers] = useState(wordsLocation);
   const [data, updateData] = useState<wordsList>();
@@ -23,10 +26,13 @@ function Textbook() {
   const totalSections = 6;
   const sectionsArray: number[] = createSectionsArray(totalSections);
 
-  window.addEventListener("beforeunload", () => {
-    window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
-  });
 
+      
+
+  // window.addEventListener('beforeunload', () => {
+  //   window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
+  // })
+ 
   let pagination;
   let sectionDisplayer = <div className={`section-displayer section-${numbers.section}`}/>;
   const loginWindow = <div className="textbook__login">Войдите, чтобы увидеть добавленные сложные слова</div>
@@ -48,6 +54,19 @@ function Textbook() {
       />
     );
   }
+
+  
+  useEffect(() => {
+    const handleUnload = () => {
+      // saving current location in the storage
+      window.localStorage.setItem("wordsLocation", JSON.stringify(numbers))
+      // updating 
+      sendLocalWords(localWords);
+    }
+    window.addEventListener("beforeunload", handleUnload);
+    return () => window.removeEventListener("beforeunload", handleUnload);
+  });
+  
 
   useEffect( () => {
     const fetchData = async () => { 

@@ -23,9 +23,6 @@ function Card(props: wordProps) {
   
   const [difficultWord, setDifficultWord] = useState(word);
 
-  useEffect(() => {
-
-  }, [difficultWord]);
 
   if (isLoggedIn) {
     buttons = <div className="word__interact">
@@ -34,8 +31,9 @@ function Card(props: wordProps) {
         onClick={() => {
           const newDifficulty = (difficultWord as IUserWord).userWord?.difficulty === 'hard' ? 'easy' : 'hard'
           const newIsLearnt = newDifficulty === 'hard' ? false : true;
+
           const newLocalWord = { _id: (word as IPagenatedResult)._id, userWord: {
-             difficulty: newDifficulty, optional: { ...(word as IUserWord).userWord?.optional, newIsLearnt }
+             difficulty: newDifficulty, optional: { ...(word as IUserWord).userWord?.optional, learnt: newIsLearnt }
              }, isUserWord: !!(word as IUserWord).userWord }
 
              let ids = localWords.map((element) => element._id);
@@ -46,6 +44,7 @@ function Card(props: wordProps) {
             setDifficultWord({ ...difficultWord, userWord: {
               ...(difficultWord as IUserWord).userWord, difficulty: newDifficulty
             }});
+            console.log(difficultWord);
         }}
       >
         {(difficultWord as IUserWord).userWord?.difficulty === 'hard' ? 'Убрать из сложных' : 'Отметить как сложное'}
