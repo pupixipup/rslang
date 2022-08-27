@@ -8,6 +8,8 @@ export class wordUtils {
     return array.filter((element) => element.userWord?.difficulty === 'hard').length;
   }
   static countLearntWords(array: IUserWord[]) {
-    return array.filter((element) => !!element.userWord?.optional?.learnt).length;
+    return array.filter((element) => {
+      if (element.userWord?.optional?.learnt === undefined) return false;
+      return element.userWord?.optional?.learnt}).length;
   }
 }

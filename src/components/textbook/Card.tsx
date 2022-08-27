@@ -86,10 +86,12 @@ function Card(props: wordProps) {
           onClick={() => {
             const newLocalWord = createLocalisLearntWord(currentWord);
             let ids = localWords.map((element) => element._id);
+            
             if (ids.includes(newLocalWord._id)) {
               const filteredLocalWords = localWords.filter(
                 (element) => element._id !== newLocalWord._id
-              );
+                );
+                console.log(filteredLocalWords, 'bef');
               updateLocalWords([...filteredLocalWords, newLocalWord]);
             } else {
               updateLocalWords([...localWords, newLocalWord]);

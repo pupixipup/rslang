@@ -22,11 +22,12 @@ function Textbook() {
 
   const [numbers, setNumbers] = useState(wordsLocation);
   const [wrapperClass, setWrapperClass] = useState('textbook-wrapper')
-  const [data, updateData] = useState<wordsList>();
+  const [data, updateData] = useState<wordsList>([]);
   const [localWords, updateLocalWords] = useState<localWord[]>([]);
   const [isLoggedIn] = useState<boolean>(API.isAuth());
   const [learntWordsCounter, setLearntWordsCounter] = useState(0);
   const [hardWordsCounter, setHardWordsCounter] = useState(0);
+  const [wordsAreLoaded, setLoadedState] = useState(false);
 
   let navigate = useNavigate();
   const totalSections = 6;
@@ -66,14 +67,14 @@ function Textbook() {
       // saving current location in the storage
       window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
       // updating
-      sendLocalWords(localWords);
+      window.alert('Пожалуйста, подождите, пока данные загрузятся')
+      await sendLocalWords(localWords);
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => window.removeEventListener("beforeunload", handleUnload);
   });
 
   useEffect(() => {
-    console.log('1');
     const fetchData = async () => {
       await sendLocalWords(localWords);
       updateLocalWords([]);
@@ -95,12 +96,9 @@ function Textbook() {
           words = await API.getWords(numbers.page, numbers.section);
         }
       }
-      console.log('2');
       updateData(words);
-
-      setHardWordsCounter(wordUtils.countHardWords(words as IUserWord[]) + wordUtils.countHardWords(localWords as localWord[] & IUserWord[]));
-      setLearntWordsCounter(wordUtils.countLearntWords( words as IUserWord[]) + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
-    };
+      setLoadedState(!wordsAreLoaded);
+  };
     fetchData();
   }, [numbers]);
 
@@ -111,12 +109,15 @@ function Textbook() {
     setWrapperClass(className);
   }, [hardWordsCounter, learntWordsCounter, numbers]);
 
+
   useEffect(() => {
-  if (data) {
-    setHardWordsCounter(wordUtils.countHardWords(data as IUserWord[]) + wordUtils.countHardWords(localWords as localWord[] & IUserWord[]));
-    setLearntWordsCounter(wordUtils.countLearntWords(data as IUserWord[]) + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
-  }
-  }, [localWords]);
+    const idsOnly = localWords.map((element) => element._id);
+    const filteredData = (data as IUserWord[]).filter(element => !idsOnly.includes(element._id));
+    console.log(filteredData, 'filt');
+    
+    setHardWordsCounter(wordUtils.countHardWords(filteredData as IUserWord[]) + wordUtils.countHardWords(localWords as localWord[] & IUserWord[]));
+    setLearntWordsCounter(wordUtils.countLearntWords(filteredData as IUserWord[]) + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
+  }, [wordsAreLoaded, localWords]);
 
   return (
     <React.StrictMode>
