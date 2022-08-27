@@ -29,11 +29,43 @@ export interface IUserToken {
   refreshToken: string,
 }
 
+export interface IGameStats{
+  game: string,
+  answers: number,
+  correctAnswers: number,
+  newWords: number,
+  longestSeries: number  
+}
 
+export interface IUserStats {
+  learnedWords: 0,
+  optional?: {
+    daystats:
+    {
+      date: string,
+      gamestats: IGameStats[],
+      wordsstats: {
+        learnedWords: number,
+      }
+    },
+    longstats: [
+      {
+        date: string,
+        learnedWords: number,
+        newWords: number
+      }
+    ]
 
-export interface IUserStatistics {
-      learntWords: 0,
-      optional?: {}
+  }
+}
+
+export interface IWordStats {
+  id: string,
+  learned: boolean,
+  difficult: boolean,
+  met: number,
+  guessed: number,
+  series: number 
 }
 
 export interface IUserSettings {
@@ -54,8 +86,10 @@ export interface IUserWordOptions {
   difficulty: string,
   optional?: {
           learnt?: boolean,
+          new?: boolean,
           correctAnswers?: number,
-          wrongAnswers?: number
+          wrongAnswers?: number,
+          series?: number
   }
 }
 
@@ -82,6 +116,7 @@ export interface IWordDescription{
 
 export interface IWord extends IWordDescription {
   id: string,  
+  userWord?: IUserWordOptions,
 }
 
 export interface IPagenatedResult extends IWordDescription{

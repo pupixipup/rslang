@@ -1,6 +1,6 @@
 import { UserData } from './userData';
 import { BASELINK, PORT, RESERVE_TIME } from "../../common/constants";
-import { IAggrResp, IUser, IUserSignin, IUserToken, IUserWord,  IUserWordOptions, IUserWordRecord, IWord } from "../../common/interfaces";
+import { IAggrResp, IUser, IUserSignin, IUserStats, IUserToken, IUserWord,  IUserWordOptions, IUserWordRecord, IWord } from "../../common/interfaces";
 
 
 const enum METHODS {
@@ -14,7 +14,8 @@ const enum ENDPOINTS {
   users = "users",
   signin = "signin",
   tokens = "tokens",
-  aggwords = "aggregatedWords"
+  aggwords = "aggregatedWords",
+  statistics = "statistics"
 }
 
 export class API {
@@ -56,7 +57,7 @@ export class API {
  * @param {number} group - group
  * @returns {Promise<IWord[]>} array of words
  */
-  static async getWords(page?: number, group?: number) {
+  static async getWords(group?: number, page?: number) {
     if (page === undefined) page = 0;
     if (group === undefined) group = 0;
 
@@ -226,8 +227,8 @@ export class API {
       return API.authFetch(link)
         .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
         .then((res) => res.json())
-        .then((data:IAggrResp[]) => {console.log(data[0]); return data[0]})
-        .then((data: IAggrResp) =>  data.paginatedResults as IUserWord[])
+        .then((data:IAggrResp[]) => {console.log("после агрегации"); console.log(data[0]); return data[0]})
+        .then((data: IAggrResp) =>  data.paginatedResults.map(({ _id, ...rest }: IUserWord ) => ({ id: _id, ...rest })as IWord))
         .catch((err: Error) => {throw new Error(err.message)});
     }
  /**
@@ -273,7 +274,7 @@ export class API {
    * @deleteUserWord
    * @param {string} wordId - word ID
    */ 
-static async deleteUserWord(wordId: string) {    
+static deleteUserWord(wordId: string) {    
     return API.authFetch(
       `${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`,
       {
@@ -282,7 +283,37 @@ static async deleteUserWord(wordId: string) {
       .then((res) => API.errorHandler(res))  
       .then(()=> {})
       .catch((err: Error) => {throw new Error(err.message)}); //Error 
+}
+
+
+  /**
+ * getUserStats
+ * @getUserStats
+ * @returns {Promise<IUserStats>}  wordID with info
+ */
+  static getUserStats() {
+    return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.statistics}`)
+      .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
+      .then((res) => res.json())
+      .then((data) => data as IUserStats)
+      .catch((err: Error) => { throw new Error(err.message) });
   }
+
+  static setUserStats(userStats: IUserStats){
+    return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.statistics}`,
+    {
+        method: METHODS.put,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userStats)
+    })
+    .then((res) => API.errorHandler(res))  //
+    .then((res) => res.json())
+    .then((data) => data as IUserStats)
+    .catch((err: Error) => {throw new Error(err.message)}); 
+  }
+  
 
 
 // https://www.codementor.io/@obabichev/react-token-auth-12os8txqo1
