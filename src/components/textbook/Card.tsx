@@ -26,7 +26,7 @@ function Card(props: wordProps) {
         onClick={() => {
           const newLocalWord = { _id: (word as IPagenatedResult)._id, userWord: {
              difficulty: 'hard', optional: { ...(word as IUserWord).userWord?.optional, learnt: false }
-             } }
+             }, isUserWord: !!(word as IUserWord).userWord }
              let ids = localWords.map((element) => element._id);
             if (!ids.includes(newLocalWord._id)){
               updateLocalWords([...localWords, newLocalWord]);

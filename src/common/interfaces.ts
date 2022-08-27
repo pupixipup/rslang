@@ -12,7 +12,8 @@ export interface IUserReg {
 
 export interface localWord {
   _id: string,
-  userWord: IUserWordOptions
+  userWord: IUserWordOptions,
+  isUserWord: boolean
 }
 
 export interface IUser {
