@@ -148,3 +148,10 @@
   cursor: default;
   user-select: none;
 }
+
+.textbook-wrapper.allWordsHard {
+  background: rgba(red, .1);
+}
+.textbook-wrapper.allWordsLearnt {
+  background: rgba(green, .1);
+}

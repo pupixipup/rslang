@@ -21,6 +21,7 @@ function Textbook() {
   ) || { page: 0, section: 0 };
 
   const [numbers, setNumbers] = useState(wordsLocation);
+  const [wrapperClass, setWrapperClass] = useState('textbook-wrapper')
   const [data, updateData] = useState<wordsList>();
   const [localWords, updateLocalWords] = useState<localWord[]>([]);
   const [isLoggedIn] = useState<boolean>(API.isAuth());
@@ -98,10 +99,17 @@ function Textbook() {
       updateData(words);
 
       setHardWordsCounter(wordUtils.countHardWords(words as IUserWord[]) + wordUtils.countHardWords(localWords as localWord[] & IUserWord[]));
-        setLearntWordsCounter(wordUtils.countLearntWords( words as IUserWord[]) + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
+      setLearntWordsCounter(wordUtils.countLearntWords( words as IUserWord[]) + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
     };
     fetchData();
   }, [numbers]);
+
+  useEffect(() => {
+    let className = 'textbook-wrapper'
+    if (hardWordsCounter === 20) className += ' allWordsHard';
+    if (learntWordsCounter === 20) className += ' allWordsLearnt';
+    setWrapperClass(className);
+  }, [hardWordsCounter, learntWordsCounter, numbers]);
 
   useEffect(() => {
   if (data) {
@@ -112,7 +120,7 @@ function Textbook() {
 
   return (
     <React.StrictMode>
-      <div className="textbook-wrapper">
+      <div className={wrapperClass}>
         {sectionDisplayer}
         <div className="textbook__games">
           <div
