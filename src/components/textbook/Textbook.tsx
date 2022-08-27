@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { API } from '../API/api';
 import { WordsApi } from "../API/wordsapi"
 import { IUserWord, IWord, wordsList, localWord } from "../../common/interfaces";
-
 import { sendLocalWords } from "./wordapi";
 import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
@@ -26,13 +25,6 @@ function Textbook() {
   const totalSections = 6;
   const sectionsArray: number[] = createSectionsArray(totalSections);
 
-
-      
-
-  // window.addEventListener('beforeunload', () => {
-  //   window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
-  // })
- 
   let pagination;
   let sectionDisplayer = <div className={`section-displayer section-${numbers.section}`}/>;
   const loginWindow = <div className="textbook__login">Войдите, чтобы увидеть добавленные сложные слова</div>
@@ -46,10 +38,12 @@ function Textbook() {
         pageCount={30}
         forcePage={numbers.page}
         onPageChange={({ selected }) => {
+          
           setNumbers({
             page: selected,
             section: numbers.section,
           });
+          console.log(numbers.page);
         }}
       />
     );
@@ -57,11 +51,11 @@ function Textbook() {
 
   
   useEffect(() => {
-    const handleUnload = () => {
+    const handleUnload = async () => {
       // saving current location in the storage
       window.localStorage.setItem("wordsLocation", JSON.stringify(numbers))
       // updating 
-      sendLocalWords(localWords);
+      await sendLocalWords(localWords);
     }
     window.addEventListener("beforeunload", handleUnload);
     return () => window.removeEventListener("beforeunload", handleUnload);
@@ -81,7 +75,7 @@ function Textbook() {
         }
       } else {
         if (API.isAuth()) {
-          words = await API.getAggregatedUserWords(numbers.page, numbers.section, 20);
+          words = await API.getAggregatedUserWords(numbers.section, numbers.page, 20);
         } else {
           words = await API.getWords(numbers.page, numbers.section);
         }
