@@ -69,7 +69,6 @@ function Card(props: wordProps) {
               updateLocalWords([...localWords, newLocalWord]);
             }
 
-
             setCurrentWord({
               ...currentWord,
               userWord: newLocalWord.userWord

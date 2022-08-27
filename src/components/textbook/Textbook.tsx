@@ -1,20 +1,23 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from 'react-router-dom';
-import { API } from '../API/api';
-import { WordsApi } from "../API/wordsapi"
-import { IUserWord, IWord, wordsList, localWord } from "../../common/interfaces";
+import { useNavigate } from "react-router-dom";
+import { API } from "../API/api";
+import { WordsApi } from "../API/wordsapi";
+import {
+  IUserWord,
+  IWord,
+  wordsList,
+  localWord,
+} from "../../common/interfaces";
 import { sendLocalWords } from "./wordapi";
 import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
 import "./Textbook.scss";
 
-
 function Textbook() {
   const wordsLocation = JSON.parse(
     window.localStorage.getItem("wordsLocation") as string
   ) || { page: 0, section: 0 };
-
 
   const [numbers, setNumbers] = useState(wordsLocation);
   const [data, updateData] = useState<wordsList>();
@@ -26,9 +29,14 @@ function Textbook() {
   const sectionsArray: number[] = createSectionsArray(totalSections);
 
   let pagination;
-  let sectionDisplayer = <div className={`section-displayer section-${numbers.section}`}/>;
-  const loginWindow = <div className="textbook__login">Войдите, чтобы увидеть добавленные сложные слова</div>
-  const noWordsWindow = <div className="textbook__login">Список слов пуст. Проверьте сеть или добавьте слова</div>
+  let sectionDisplayer = (
+    <div className={`section-displayer section-${numbers.section}`} />
+  );
+  const loginWindow = (
+    <div className="textbook__login">
+      Войдите, чтобы увидеть добавленные сложные слова
+    </div>
+  );
 
   if (numbers.section !== 6) {
     pagination = (
@@ -39,7 +47,6 @@ function Textbook() {
         pageCount={30}
         forcePage={numbers.page}
         onPageChange={({ selected }) => {
-          
           setNumbers({
             page: selected,
             section: numbers.section,
@@ -50,21 +57,19 @@ function Textbook() {
     );
   }
 
-  
   useEffect(() => {
     const handleUnload = async () => {
       // saving current location in the storage
-      window.localStorage.setItem("wordsLocation", JSON.stringify(numbers))
-      // updating 
+      window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
+      // updating
       sendLocalWords(localWords);
-    }
+    };
     window.addEventListener("beforeunload", handleUnload);
     return () => window.removeEventListener("beforeunload", handleUnload);
   });
-  
 
-  useEffect( () => {
-    const fetchData = async () => { 
+  useEffect(() => {
+    const fetchData = async () => {
       await sendLocalWords(localWords);
       updateLocalWords([]);
       let words: wordsList;
@@ -76,63 +81,73 @@ function Textbook() {
         }
       } else {
         if (API.isAuth()) {
-          words = await API.getAggregatedUserWords(numbers.section, numbers.page, 20);
+          words = await API.getAggregatedUserWords(
+            numbers.section,
+            numbers.page,
+            20
+          );
         } else {
           words = await API.getWords(numbers.page, numbers.section);
         }
       }
       updateData(words);
-    }
+    };
     fetchData();
   }, [numbers]);
 
   return (
     <React.StrictMode>
-    <div className="textbook-wrapper">
-      { sectionDisplayer }
-      <div className="textbook__games">
-        <div className="textbook__games-game game-sprint" onClick={() => navigate('/games/sprint', { replace: true })}>
-          Спринт
+      <div className="textbook-wrapper">
+        {sectionDisplayer}
+        <div className="textbook__games">
+          <div
+            className="textbook__games-game game-sprint"
+            onClick={() => navigate("/games/sprint", { replace: true })}
+          >
+            Спринт
+          </div>
+          <div
+            className="textbook__games-game game-audio"
+            onClick={() => navigate("/games/games/audio", { replace: true })}
+          >
+            Аудиовызов
+          </div>
         </div>
-        <div className="textbook__games-game game-audio" onClick={() => navigate('/games/games/audio', { replace: true })}>
-          Аудиовызов
+        <div className="textbook">
+          {!API.isAuth() && numbers.section === 6 ? loginWindow : ""}
+          <div className="words">
+            {data?.map((word, ndx) => {
+              return (
+                <Card
+                  localWords={localWords}
+                  updateLocalWords={updateLocalWords}
+                  wordsArray={data}
+                  updateWords={updateData}
+                  numbers={numbers}
+                  link={`${API.baseUrl}/${word?.image}`}
+                  isLoggedIn={isLoggedIn}
+                  key={`${word.word}-${numbers.section}`}
+                  word={word}
+                />
+              );
+            })}
+          </div>
+          <div className="sections">
+            {sectionsArray.map((number) => {
+              return (
+                <Section
+                  location={numbers}
+                  key={number}
+                  sectionId={number}
+                  setNumbers={setNumbers}
+                />
+              );
+            })}
+          </div>
         </div>
+        <div>{pagination}</div>
       </div>
-      <div className="textbook">
-      { !API.isAuth() && numbers.section === 6 ? loginWindow : "" }
-        <div className="words">
-          {data?.map((word, ndx) => {
-            return (
-              <Card
-                localWords={localWords}
-                updateLocalWords={updateLocalWords}
-                wordsArray={data}
-                updateWords={updateData}
-                numbers={numbers}
-                link={`${API.baseUrl}/${word?.image}`}
-                isLoggedIn={ isLoggedIn }
-                key={`${word.word}-${numbers.section}`}
-                word={word}
-              />
-            );
-          })}
-        </div>
-        <div className="sections">
-          {sectionsArray.map((number) => {
-            return (
-              <Section
-                location={numbers}
-                key={number}
-                sectionId={number}
-                setNumbers={setNumbers}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div>{pagination}</div>
-    </div>
-  </React.StrictMode>
+    </React.StrictMode>
   );
 }
 
