@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { API } from "../API/api";
 import { WordsApi } from "../API/wordsapi";
+import { wordUtils } from "./utils";
 import {
   IUserWord,
   IWord,
@@ -23,6 +24,8 @@ function Textbook() {
   const [data, updateData] = useState<wordsList>();
   const [localWords, updateLocalWords] = useState<localWord[]>([]);
   const [isLoggedIn] = useState<boolean>(API.isAuth());
+  const [learntWordsCounter, setLearntWordsCounter] = useState(0);
+  const [hardWordsCounter, setHardWordsCounter] = useState(0);
 
   let navigate = useNavigate();
   const totalSections = 6;
@@ -91,6 +94,8 @@ function Textbook() {
         }
       }
       updateData(words);
+      setHardWordsCounter(wordUtils.countHardWords(words as IUserWord[]));
+      setLearntWordsCounter(wordUtils.countLearntWords(words as IUserWord[]));
     };
     fetchData();
   }, [numbers]);
