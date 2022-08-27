@@ -27,8 +27,10 @@ function Card(props: wordProps) {
           const newLocalWord = { _id: (word as IPagenatedResult)._id, userWord: {
              difficulty: 'hard', optional: { ...(word as IUserWord).userWord?.optional, learnt: false }
              } }
-          updateLocalWords([...localWords, newLocalWord]);
-          console.log(localWords);
+             let ids = localWords.map((element) => element._id);
+            if (!ids.includes(newLocalWord._id)){
+              updateLocalWords([...localWords, newLocalWord]);
+            }
         }}
       >
         {(word as IUserWord).userWord?.difficulty === 'hard' ? 'Убрать из сложных' : 'Отметить как сложное'}
