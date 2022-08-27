@@ -38,13 +38,14 @@ function Card(props: wordProps) {
           onClick={() => {
             const newLocalWord = createLocalDifficultyWord(currentWord);
             let ids = localWords.map((element) => element._id);
-            if (
-              !ids.includes(newLocalWord._id) ||
-              !wordUtils.areObjectsEqual(
-                newLocalWord.userWord,
-                (currentWord as IUserWord).userWord!
-              )
-            ) updateLocalWords([...localWords, newLocalWord]);
+            
+            if (ids.includes(newLocalWord._id)) {
+              const filteredLocalWords = localWords.filter((element) => element._id !== newLocalWord._id);
+              updateLocalWords([...filteredLocalWords, newLocalWord]);
+            } else {
+              updateLocalWords([...localWords, newLocalWord]);
+            }
+          
             setCurrentWord({
               ...currentWord,
               userWord: newLocalWord.userWord
@@ -62,22 +63,20 @@ function Card(props: wordProps) {
           onClick={() => {
            const newLocalWord = createLocalisLearntWord(currentWord);
            let ids = localWords.map((element) => element._id);
-           if (
-            !ids.includes(newLocalWord._id) ||
-            !wordUtils.areObjectsEqual(
-              newLocalWord.userWord,
-              (currentWord as IUserWord).userWord!
-            )
-          ) updateLocalWords([...localWords, newLocalWord]);
+
+           //--
+            if (ids.includes(newLocalWord._id)) {
+              const filteredLocalWords = localWords.filter((element) => element._id !== newLocalWord._id);
+              updateLocalWords([...filteredLocalWords, newLocalWord]);
+            } else {
+              updateLocalWords([...localWords, newLocalWord]);
+            }
+          
 
           setCurrentWord({
             ...currentWord,
             userWord: newLocalWord.userWord
           });
-
-
-          console.log(currentWord);
-          
           }}>
           {(currentWord as IUserWord).userWord?.optional?.learnt === true
             ? "Убрать из изученных"
