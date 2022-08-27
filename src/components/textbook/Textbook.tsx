@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API } from "../API/api";
 import { WordsApi } from "../API/wordsapi";
@@ -72,6 +72,7 @@ function Textbook() {
   });
 
   useEffect(() => {
+    console.log('1');
     const fetchData = async () => {
       await sendLocalWords(localWords);
       updateLocalWords([]);
@@ -93,12 +94,21 @@ function Textbook() {
           words = await API.getWords(numbers.page, numbers.section);
         }
       }
+      console.log('2');
       updateData(words);
-      setHardWordsCounter(wordUtils.countHardWords(words as IUserWord[]));
-      setLearntWordsCounter(wordUtils.countLearntWords(words as IUserWord[]));
+
+      setHardWordsCounter(wordUtils.countHardWords(words as IUserWord[]) + wordUtils.countHardWords(localWords as localWord[] & IUserWord[]));
+        setLearntWordsCounter(wordUtils.countLearntWords( words as IUserWord[]) + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
     };
     fetchData();
   }, [numbers]);
+
+  useEffect(() => {
+  if (data) {
+    setHardWordsCounter(wordUtils.countHardWords(data as IUserWord[]) + wordUtils.countHardWords(localWords as localWord[] & IUserWord[]));
+    setLearntWordsCounter(wordUtils.countLearntWords(data as IUserWord[]) + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
+  }
+  }, [localWords]);
 
   return (
     <React.StrictMode>
@@ -124,6 +134,10 @@ function Textbook() {
             {data?.map((word, ndx) => {
               return (
                 <Card
+                  learntWordsCounter={learntWordsCounter}
+                  hardWordsCounter={hardWordsCounter}
+                  setHardWordsCounter={setHardWordsCounter}
+                  setLearntWordsCounter={setLearntWordsCounter}
                   localWords={localWords}
                   updateLocalWords={updateLocalWords}
                   wordsArray={data}

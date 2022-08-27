@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import { createLocalDifficultyWord, createLocalisLearntWord } from "./wordapi";
 import "./Card.scss";
+import { wordUtils } from "./utils";
 import WordAudio from "./WordAudio";
 import {
   IUserWord,
@@ -12,6 +13,10 @@ import {
 } from "../../common/interfaces";
 
 interface wordProps {
+  setHardWordsCounter: (number: number) => void;
+  setLearntWordsCounter: (number: number) => void;
+  hardWordsCounter: number,
+  learntWordsCounter: number,
   wordsArray: wordsList;
   word: IUserWord | IWord;
   localWords: Array<localWord>;
@@ -23,8 +28,20 @@ interface wordProps {
 }
 
 function Card(props: wordProps) {
-  const { word, link, isLoggedIn, numbers, localWords, updateLocalWords, wordsArray, updateWords } =
-    props;
+  const {
+    word,
+    link,
+    isLoggedIn,
+    numbers,
+    localWords,
+    updateLocalWords,
+    wordsArray,
+    updateWords,
+    setLearntWordsCounter,
+    setHardWordsCounter,
+    hardWordsCounter,
+    learntWordsCounter
+  } = props;
   let buttons = <div></div>;
 
   const [currentWord, setCurrentWord] = useState(word);
@@ -39,7 +56,9 @@ function Card(props: wordProps) {
             let ids = localWords.map((element) => element._id);
 
             if (ids.includes(newLocalWord._id)) {
-              const filteredLocalWords = localWords.filter((element) => element._id !== newLocalWord._id);
+              const filteredLocalWords = localWords.filter(
+                (element) => element._id !== newLocalWord._id
+              );
               updateLocalWords([...filteredLocalWords, newLocalWord]);
             } else {
               updateLocalWords([...localWords, newLocalWord]);
@@ -47,33 +66,40 @@ function Card(props: wordProps) {
 
             setCurrentWord({
               ...currentWord,
-              userWord: newLocalWord.userWord
+              userWord: newLocalWord.userWord,
             });
-            if (numbers.section === 6) {
-              updateWords((wordsArray as IUserWord[]).filter((element) => element._id !== (currentWord as IUserWord)._id));
-            }
+              if (numbers.section === 6) {
+                updateWords(
+                  (wordsArray as IUserWord[]).filter(
+                    (element) => element._id !== (currentWord as IUserWord)._id
+                  )
+                );
+              }
           }}
         >
           {(currentWord as IUserWord).userWord?.difficulty === "hard"
             ? "Убрать из сложных"
             : "Отметить как сложное"}
         </button>
-        <button className="words__interact-learnt"
+        <button
+          className="words__interact-learnt"
           onClick={() => {
             const newLocalWord = createLocalisLearntWord(currentWord);
             let ids = localWords.map((element) => element._id);
             if (ids.includes(newLocalWord._id)) {
-              const filteredLocalWords = localWords.filter((element) => element._id !== newLocalWord._id);
+              const filteredLocalWords = localWords.filter(
+                (element) => element._id !== newLocalWord._id
+              );
               updateLocalWords([...filteredLocalWords, newLocalWord]);
             } else {
               updateLocalWords([...localWords, newLocalWord]);
             }
-
             setCurrentWord({
               ...currentWord,
-              userWord: newLocalWord.userWord
+              userWord: newLocalWord.userWord,
             });
-          }}>
+          }}
+        >
           {(currentWord as IUserWord).userWord?.optional?.learnt === true
             ? "Убрать из изученных"
             : "Отметить как изученное"}
