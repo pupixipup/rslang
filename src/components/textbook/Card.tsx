@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import { createLocalDifficultyWord, createLocalisLearntWord } from "./wordapi";
-import { wordUtils } from "./utils";
 import "./Card.scss";
 import WordAudio from "./WordAudio";
 import {
@@ -38,14 +37,14 @@ function Card(props: wordProps) {
           onClick={() => {
             const newLocalWord = createLocalDifficultyWord(currentWord);
             let ids = localWords.map((element) => element._id);
-            
+
             if (ids.includes(newLocalWord._id)) {
               const filteredLocalWords = localWords.filter((element) => element._id !== newLocalWord._id);
               updateLocalWords([...filteredLocalWords, newLocalWord]);
             } else {
               updateLocalWords([...localWords, newLocalWord]);
             }
-          
+
             setCurrentWord({
               ...currentWord,
               userWord: newLocalWord.userWord
@@ -61,22 +60,20 @@ function Card(props: wordProps) {
         </button>
         <button className="words__interact-learnt"
           onClick={() => {
-           const newLocalWord = createLocalisLearntWord(currentWord);
-           let ids = localWords.map((element) => element._id);
-
-           //--
+            const newLocalWord = createLocalisLearntWord(currentWord);
+            let ids = localWords.map((element) => element._id);
             if (ids.includes(newLocalWord._id)) {
               const filteredLocalWords = localWords.filter((element) => element._id !== newLocalWord._id);
               updateLocalWords([...filteredLocalWords, newLocalWord]);
             } else {
               updateLocalWords([...localWords, newLocalWord]);
             }
-          
 
-          setCurrentWord({
-            ...currentWord,
-            userWord: newLocalWord.userWord
-          });
+
+            setCurrentWord({
+              ...currentWord,
+              userWord: newLocalWord.userWord
+            });
           }}>
           {(currentWord as IUserWord).userWord?.optional?.learnt === true
             ? "Убрать из изученных"
