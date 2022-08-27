@@ -28,6 +28,7 @@ function Textbook() {
   let pagination;
   let sectionDisplayer = <div className={`section-displayer section-${numbers.section}`}/>;
   const loginWindow = <div className="textbook__login">Войдите, чтобы увидеть добавленные сложные слова</div>
+  const noWordsWindow = <div className="textbook__login">Список слов пуст. Проверьте сеть или добавьте слова</div>
 
   if (numbers.section !== 6) {
     pagination = (
@@ -55,7 +56,7 @@ function Textbook() {
       // saving current location in the storage
       window.localStorage.setItem("wordsLocation", JSON.stringify(numbers))
       // updating 
-      await sendLocalWords(localWords);
+      sendLocalWords(localWords);
     }
     window.addEventListener("beforeunload", handleUnload);
     return () => window.removeEventListener("beforeunload", handleUnload);
@@ -98,7 +99,7 @@ function Textbook() {
         </div>
       </div>
       <div className="textbook">
-      { !API.isAuth() && numbers.section === 6 ? loginWindow : '' }
+      { !API.isAuth() && numbers.section === 6 ? loginWindow : "" }
         <div className="words">
           {data?.map((word, ndx) => {
             return (

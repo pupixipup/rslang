@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
-import { createLocalWord } from "./wordapi";
-import { areObjectsEqual } from "./utils";
+import { createLocalDifficultyWord, createLocalisLearntWord } from "./wordapi";
+import { wordUtils } from "./utils";
 import "./Card.scss";
 import WordAudio from "./WordAudio";
 import {
@@ -36,23 +36,18 @@ function Card(props: wordProps) {
         <button
           className="words__interact-hard"
           onClick={() => {
-            // const newDifficulty = (difficultWord as IUserWord).userWord?.difficulty === 'hard' ? 'easy' : 'hard'
-            // const newIsLearnt = newDifficulty === 'hard' ? false : true;
-            const newLocalWord = createLocalWord(difficultWord);
+            const newLocalWord = createLocalDifficultyWord(difficultWord);
             let ids = localWords.map((element) => element._id);
             if (
               !ids.includes(newLocalWord._id) ||
-              !areObjectsEqual(
+              !wordUtils.areObjectsEqual(
                 newLocalWord.userWord,
                 (difficultWord as IUserWord).userWord!
               )
             ) updateLocalWords([...localWords, newLocalWord]);
             setDifficultWord({
               ...difficultWord,
-              userWord: {
-                ...(difficultWord as IUserWord).userWord,
-                difficulty: newLocalWord.userWord.difficulty,
-              },
+              userWord: newLocalWord.userWord
             });
             if (numbers.section === 6) {
               updateWords((wordsArray as IUserWord[]).filter((element) => element._id !== (difficultWord as IUserWord)._id));
@@ -63,7 +58,25 @@ function Card(props: wordProps) {
             ? "Убрать из сложных"
             : "Отметить как сложное"}
         </button>
-        <button className="words__interact-learnt">
+        <button className="words__interact-learnt"
+          onClick={() => {
+           const newLocalWord = createLocalisLearntWord(difficultWord);
+           let ids = localWords.map((element) => element._id);
+           if (
+            !ids.includes(newLocalWord._id) ||
+            !wordUtils.areObjectsEqual(
+              newLocalWord.userWord,
+              (difficultWord as IUserWord).userWord!
+            )
+          ) updateLocalWords([...localWords, newLocalWord]);
+
+          setDifficultWord({
+            ...difficultWord,
+            userWord: newLocalWord.userWord
+          });
+          console.log(difficultWord);
+          
+          }}>
           {(difficultWord as IUserWord).userWord?.optional?.learnt === true
             ? "Убрать из изученных"
             : "Отметить как изученное"}

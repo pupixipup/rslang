@@ -1,9 +1,7 @@
-function areObjectsEqual(obj1: object, obj2: object) {
-  console.log(obj1, '1');
-  
-  console.log(obj2, '2');
-  
- return JSON.stringify(obj1) === JSON.stringify(obj2)
-}
+import { IUserWord, IWord } from "../../common/interfaces";
 
-export { areObjectsEqual }
+export class wordUtils {
+  static areObjectsEqual(obj1: object, obj2: object) {
+   return JSON.stringify(obj1) === JSON.stringify(obj2)
+  }
+}
