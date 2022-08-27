@@ -28,7 +28,7 @@ function Card(props: wordProps) {
     props;
   let buttons = <div></div>;
 
-  const [difficultWord, setDifficultWord] = useState(word);
+  const [currentWord, setCurrentWord] = useState(word);
 
   if (isLoggedIn) {
     buttons = (
@@ -36,48 +36,50 @@ function Card(props: wordProps) {
         <button
           className="words__interact-hard"
           onClick={() => {
-            const newLocalWord = createLocalDifficultyWord(difficultWord);
+            const newLocalWord = createLocalDifficultyWord(currentWord);
             let ids = localWords.map((element) => element._id);
             if (
               !ids.includes(newLocalWord._id) ||
               !wordUtils.areObjectsEqual(
                 newLocalWord.userWord,
-                (difficultWord as IUserWord).userWord!
+                (currentWord as IUserWord).userWord!
               )
             ) updateLocalWords([...localWords, newLocalWord]);
-            setDifficultWord({
-              ...difficultWord,
+            setCurrentWord({
+              ...currentWord,
               userWord: newLocalWord.userWord
             });
             if (numbers.section === 6) {
-              updateWords((wordsArray as IUserWord[]).filter((element) => element._id !== (difficultWord as IUserWord)._id));
+              updateWords((wordsArray as IUserWord[]).filter((element) => element._id !== (currentWord as IUserWord)._id));
             }
           }}
         >
-          {(difficultWord as IUserWord).userWord?.difficulty === "hard"
+          {(currentWord as IUserWord).userWord?.difficulty === "hard"
             ? "Убрать из сложных"
             : "Отметить как сложное"}
         </button>
         <button className="words__interact-learnt"
           onClick={() => {
-           const newLocalWord = createLocalisLearntWord(difficultWord);
+           const newLocalWord = createLocalisLearntWord(currentWord);
            let ids = localWords.map((element) => element._id);
            if (
             !ids.includes(newLocalWord._id) ||
             !wordUtils.areObjectsEqual(
               newLocalWord.userWord,
-              (difficultWord as IUserWord).userWord!
+              (currentWord as IUserWord).userWord!
             )
           ) updateLocalWords([...localWords, newLocalWord]);
 
-          setDifficultWord({
-            ...difficultWord,
+          setCurrentWord({
+            ...currentWord,
             userWord: newLocalWord.userWord
           });
-          console.log(difficultWord);
+
+
+          console.log(currentWord);
           
           }}>
-          {(difficultWord as IUserWord).userWord?.optional?.learnt === true
+          {(currentWord as IUserWord).userWord?.optional?.learnt === true
             ? "Убрать из изученных"
             : "Отметить как изученное"}
         </button>

@@ -34,7 +34,7 @@ export function createLocalDifficultyWord(difficultWord: IUserWord | IWord) {
 
 export function createLocalisLearntWord(difficultWord: IUserWord | IWord) {
   const oldIsLearnt = (difficultWord as IUserWord).userWord?.optional?.learnt;
-  const newDifficulty = !!oldIsLearnt ? 'easy' : (difficultWord as IUserWord).userWord?.difficulty!;  
+  const newDifficulty = !oldIsLearnt ? 'easy' : (difficultWord as IUserWord).userWord?.difficulty!;  
   const newIsLearnt = !oldIsLearnt;
 
   return { _id: (difficultWord as IUserWord)._id, userWord: {

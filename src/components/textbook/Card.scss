@@ -107,6 +107,8 @@
 
 .word__interact {
   display: flex;
+  justify-content: space-between;
+  max-width: 375px;
   margin-top: 15px;
   gap: 15px;
 }
