@@ -15,29 +15,44 @@ interface wordProps {
   numbers: { page: number, section: number },
   isLoggedIn: boolean
 }
+
+
 function Card(props: wordProps) {
   const { word, link, isLoggedIn, numbers, localWords, updateLocalWords } = props;
   let buttons = <div></div>;
+  
+  const [difficultWord, setDifficultWord] = useState(word);
+
+  useEffect(() => {
+
+  }, [difficultWord]);
 
   if (isLoggedIn) {
     buttons = <div className="word__interact">
       <button
         className='words__interact-hard'
         onClick={() => {
+          const newDifficulty = (difficultWord as IUserWord).userWord?.difficulty === 'hard' ? 'easy' : 'hard'
+          const newIsLearnt = newDifficulty === 'hard' ? false : true;
           const newLocalWord = { _id: (word as IPagenatedResult)._id, userWord: {
-             difficulty: 'hard', optional: { ...(word as IUserWord).userWord?.optional, learnt: false }
+             difficulty: newDifficulty, optional: { ...(word as IUserWord).userWord?.optional, newIsLearnt }
              }, isUserWord: !!(word as IUserWord).userWord }
+
              let ids = localWords.map((element) => element._id);
             if (!ids.includes(newLocalWord._id)){
               updateLocalWords([...localWords, newLocalWord]);
             }
+
+            setDifficultWord({ ...difficultWord, userWord: {
+              ...(difficultWord as IUserWord).userWord, difficulty: newDifficulty
+            }});
         }}
       >
-        {(word as IUserWord).userWord?.difficulty === 'hard' ? 'Убрать из сложных' : 'Отметить как сложное'}
+        {(difficultWord as IUserWord).userWord?.difficulty === 'hard' ? 'Убрать из сложных' : 'Отметить как сложное'}
       </button>
       <button
         className='words__interact-learnt'>
-        {(word as IUserWord).userWord?.optional?.learnt === true ? 'Убрать из изученных' : 'Отметить как изученное'}
+        {(difficultWord as IUserWord).userWord?.optional?.learnt === true ? 'Убрать из изученных' : 'Отметить как изученное'}
       </button>
     </div>
   }
