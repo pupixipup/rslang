@@ -36,27 +36,29 @@ export interface IGameStats{
   newWords: number,
   longestSeries: number  
 }
-
+export interface ILongStats{
+  date: string,
+  learnedWords: number,
+  newWords: number
+}
 export interface IUserStats {
-  learnedWords: 0,
-  optional?: {
+  learnedWords: number,
+  optional: {
     daystats:
     {
       date: string,
       gamestats: IGameStats[],
       wordsstats: {
         learnedWords: number,
-      }
-    },
-    longstats: [
-      {
-        date: string,
-        learnedWords: number,
         newWords: number
       }
-    ]
+    },
+    longstats?: ILongStats[]
 
   }
+}
+export interface IGetUserStats extends IUserStats{
+  id: string,
 }
 
 export interface IWordStats {

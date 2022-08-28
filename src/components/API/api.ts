@@ -1,6 +1,6 @@
 import { UserData } from './userData';
 import { BASELINK, PORT, RESERVE_TIME } from "../../common/constants";
-import { IAggrResp, IUser, IUserSignin, IUserStats, IUserToken, IUserWord,  IUserWordOptions, IUserWordRecord, IWord } from "../../common/interfaces";
+import { IAggrResp, IGetUserStats, IUser, IUserSignin, IUserStats, IUserToken, IUserWord,  IUserWordOptions, IUserWordRecord, IWord } from "../../common/interfaces";
 
 
 const enum METHODS {
@@ -295,7 +295,8 @@ static deleteUserWord(wordId: string) {
     return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.statistics}`)
       .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
       .then((res) => res.json())
-      .then((data) => data as IUserStats)
+      //.then((data) => data as IGetUserStats)
+      .then(({ id, ...rest }: IGetUserStats) => { const tmpid = id; const data: IUserStats = rest; return data})
       .catch((err: Error) => { throw new Error(err.message) });
   }
 
@@ -306,21 +307,21 @@ static deleteUserWord(wordId: string) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userStats)
+        body: JSON.stringify(userStats),
+        // keepalive: true //проверить что работает.
     })
     .then((res) => API.errorHandler(res))  //
     .then((res) => res.json())
     .then((data) => data as IUserStats)
     .catch((err: Error) => {throw new Error(err.message)}); 
   }
-  
+
 
 
 // https://www.codementor.io/@obabichev/react-token-auth-12os8txqo1
 // args of fetch api are typed in typescrypt
   private static async authFetch(input: RequestInfo, init?: RequestInit) {
     //const token = await tokenProvider.getToken();
-
     init = init || {};
 
     init.headers = {
