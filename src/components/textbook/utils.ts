@@ -1,4 +1,5 @@
-import { IUser, IUserWord, IWord } from "../../common/interfaces";
+import { localWord, IUserWord } from "../../common/interfaces";
+
 
 export class wordUtils {
   static areObjectsEqual(obj1: object, obj2: object) {
@@ -11,5 +12,14 @@ export class wordUtils {
     return array.filter((element) => {
       if (element.userWord?.optional?.learnt === undefined) return false;
       return element.userWord?.optional?.learnt}).length;
+  }
+
+  static getIdsArray(array: localWord[]) {
+    return array.map((element) => element._id);
+  }
+  
+  static getUniqueWords(array1: localWord[], array2: IUserWord[]) {
+    const idsOnly = wordUtils.getIdsArray(array1);
+    return array2.filter(element => !idsOnly.includes(element._id));
   }
 }

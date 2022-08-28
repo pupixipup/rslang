@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DOMPurify from "dompurify";
 import { createLocalDifficultyWord, createLocalisLearntWord } from "./wordapi";
 import "./Card.scss";
-import { wordUtils } from "./utils";
 import WordAudio from "./WordAudio";
 import {
   IUserWord,
   IWord,
   localWord,
-  wordsList,
-  IPagenatedResult,
+  wordsList
 } from "../../common/interfaces";
 
 interface wordProps {
-  setHardWordsCounter: (number: number) => void;
-  setLearntWordsCounter: (number: number) => void;
-  hardWordsCounter: number,
-  learntWordsCounter: number,
   wordsArray: wordsList;
   word: IUserWord | IWord;
   localWords: Array<localWord>;
@@ -37,10 +31,6 @@ function Card(props: wordProps) {
     updateLocalWords,
     wordsArray,
     updateWords,
-    setLearntWordsCounter,
-    setHardWordsCounter,
-    hardWordsCounter,
-    learntWordsCounter
   } = props;
   let buttons = <div></div>;
 

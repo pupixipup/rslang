@@ -5,7 +5,6 @@ import { WordsApi } from "../API/wordsapi";
 import { wordUtils } from "./utils";
 import {
   IUserWord,
-  IWord,
   wordsList,
   localWord,
 } from "../../common/interfaces";
@@ -64,10 +63,7 @@ function Textbook() {
 
   useEffect(() => {
     const handleUnload = async () => {
-      // saving current location in the storage
       window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
-      // updating
-      window.alert('Пожалуйста, подождите, пока данные загрузятся')
       await sendLocalWords(localWords);
     };
     window.addEventListener("beforeunload", handleUnload);
@@ -80,11 +76,7 @@ function Textbook() {
       updateLocalWords([]);
       let words: wordsList;
       if (numbers.section === 6) {
-        if (API.isAuth()) {
-          words = await WordsApi.getDifficultWords();
-        } else {
-          words = [];
-        }
+        words = API.isAuth() ? await WordsApi.getDifficultWords() : [];
       } else {
         if (API.isAuth()) {
           words = await API.getAggregatedUserWords(
@@ -111,12 +103,11 @@ function Textbook() {
 
 
   useEffect(() => {
-    const idsOnly = localWords.map((element) => element._id);
-    const filteredData = (data as IUserWord[]).filter(element => !idsOnly.includes(element._id));
-    console.log(filteredData, 'filt');
-    
-    setHardWordsCounter(wordUtils.countHardWords(filteredData as IUserWord[]) + wordUtils.countHardWords(localWords as localWord[] & IUserWord[]));
-    setLearntWordsCounter(wordUtils.countLearntWords(filteredData as IUserWord[]) + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
+    const filteredData = wordUtils.getUniqueWords(localWords, data as IUserWord[]);
+    setHardWordsCounter(wordUtils.countHardWords(filteredData)
+     + wordUtils.countHardWords(localWords as localWord[] & IUserWord[]));
+    setLearntWordsCounter(wordUtils.countLearntWords(filteredData)
+     + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
   }, [wordsAreLoaded, localWords]);
 
   return (
@@ -143,10 +134,6 @@ function Textbook() {
             {data?.map((word, ndx) => {
               return (
                 <Card
-                  learntWordsCounter={learntWordsCounter}
-                  hardWordsCounter={hardWordsCounter}
-                  setHardWordsCounter={setHardWordsCounter}
-                  setLearntWordsCounter={setLearntWordsCounter}
                   localWords={localWords}
                   updateLocalWords={updateLocalWords}
                   wordsArray={data}

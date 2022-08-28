@@ -1,5 +1,5 @@
 import { API } from "../API/api";
-import { IUserWord, IWord, wordsList, localWord, IUserWordOptions } from "../../common/interfaces";
+import { IUserWord, IWord, localWord, IUserWordOptions } from "../../common/interfaces";
 
 export async function sendLocalWords(localWordsList: localWord[]) {
   let requests: Promise<void>[] = [];
