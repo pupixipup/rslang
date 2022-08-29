@@ -16,7 +16,7 @@ export class wordUtils {
       return element.userWord?.optional?.learnt;
     }).length;
   }
-
+  
   static getIdsArray(array: localWord[]) {
     return array.map((element) => element._id);
   }
@@ -54,6 +54,7 @@ export class wordUtils {
       userWord: {
         difficulty: newDifficulty,
         optional: {
+          new: true,
           ...(difficultWord as IUserWord).userWord?.optional,
           learnt: newIsLearnt,
         },
@@ -74,6 +75,7 @@ export class wordUtils {
       userWord: {
         difficulty: newDifficulty,
         optional: {
+          new: true,
           ...(difficultWord as IUserWord).userWord?.optional,
           learnt: newIsLearnt,
         },

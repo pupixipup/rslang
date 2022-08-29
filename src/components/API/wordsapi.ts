@@ -18,10 +18,12 @@ export class WordsApi {
   static async setWord(id: string, userWord: IUserWordOptions, isUserWord: boolean) {
     if (isUserWord) {
       API.updateUserWord(id, userWord)
-    } else {
-      API.createUserWord(id, { difficulty: userWord.difficulty, optional: { new: true }});  
-      }
       console.log('updated');
+      
+    } else {
+      console.log('created');
+      API.createUserWord(id, { difficulty: userWord.difficulty, optional: { new: true, learnt: userWord?.optional?.learnt }});  
+      }
   }
 
   /**
