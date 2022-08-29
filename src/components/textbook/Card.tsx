@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import DOMPurify from "dompurify";
-import { createLocalDifficultyWord, createLocalisLearntWord, setWord } from "./wordapi";
 import "./Card.scss";
 import WordAudio from "./WordAudio";
+import { WordsApi } from "../API/wordsapi";
 import {
   IUserWord,
   IWord,
@@ -43,9 +43,9 @@ function Card(props: wordProps) {
         <button
           className="words__interact-hard"
           onClick={() => {
-            const newLocalWord = createLocalDifficultyWord(currentWord);
+            const newLocalWord = wordUtils.createLocalDifficultyWord(currentWord);
             wordUtils.updateLocalWord(localWords, newLocalWord, updateLocalWords);
-            setWord(newLocalWord._id, newLocalWord.userWord, newLocalWord.isUserWord);
+            WordsApi.setWord(newLocalWord._id, newLocalWord.userWord, newLocalWord.isUserWord);
             setCurrentWord({
               ...currentWord,
               userWord: newLocalWord.userWord,
@@ -66,9 +66,9 @@ function Card(props: wordProps) {
         <button
           className="words__interact-learnt"
           onClick={() => {
-            const newLocalWord = createLocalisLearntWord(currentWord);
+            const newLocalWord = wordUtils.createLocalisLearntWord(currentWord);
             wordUtils.updateLocalWord(localWords, newLocalWord, updateLocalWords);
-            setWord(newLocalWord._id, newLocalWord.userWord, newLocalWord.isUserWord);
+            WordsApi.setWord(newLocalWord._id, newLocalWord.userWord, newLocalWord.isUserWord);
             setCurrentWord({
               ...currentWord,
               userWord: newLocalWord.userWord,
