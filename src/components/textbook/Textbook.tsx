@@ -8,7 +8,6 @@ import {
   wordsList,
   localWord,
 } from "../../common/interfaces";
-import { sendLocalWords } from "./wordapi";
 import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
@@ -55,7 +54,6 @@ function Textbook() {
             page: selected,
             section: numbers.section,
           });
-          console.log(numbers.page);
         }}
       />
     );
@@ -64,7 +62,6 @@ function Textbook() {
   useEffect(() => {
     const handleUnload = async () => {
       window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
-      await sendLocalWords(localWords);
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => window.removeEventListener("beforeunload", handleUnload);
@@ -72,7 +69,6 @@ function Textbook() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await sendLocalWords(localWords);
       updateLocalWords([]);
       let words: wordsList;
       if (numbers.section === 6) {
@@ -83,8 +79,6 @@ function Textbook() {
             numbers.page,
             numbers.section
           );
-          console.log(words);
-          
         } else {
           words = await API.getWords(numbers.page, numbers.section);
         }
