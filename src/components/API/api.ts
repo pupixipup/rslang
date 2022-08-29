@@ -20,7 +20,7 @@ const enum ENDPOINTS {
 
 export class API {
  // static instance: API;
-  private static baseUrl = BASELINK + ":" + PORT;
+  static baseUrl = BASELINK + ":" + PORT;
   private static userToken = "";
   private static userId = "";
   private static refreshToken ="";
@@ -268,7 +268,6 @@ export class API {
         .then((data) => data as IUserWordRecord)
         .catch((err: Error) => {throw new Error(err.message)}); 
 }
-
    /**
    * delete UserWord
    * @deleteUserWord
@@ -300,6 +299,7 @@ static deleteUserWord(wordId: string) {
       .catch((err: Error) => { throw new Error(err.message) });
   }
 
+
   static setUserStats(userStats: IUserStats){
     return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.statistics}`,
     {
@@ -315,6 +315,9 @@ static deleteUserWord(wordId: string) {
     .then((data) => data as IUserStats)
     .catch((err: Error) => {throw new Error(err.message)}); 
   }
+
+
+
 
 
 

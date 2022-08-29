@@ -15,6 +15,17 @@ export class WordsApi {
     .catch((err: Error) => {throw new Error(err.message)}); 
   }
 
+  static async setWord(id: string, userWord: IUserWordOptions, isUserWord: boolean) {
+    if (isUserWord) {
+      API.updateUserWord(id, userWord)
+      console.log('updated');
+      
+    } else {
+      console.log('created');
+      API.createUserWord(id, { difficulty: userWord.difficulty, optional: { new: true, learnt: userWord?.optional?.learnt }});  
+      }
+  }
+
   /**
   * return user words 
   * @getWords

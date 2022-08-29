@@ -2,12 +2,18 @@ import { UserData } from "../components/API/userData"
 
 
 
-
+export type wordsList = IUserWord[] | IWord[];
 
 export interface IUserReg {
   name?: string,
   email: string,
   password: string
+}
+
+export interface localWord {
+  _id: string,
+  userWord: IUserWordOptions,
+  isUserWord: boolean
 }
 
 export interface IUser {
@@ -54,8 +60,7 @@ export interface IUserStats {
       }
     },
     longstats?: ILongStats[]
-
-  }
+ }
 }
 export interface IGetUserStats extends IUserStats{
   id: string,
