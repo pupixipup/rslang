@@ -31,7 +31,7 @@ export class GameWordsProvider {
         return data;
       })
       .then((data) => {
-        const tmp = data.map(({id, userWord, ...rest}) => { return {wordId: id, wordOptions: userWord} as IUserWordUpload});
+        const tmp = data.map(({_id, userWord, ...rest}) => { return {wordId: _id, wordOptions: userWord} as IUserWordUpload});
         console.log(tmp);
         console.log(this.startWordsList);
         this.startWordsList = [ ...this.startWordsList, ...tmp];

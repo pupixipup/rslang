@@ -18,7 +18,7 @@ export class WordsApi {
   static async setWord(id: string, userWord: IUserWordOptions, isUserWord: boolean) {
     if (isUserWord) {
       API.updateUserWord(id, userWord)
-      console.log('updated');
+      console.log('updated ');
       
     } else {
       console.log('created');
