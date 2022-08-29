@@ -38,6 +38,7 @@ export interface IUserToken {
 export interface IUserWordOptions {
   difficulty: string,
   optional?: {
+          new?: boolean,
           learnt?: boolean,
           correctAnswers?: number,
           wrongAnswers?: number
