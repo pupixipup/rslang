@@ -57,7 +57,7 @@ export class API {
  * @param {number} group - group
  * @returns {Promise<IWord[]>} array of words
  */
-  static async getWords(group?: number, page?: number) {
+  static async getWords(page?: number, group?: number) {
     if (page === undefined) page = 0;
     if (group === undefined) group = 0;
 
