@@ -79,11 +79,12 @@ function Textbook() {
         words = API.isAuth() ? await WordsApi.getDifficultWords() : [];
       } else {
         if (API.isAuth()) {
-          words = await API.getAggregatedUserWords(
-            numbers.section,
+          words = await WordsApi.getUserWords(
             numbers.page,
-            20
+            numbers.section
           );
+          console.log(words);
+          
         } else {
           words = await API.getWords(numbers.page, numbers.section);
         }
@@ -131,7 +132,7 @@ function Textbook() {
         <div className="textbook">
           {!API.isAuth() && numbers.section === 6 ? loginWindow : ""}
           <div className="words">
-            {data?.map((word, ndx) => {
+            {data?.map((word) => {
               return (
                 <Card
                   localWords={localWords}

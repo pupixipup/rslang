@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DOMPurify from "dompurify";
-import { createLocalDifficultyWord, createLocalisLearntWord } from "./wordapi";
+import { createLocalDifficultyWord, createLocalisLearntWord, setWord } from "./wordapi";
 import "./Card.scss";
 import WordAudio from "./WordAudio";
 import {
@@ -9,6 +9,7 @@ import {
   localWord,
   wordsList
 } from "../../common/interfaces";
+import { wordUtils } from "./utils";
 
 interface wordProps {
   wordsArray: wordsList;
@@ -43,17 +44,8 @@ function Card(props: wordProps) {
           className="words__interact-hard"
           onClick={() => {
             const newLocalWord = createLocalDifficultyWord(currentWord);
-            let ids = localWords.map((element) => element._id);
-
-            if (ids.includes(newLocalWord._id)) {
-              const filteredLocalWords = localWords.filter(
-                (element) => element._id !== newLocalWord._id
-              );
-              updateLocalWords([...filteredLocalWords, newLocalWord]);
-            } else {
-              updateLocalWords([...localWords, newLocalWord]);
-            }
-
+            wordUtils.updateLocalWord(localWords, newLocalWord, updateLocalWords);
+            setWord(newLocalWord._id, newLocalWord.userWord, newLocalWord.isUserWord);
             setCurrentWord({
               ...currentWord,
               userWord: newLocalWord.userWord,
@@ -75,17 +67,8 @@ function Card(props: wordProps) {
           className="words__interact-learnt"
           onClick={() => {
             const newLocalWord = createLocalisLearntWord(currentWord);
-            let ids = localWords.map((element) => element._id);
-            
-            if (ids.includes(newLocalWord._id)) {
-              const filteredLocalWords = localWords.filter(
-                (element) => element._id !== newLocalWord._id
-                );
-                console.log(filteredLocalWords, 'bef');
-              updateLocalWords([...filteredLocalWords, newLocalWord]);
-            } else {
-              updateLocalWords([...localWords, newLocalWord]);
-            }
+            wordUtils.updateLocalWord(localWords, newLocalWord, updateLocalWords);
+            setWord(newLocalWord._id, newLocalWord.userWord, newLocalWord.isUserWord);
             setCurrentWord({
               ...currentWord,
               userWord: newLocalWord.userWord,
