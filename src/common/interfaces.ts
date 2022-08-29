@@ -2,12 +2,18 @@ import { UserData } from "../components/API/userData"
 
 
 
-
+export type wordsList = IUserWord[] | IWord[];
 
 export interface IUserReg {
   name?: string,
   email: string,
   password: string
+}
+
+export interface localWord {
+  _id: string,
+  userWord: IUserWordOptions,
+  isUserWord: boolean
 }
 
 export interface IUser {
@@ -32,6 +38,7 @@ export interface IUserToken {
 export interface IUserWordOptions {
   difficulty: string,
   optional?: {
+          new?: boolean,
           learnt?: boolean,
           correctAnswers?: number,
           wrongAnswers?: number
