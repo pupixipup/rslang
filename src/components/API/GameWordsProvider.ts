@@ -1,12 +1,11 @@
-
 import { timeStamp } from "console";
 import { GROUP_DIFFICULT, SERIES_FOR_UPD } from "../../common/constants";
 import { IGameStats, IUserStats, IUserWordUpload, IWord, IWordStats } from "../../common/interfaces";
 import { WordsApi } from "./wordsapi";
 
 export class GameWordsProvider {
-  private startWordsList: IWord[];
-  private currWordsList: IWordStats[];
+  private startWordsList: IUserWordUpload[];
+  private currWordsList: IUserWordUpload[];
   private includeLearned: boolean;
   private correctAnswers = 0;
   private answers = 0;
@@ -32,7 +31,11 @@ export class GameWordsProvider {
         return data;
       })
       .then((data) => {
-        this.startWordsList = [...data];        
+        const tmp = data.map(({id, userWord, ...rest}) => { return {wordId: id, wordOptions: userWord} as IUserWordUpload});
+        console.log(tmp);
+        console.log(this.startWordsList);
+        this.startWordsList = [ ...this.startWordsList, ...tmp];
+        console.log(this.startWordsList);
         return data;
       })
       .catch((err: Error) => { throw new Error(err.message) });
@@ -43,26 +46,117 @@ export class GameWordsProvider {
     this.correctAnswers += 1;
     this.answers += 1;
     this.series += 1;
-    const index = this.currWordsList.findIndex((item) => item.id === id);
-    if (index === -1) {
-      this.currWordsList.push({ id: id, met: 1, guessed: 1, series: 1 } as IWordStats)
-    } else {
-      //console.log(this.currWordsList);
-      this.currWordsList[index].met += 1;
-      this.currWordsList[index].guessed += 1;
-      this.currWordsList[index].series += 1;
-    }
+    const tmp = this.createWordToUp(id, true);
+    console.log("угадано " + id);
+    //console.log(tmp);
+	  return WordsApi.uploadUserWord(tmp)
+		.catch((err: Error) => { throw new Error(err.message) });
+	
+	
   }
   notGuessed(id: string) {
     this.answers += 1;
     if (this.series > this.longestSeries) this.longestSeries = this.series;
     this.series = 0;
-    const index = this.currWordsList.findIndex((item) => item.id === id);
+    const tmp = this.createWordToUp(id, false);
+    console.log("не угадано " + id);
+    //console.log(tmp);
+    return WordsApi.uploadUserWord(tmp)
+      .catch((err: Error) => { throw new Error(err.message) });
+  }
+
+  private createWordToUp(id: string, isGuessed: boolean) {
+    let wordToUp: IUserWordUpload;
+    let isUserWord = true;
+    const index = this.currWordsList.findIndex((item) => item.wordId === id);
     if (index === -1) {
-      this.currWordsList.push({ id: id, met: 1, guessed: 0, series: 0 } as IWordStats)
+      const wordItem = this.startWordsList.find((item) => item.wordId === id);
+      if(wordItem === undefined) throw new Error("deverr: error in ID list");
+      console.log(wordItem);
+      if (wordItem.wordOptions === undefined) {
+        this.newWordsNumber += 1;
+        wordToUp = this.createNewWordItem(id, isGuessed);
+        isUserWord = false;
+      } else {
+
+        wordToUp = this.updateWordItem(id, isGuessed, wordItem);
+      }
+      this.currWordsList.push(wordToUp);
     } else {
-      this.currWordsList[index].met += 1;
-      this.currWordsList[index].series = 0;
+      //console.log(this.currWordsList);
+      wordToUp = this.updateWordItem(id, isGuessed, this.currWordsList[index]);
+      this.currWordsList[index] = wordToUp;
+    }
+    return {wordToUp, isUserWord};
+  }
+
+  private createNewWordItem(id: string, guessed: boolean){
+    return {
+      wordId: id,
+            wordOptions: {
+              difficulty: "easy" ,
+              optional: {
+                learnt: false ,
+                new: false,
+                correctAnswers: guessed ? 1 : 0,
+                wrongAnswers: guessed ? 0 : 1,
+                series: guessed ? 1 : 0
+              }
+            }
+    } as IUserWordUpload;
+  }
+
+  private updateWordItem(id: string, isGuessed: boolean, wordItem: IUserWordUpload){
+    if(wordItem.wordOptions.optional?.new) {
+      this.newWordsNumber +=1;
+      wordItem.wordOptions.optional.new = false;
+    }
+    const series = wordItem.wordOptions.optional === undefined || wordItem.wordOptions.optional.series === undefined ? 0 
+        :wordItem.wordOptions.optional.series;
+    const learnt =  wordItem.wordOptions.optional === undefined || wordItem.wordOptions.optional.learnt === undefined? false 
+        :wordItem.wordOptions.optional.learnt;
+    const correctAnswers = wordItem.wordOptions.optional === undefined || wordItem.wordOptions.optional.correctAnswers === undefined ? 0 
+        :wordItem.wordOptions.optional.correctAnswers;
+    const wrongAnswers = wordItem.wordOptions.optional === undefined || wordItem.wordOptions.optional.wrongAnswers === undefined ? 0 
+        :wordItem.wordOptions.optional.wrongAnswers;
+    const newSeries = isGuessed ? 1 + series : 0;
+    const newIsLearned = this.isLearned(isGuessed, learnt, newSeries);
+    return {
+      wordId: id,
+            wordOptions: {
+              difficulty: newIsLearned ? "easy" : wordItem.wordOptions.difficulty,
+              optional: {
+                learnt:  newIsLearned,
+                new: false,
+                correctAnswers: correctAnswers + (isGuessed ? 1 : 0),
+                wrongAnswers: wrongAnswers + (isGuessed ? 0 : 1),
+                series: newSeries 
+              }
+            }
+    } as IUserWordUpload;
+  }
+  
+  private isLearned(isGuessed: boolean, startLearned: boolean, series: number) {
+    //let newLearned: boolean;
+    //console.log(" this.locLearned" + this.locLearned);
+    if (startLearned) {
+      //console.log("уже изучено");
+      if (!isGuessed) {
+        this.locLearned -= 1;
+        //console.log(" this.locLearned" + this.locLearned);
+        return false
+      } else {
+        //console.log(" this.locLearned" + this.locLearned);
+        return true
+      }
+    } else {
+      if (series >= SERIES_FOR_UPD) {
+        this.locLearned += 1;
+        //console.log(" this.locLearned" + this.locLearned);
+        return true
+      }
+      //console.log(" this.locLearned" + this.locLearned);
+      return false
     }
   }
 
@@ -76,31 +170,29 @@ export class GameWordsProvider {
       game: this.game,
       answers: this.answers,
       correctAnswers: this.correctAnswers,
-      newWords: this.getNewWordsNumber(),
+      newWords: this.newWordsNumber,
       longestSeries: this.series
     } as IGameStats;
     return res;
   }
 
   uploadStats() {
-    const { res, learned } = this.calculateWordStats();
-    const arr = [
-      this.uploadWordsStat(res),
-      this.uploadGameStat(learned),
-    ]
-    return Promise.all(arr);
+    return this.uploadGameStat()
+      .catch((err: Error) => { throw new Error(err.message) });
+
   }
-  private uploadGameStat(learned:number) {
+
+  private uploadGameStat() {
     const now = new Date();
-    const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()-1}`;
+    const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
     let newStat: IUserStats;
     console.log(date);
     return WordsApi.getUserStats()
       .then((data) => {  
         newStat = {...data};  
-        newStat.learnedWords += learned;
+        // console.log(" this.locLearned" + this.locLearned + " newStat.learnedWords"+ newStat.learnedWords );
+        newStat.learnedWords += this.locLearned;
         if (data.optional.daystats.date !== date){
-          console.log("new date");
           newStat.optional.daystats.date = date;
           newStat.optional.daystats.gamestats = [];
           newStat.optional.daystats.gamestats.push(this.createNewDayStats());
@@ -109,8 +201,8 @@ export class GameWordsProvider {
             learnedWords: data.optional.daystats.wordsstats.learnedWords,
             newWords: data.optional.daystats.wordsstats.newWords
           };*/
-          newStat.optional.daystats.wordsstats.learnedWords = learned;
-          newStat.optional.daystats.wordsstats.newWords = this.getNewWordsNumber();
+          newStat.optional.daystats.wordsstats.learnedWords =  this.locLearned;
+          newStat.optional.daystats.wordsstats.newWords = this.newWordsNumber;
           
           //newStat.optional.longstats.push(dayStat);
           console.log(data.optional.daystats);
@@ -123,8 +215,8 @@ export class GameWordsProvider {
             const tmpGameStat = newStat.optional.daystats.gamestats[startGameDayStatsInd];            
             newStat.optional.daystats.gamestats[startGameDayStatsInd] = this.updateDayStats(tmpGameStat);
           }     
-          newStat.optional.daystats.wordsstats.learnedWords += learned;
-          newStat.optional.daystats.wordsstats.newWords += this.getNewWordsNumber();
+          newStat.optional.daystats.wordsstats.learnedWords += this.locLearned;
+          newStat.optional.daystats.wordsstats.newWords += this.newWordsNumber;
         }
         
         //console.log("после присвоения newstat" +data.optional.daystats.date);
@@ -133,6 +225,7 @@ export class GameWordsProvider {
       })
       
   }
+  
   private createNewDayStats(){
     const currStat = this.getGameStats();
     const res = {
@@ -140,7 +233,7 @@ export class GameWordsProvider {
       correctAnswers: currStat.correctAnswers,
       longestSeries: currStat.longestSeries,
       game: this.game,
-      newWords: this.getNewWordsNumber(),
+      newWords: this.newWordsNumber,
     } as IGameStats;
     return res;   
   }
@@ -155,89 +248,12 @@ export class GameWordsProvider {
     return res;
   }
 
-  private uploadWordsStat(wordListToUp: IUserWordUpload[]) {
-    console.log("res");
-    console.log(wordListToUp);
-    
-    return WordsApi.uploadUserWords(wordListToUp)
-      .catch((err: Error) => { throw new Error(err.message) });
-  }
-
-  private calculateWordStats() {
-    let learned = 0;
-    const res = this.currWordsList.map((curritem) => {
-      console.log(curritem);
-      const wrongAnswers = curritem.met - curritem.guessed;
-      const startItem = this.startWordsList.find((startitem) => curritem.id === startitem.id);
-      if (startItem === undefined) throw new Error("dev_err: calculateStats: error in wordId");
-      if (startItem.userWord === undefined) {
-        if (curritem.series >= SERIES_FOR_UPD) learned += 1;
-        console.log("новое слово");
-        return {
-          wordId: curritem.id,
-          wordOptions: {
-            difficulty: "normal",
-            optional: {
-              learnt: curritem.series >= SERIES_FOR_UPD,
-              new: true,
-              correctAnswers: curritem.guessed,
-              wrongAnswers: wrongAnswers,
-              series: curritem.series
-            }
-          }
-        } as IUserWordUpload
-      } else {
-        console.log("исправляем слово");
-
-        const startseries = startItem.userWord.optional?.series === undefined ? 0 : startItem.userWord.optional?.series;
-        const startLearned = startItem.userWord.optional?.learnt === undefined ? false : startItem.userWord.optional?.learnt;
-        let newLearned: boolean;
-        if (startLearned) {
-          console.log("уже изучено");
-          newLearned = wrongAnswers ? (curritem.series >= SERIES_FOR_UPD) : startLearned;
-          learned = newLearned ? learned : learned - 1;
-        } else {
-          console.log("еще не изучено");
-          console.log(curritem.series);
-          newLearned = curritem.series >= SERIES_FOR_UPD;
-          learned = newLearned ? learned + 1 : learned;
-          console.log(newLearned + "    learned = " + learned);
-        }
-        const startCorrectAnswer = startItem.userWord.optional?.correctAnswers === undefined ? 0 : startItem.userWord.optional?.correctAnswers;
-        const startWrongAnswer = startItem.userWord.optional?.wrongAnswers === undefined ? 0 : startItem.userWord.optional?.wrongAnswers;
-        return {
-          wordId: curritem.id,
-          wordOptions: {
-            difficulty: newLearned ? "normal" : startItem.userWord.difficulty,
-            optional: {
-              learnt: newLearned,
-              new: false,
-              correctAnswers: curritem.guessed + startCorrectAnswer,
-              wrongAnswers: wrongAnswers + startWrongAnswer,
-              series: curritem.series + (wrongAnswers ? 0 : startseries)
-            }
-          }
-        } as IUserWordUpload
-      }
-    });
-    //console.log("res learned" + learned);
-    //console.log(res);
-    return { res: res, learned: learned };
-    
-  }
-  private getNewWordsNumber() {
-    return this.currWordsList.reduce((acc, curritem) => {
-      const index = this.startWordsList.findIndex((startitem) => curritem.id === startitem.id);
-      if (this.startWordsList[index].userWord === undefined) return acc++;
-      return acc;
-    }, 0)
-  }
-
   private getWords(group: number, page?: number) {
+    if (page === undefined) page = 0;
     if (group === GROUP_DIFFICULT)
       return WordsApi.getDifficultWords()
         .catch((err: Error) => { throw new Error(err.message) });
-    return WordsApi.getUserWords(group, page)
+    return WordsApi.getUserWords(page, group)
       .catch((err: Error) => { throw new Error(err.message) });
   }
 }
