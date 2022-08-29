@@ -285,7 +285,6 @@ static async deleteUserWord(wordId: string) {
         ...init.headers,
         Authorization: `Bearer ${API.userToken}`,
     };
-    init.keepalive = true;
 
     return fetch(input, init);
   };
