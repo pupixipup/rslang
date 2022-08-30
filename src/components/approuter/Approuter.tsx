@@ -35,10 +35,6 @@ const ROUTEITEMS = [
     value: 'Audio',
     link: 'audio'
   },
-  {
-    value: 'ResultsGame',
-    link: 'results'
-  },
 ]
 
   
@@ -60,7 +56,6 @@ function AppRouter() {
               <Route path={'/' + MENUITEMS[2].link} element ={<Textbook />}/>
               <Route path={'/' + MENUITEMS[3].link} element ={<Games />}/>
               <Route path={'/' + MENUITEMS[3].link + '/' + ROUTEITEMS[0].link} element ={<Sprint />}/>
-              <Route path={'/' + MENUITEMS[3].link + '/' + ROUTEITEMS[2].link} element ={<ResultsGame />}/>
             </Routes>
           </section>
           </BrowserRouter>

@@ -1,0 +1,15 @@
+@import '../../../style/abstract';
+
+.results {
+  padding: 30px;
+  background-color: $light-bg-color;
+}
+.results-card {
+  padding: 20px;
+  margin: 0 auto;
+  width: 700px;
+  height: 600px;
+  background-color: #fefefefe;
+  border-radius: 20px;
+  box-shadow: rgb(0 0 0 / 20%) 0px 0px 20px;
+}

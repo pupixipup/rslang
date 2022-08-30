@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-export function Timer () {
-  let navigate = useNavigate();
+export function Timer (props: {updateTime: (bool: boolean) => void}) {
+  const {updateTime} = props;
+
   const [seconds, setSeconds] = useState(59);
   useEffect(() => {
     setInterval(() => {
@@ -11,12 +11,12 @@ export function Timer () {
           time -= 1;
         } else {
           time = 0;
-          navigate('/games/results');
+          updateTime(false);
         }
         return time;
       });
     }, 1000);
-  }, [navigate]);
+  }, []);
   return (
     <div className='sprint-timer'>
       <div className='sprint-time'>{seconds}</div>

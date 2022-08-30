@@ -2,6 +2,10 @@ import './ResultsGame.scss';
 
 export function ResultsGame () {
   return (
-    <div>Results</div>
+    <div className='results'>
+      <div className="results-card">
+        ResultsGame
+      </div>
+    </div>
   )
 }

@@ -5,6 +5,7 @@ import './GameMenu.scss';
 
 export function GameMenu () {
   let navigate = useNavigate();
+  SprintApi.clearWords();
   const choiceOfGroup = async (e: React.MouseEvent) => {
     const group = Number((e.target as HTMLElement).textContent);
     SprintApi.setGroup(group);

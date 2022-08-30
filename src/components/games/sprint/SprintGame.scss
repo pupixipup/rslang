@@ -139,8 +139,22 @@
   filter: invert(85%) sepia(0%) saturate(0%) hue-rotate(285deg) brightness(87%) contrast(85%);
 }
 .active-circle {
+  position: relative;
   background-color: rgb(95, 202, 149);
 }
+.active-circle::after {
+  content: '';
+  position: absolute;
+  background-image: url(../../../assets/icon/check.svg);
+  width: 20px;
+  height: 20px;
+  background-size: 18px;
+  background-repeat: no-repeat;
+  top: 3px;
+  left: 3px;
+  filter: invert(93%) sepia(23%) saturate(0%) hue-rotate(188deg) brightness(87%) contrast(88%);
+}
+
 .active-star {
   filter: invert(100%) sepia(59%) saturate(1691%) hue-rotate(0deg) brightness(84%) contrast(86%);
 }

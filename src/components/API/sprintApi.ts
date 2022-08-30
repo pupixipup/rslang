@@ -31,14 +31,10 @@ export class SprintApi {
       this.setWords(data);
       await API.getWords(this.getRandomPage(), this.group).then((data) => this.setWords(data));
     });
-
-    this.mix(this.wordsRu);
-
-    console.log(this.wordsEn);
-    console.log(this.wordsRu);
   }
-  static mix(array: string[]) {
-    array.sort(() => Math.random() - 0.5);
+
+  static createRandomId(): number {
+    return Math.floor(Math.random() * this.wordsEn.length);
   }
 
   static clearWords () {
