@@ -1,8 +1,9 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { Auth } from "../auth/Auth";
+import { Audiogame } from '../games/audiogame/Audiogame'
 import Home from "../home/Home";
 import Textbook from "../textbook/Textbook";
-import "./approuter.scss";
+import "./Approuter.scss";
 
 
 const MENUITEMS =[
@@ -18,6 +19,20 @@ const MENUITEMS =[
         value: 'TEXTBOOK',
         link: 'textbook'
     },
+    {
+      value: 'Игры',
+      link: 'games'
+  },
+]
+const ROUTEITEMS = [
+  {
+    value: 'Sprint',
+    link: 'sprint'
+  },
+  {
+    value: 'Audio',
+    link: 'audio'
+  },
 ]
 
   
@@ -37,6 +52,7 @@ function AppRouter() {
               <Route path="/" element ={<Home />}/>
               <Route path={'/' + MENUITEMS[1].link} element ={<Auth />}/>
               <Route path={'/' + MENUITEMS[2].link} element ={<Textbook />}/>
+              <Route path={'/' + MENUITEMS[3].link + '/' + ROUTEITEMS[1].link} element ={<Audiogame />}/>
             </Routes>
           </section>
           </BrowserRouter>
