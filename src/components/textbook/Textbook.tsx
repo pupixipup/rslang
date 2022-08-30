@@ -1,66 +1,164 @@
-import React, { useEffect, useState } from 'react'
-import constants from '../../constants';
-import {createSectionsArray, Section} from './Section';
-import {IWord, API } from './api';
-import ReactPaginate from 'react-paginate'
-import Card from './Card';
-import './Textbook.scss';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { API } from "../API/api";
+import { WordsApi } from "../API/wordsapi";
+import { wordUtils } from "./utils";
+import {
+  IUserWord,
+  wordsList,
+  localWord,
+} from "../../common/interfaces";
+import { createSectionsArray, Section } from "./Section";
+import ReactPaginate from "react-paginate";
+import Card from "./Card";
+import "./Textbook.scss";
 
 function Textbook() {
-  const wordsLocation = JSON.parse(window.localStorage.getItem('wordsLocation') as string) || [0, 0];
-  const [numbers, setNumbers] = useState(wordsLocation);
-  const [data, updateData] = useState<IWord[]>();
+  const wordsLocation = JSON.parse(
+    window.localStorage.getItem("wordsLocation") as string
+  ) || { page: 0, section: 0 };
 
-  const totalSections = 5;
+  const [numbers, setNumbers] = useState(wordsLocation);
+  const [wrapperClass, setWrapperClass] = useState('textbook-wrapper')
+  const [data, updateData] = useState<wordsList>([]);
+  const [localWords, updateLocalWords] = useState<localWord[]>([]);
+  const [isLoggedIn] = useState<boolean>(API.isAuth());
+  const [learntWordsCounter, setLearntWordsCounter] = useState(0);
+  const [hardWordsCounter, setHardWordsCounter] = useState(0);
+  const [wordsAreLoaded, setLoadedState] = useState(false);
+
+  let navigate = useNavigate();
+  const totalSections = 6;
   const sectionsArray: number[] = createSectionsArray(totalSections);
 
-  useEffect(() => {
-    const api = new API();
-    api.getWords(numbers[0], numbers[1]).then((words) => {
-      updateData(words);
-    });
-  }, [numbers]);
+  let pagination;
+  let sectionDisplayer = (
+    <div className={`section-displayer section-${numbers.section}`} />
+  );
+  const loginWindow = (
+    <div className="textbook__login">
+      Войдите, чтобы увидеть добавленные сложные слова
+    </div>
+  );
 
-  function setPage(arr: number[]) {
-    window.localStorage.setItem('wordsLocation', JSON.stringify(arr));
-    setNumbers(arr);
-  }
-
-
-  return (
-    <React.StrictMode>
-      <div>
-      <div className="textbook">
-      <div className="words">
-        {
-          data?.map((word, ndx) => {
-            return <Card link={`${constants.baseUrl}/${word?.image}`} word={word} key={ndx}/>
-          })
-        }
-      </div>
-        <div className="sections">
-          {
-        sectionsArray.map((number) => {
-          return <Section location={numbers} key={number} sectionId={number} setPage={setPage} />
-        })
-        }
-        </div>
-      </div>
+  if (numbers.section !== 6) {
+    pagination = (
       <ReactPaginate
         className="pagination"
         previousLabel={"<"}
         nextLabel={">"}
         pageCount={30}
-        forcePage={numbers[0]}
-        onPageChange={ ({selected}) => {
-          setPage([
-            selected,
-            JSON.parse(window.localStorage.getItem('wordsLocation') as string)[1]]);
+        forcePage={numbers.page}
+        onPageChange={({ selected }) => {
+          setNumbers({
+            page: selected,
+            section: numbers.section,
+          });
         }}
-        />
+      />
+    );
+  }
+
+  useEffect(() => {
+    const handleUnload = async () => {
+      window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
+    };
+    window.addEventListener("beforeunload", handleUnload);
+    return () => window.removeEventListener("beforeunload", handleUnload);
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      updateLocalWords([]);
+      let words: wordsList;
+      if (numbers.section === 6) {
+        words = API.isAuth() ? await WordsApi.getDifficultWords() : [];
+      } else {
+        if (API.isAuth()) {
+          words = await WordsApi.getUserWords(
+            numbers.page,
+            numbers.section
+          );
+        } else {
+          words = await API.getWords(numbers.page, numbers.section);
+        }
+      }
+      updateData(words);
+      setLoadedState(!wordsAreLoaded);
+  };
+    fetchData();
+  }, [numbers]);
+
+  useEffect(() => {
+    let className = 'textbook-wrapper'
+    if (hardWordsCounter === 20) className += ' allWordsHard';
+    if (learntWordsCounter === 20) className += ' allWordsLearnt';
+    setWrapperClass(className);
+  }, [hardWordsCounter, learntWordsCounter, numbers]);
+
+
+  useEffect(() => {
+    const filteredData = wordUtils.getUniqueWords(localWords, data as IUserWord[]);
+    setHardWordsCounter(wordUtils.countHardWords(filteredData)
+     + wordUtils.countHardWords(localWords as localWord[] & IUserWord[]));
+    setLearntWordsCounter(wordUtils.countLearntWords(filteredData)
+     + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
+  }, [wordsAreLoaded, localWords]);
+
+  return (
+    <React.StrictMode>
+      <div className={wrapperClass}>
+        {sectionDisplayer}
+        <div className="textbook__games">
+          <div
+            className="textbook__games-game game-sprint"
+            onClick={() => navigate("/games/sprint", { replace: true })}
+          >
+            Спринт
+          </div>
+          <div
+            className="textbook__games-game game-audio"
+            onClick={() => navigate("/games/games/audio", { replace: true })}
+          >
+            Аудиовызов
+          </div>
+        </div>
+        <div className="textbook">
+          {!API.isAuth() && numbers.section === 6 ? loginWindow : ""}
+          <div className="words">
+            {data?.map((word) => {
+              return (
+                <Card
+                  localWords={localWords}
+                  updateLocalWords={updateLocalWords}
+                  wordsArray={data}
+                  updateWords={updateData}
+                  numbers={numbers}
+                  link={`${API.baseUrl}/${word?.image}`}
+                  isLoggedIn={isLoggedIn}
+                  key={`${word.word}-${numbers.section}`}
+                  word={word}
+                />
+              );
+            })}
+          </div>
+          <div className="sections">
+            {sectionsArray.map((number) => {
+              return (
+                <Section
+                  location={numbers}
+                  key={number}
+                  sectionId={number}
+                  setNumbers={setNumbers}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div>{pagination}</div>
       </div>
     </React.StrictMode>
-  )
+  );
 }
 
 export default Textbook;

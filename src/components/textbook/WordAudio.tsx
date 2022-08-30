@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import icon from './assets/volume-up-interface-symbol_icon-icons.com_73337.svg';
 import playAudios from './playAudios';
 
 interface linkProps {
@@ -15,11 +16,11 @@ function WordAudio(props: linkProps) {
   return (
     <div>
       <button onClick={() => {
-        if (isPlaying === false) {
+        if (!isPlaying) {
           setPlaying(!isPlaying); 
           playAudios(sounds, setPlaying);
         }
-        }}> Play </button>
+        }}> <img className="sound-icon" alt={'play sound'} src={ icon }/> </button>
   </div>
   )
 }

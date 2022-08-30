@@ -1,4 +1,6 @@
 import './App.scss';
+import '../../style/normalize.scss';
+import '../../style/fonts.scss';
 import { createContext } from 'react';
 import { API } from '../API/api';
 import { UserData } from '../API/userData';
@@ -6,6 +8,7 @@ import { IUserData } from '../../common/interfaces';
 import Header from '../header/Header';
 import AppRouter from '../approuter/Approuter';
 import Footer from '../footer/Footer';
+
 
 
 const userData = new UserData();
@@ -31,8 +34,6 @@ function App () {
     </Context.Provider>
   );
 }
-
-
 
 
 export default App;
