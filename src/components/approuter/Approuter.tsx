@@ -1,31 +1,48 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { Auth } from "../auth/Auth";
 import Home from "../home/Home";
+import Statistics from "../statistics/Statistics";
 import Textbook from "../textbook/Textbook";
 import "./approuter.scss";
 
 
 const MENUITEMS =[
     {
-        value: 'HOME',
-        link: ''
+        value: 'Главная',        
+        link: '',
+        element: (<Home/>)
     },
     {
-        value: 'SIGN IN',
-        link: 'signin'
+        value: 'Войти',
+        link: 'signin',
+        element: (<Auth/>)
     },
     {
-        value: 'TEXTBOOK',
-        link: 'textbook'
+        value: 'Словарь',
+        link: 'textbook',
+        element: (<Textbook/>)
+    },
+    {
+      value: 'Игры',
+      link: 'games',
+      element: (<Home/>) // to do
+    },
+    {
+      value: 'Статистика',
+      link: 'statistics',
+      element: (<Statistics/>) // to do
     },
 ]
-
+const HomePage = (<Home/>);
   
 function AppRouter() {
     const listItems = MENUITEMS.map((item) =>
       <li key={item.value}>
         <Link className="menu__item" to={item.link}> {item.value}</Link>
       </li>
+    )
+    const routeItems = MENUITEMS.map((item) =>
+      <Route key={item.value} path={'/' + item.link} element ={item.element}/>
     )
     return (
         <BrowserRouter>
@@ -34,9 +51,7 @@ function AppRouter() {
           </div>
           <section className="content">
             <Routes>
-              <Route path="/" element ={<Home />}/>
-              <Route path={'/' + MENUITEMS[1].link} element ={<Auth />}/>
-              <Route path={'/' + MENUITEMS[2].link} element ={<Textbook />}/>
+              {routeItems}
             </Routes>
           </section>
           </BrowserRouter>

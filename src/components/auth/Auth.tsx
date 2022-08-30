@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserApi } from "../API/userApi";
+import { authContext } from "../app/App";
 import './auth.scss';
 
 export function Auth () {
@@ -8,6 +9,7 @@ export function Auth () {
   const [password, setPassword] = useState<string>('');
   let navigate = useNavigate();
   const userApi = new UserApi();
+  const {isAuth,changeIsAuth} = useContext(authContext); // NT 2022-08-31
   
   return (
     <div className="auth">
@@ -40,6 +42,7 @@ export function Auth () {
           className="auth__button"
           onClick={ async () => {
             await userApi.login(email, password);
+            changeIsAuth(true);  // NT 2022-08-31
             navigate("/", { replace: true });
           }}>
             Войти
@@ -47,13 +50,15 @@ export function Auth () {
         <button 
           className="auth__button"
           onClick={() => {
-            userApi.registerUser(email, password);
+            userApi.registerUser(email, password)
+            .then(() => changeIsAuth(true));   // NT 2022-08-31
             navigate("/", { replace: true });
           }}>
             Регистрация
         </button>
         <button onClick={() => {
           userApi.logout();
+          changeIsAuth(false); // NT 2022-08-31
           navigate("/", { replace: true });
           }}>
             Выйти

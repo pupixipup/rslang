@@ -1,7 +1,7 @@
 import './app.scss';
 import '../../style/normalize.scss';
 import '../../style/fonts.scss';
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 import { API } from '../API/api';
 import { UserData } from '../API/userData';
 import { IUserData } from '../../common/interfaces';
@@ -11,21 +11,33 @@ import Footer from '../footer/Footer';
 
 
 
-const userData = new UserData();
-export const Context = createContext<IUserData>({userData});
+
+export const authContext = createContext(
+  {
+    isAuth: false,
+    changeIsAuth: (val: boolean) => {}
+  });
 
 
 function App () {
+  let initValue = false;
 
-  if (localStorage.getItem('userData')) {
-    API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string))
-    API.getRefreshToken();
-  }
+  // if (localStorage.getItem('userData')) {
+  //   API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string))
+  //   API.getRefreshToken();
+  //   initValue = true;
+  // }
   /*useEffect(()=>{
     testAPI();
   })*/
+  const [isAuth, setIsAuth] = useState(initValue);
+  const changeIsAuth = (val:boolean) => {
+    setIsAuth(val);
+  }
+  const value = {isAuth,changeIsAuth};
+
   return (
-    <Context.Provider value={{userData}}>
+    <authContext.Provider value={value}>
       <div className="App">
         <Header />
         <main className="main">
@@ -33,7 +45,7 @@ function App () {
         </main>
         <Footer />
       </div>
-    </Context.Provider>
+    </authContext.Provider>
   );
 }
 
