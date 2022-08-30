@@ -57,9 +57,10 @@ function Card(props: wordProps) {
                   )
                 );
               }
+              console.log(currentWord, 'current word');
           }}
         >
-          {(currentWord as IUserWord).userWord?.difficulty === "hard"
+          {(currentWord as IUserWord).userWord?.difficulty === "hard" || numbers.section === 6
             ? "Убрать из сложных"
             : "Отметить как сложное"}
         </button>
@@ -73,6 +74,15 @@ function Card(props: wordProps) {
               ...currentWord,
               userWord: newLocalWord.userWord,
             });
+            if (numbers.section === 6) {
+              updateWords(
+                (wordsArray as IUserWord[]).filter(
+                  (element) => element._id !== (currentWord as IUserWord)._id
+                )
+              );
+            }
+            console.log(currentWord, 'current word');
+            
           }}
         >
           {(currentWord as IUserWord).userWord?.optional?.learnt === true
