@@ -35,24 +35,44 @@ export interface IUserToken {
   refreshToken: string,
 }
 
-export interface IUserWordOptions {
-  difficulty: string,
-  optional?: {
-          new?: boolean,
-          learnt?: boolean,
-          correctAnswers?: number,
-          wrongAnswers?: number
-  }
+export interface IGameStats{
+  game: string,
+  answers: number,
+  correctAnswers: number,
+  newWords: number,
+  longestSeries: number  
+}
+export interface ILongStats{
+  date: string,
+  learnedWords: number,
+  newWords: number
+}
+export interface IUserStats {
+  learnedWords: number,
+  optional: {
+    daystats:
+    {
+      date: string,
+      gamestats: IGameStats[],
+      wordsstats: {
+        learnedWords: number,
+        newWords: number
+      }
+    },
+    longstats?: ILongStats[]
+ }
+}
+export interface IGetUserStats extends IUserStats{
+  id: string,
 }
 
-export interface IUserWordInfo extends IUserWordOptions{
-  id: string, // id of record
-  wordId: string
-}
-
-export interface IUserStatistics {
-      learntWords: 0,
-      optional?: {}
+export interface IWordStats {
+  id: string,
+  learned: boolean,
+  difficult: boolean,
+  met: number,
+  guessed: number,
+  series: number 
 }
 
 export interface IUserSettings {
@@ -67,6 +87,22 @@ export interface IUserData {
 export interface IAggrResp{
   paginatedResults:[],
   totalCount: []
+}
+
+export interface IUserWordOptions {
+  difficulty: string,
+  optional?: {
+          learnt?: boolean,
+          new?: boolean,
+          correctAnswers?: number,
+          wrongAnswers?: number,
+          series?: number
+  }
+}
+
+export interface IUserWordRecord extends IUserWordOptions{
+  id: string, // id of record
+  wordId: string
 }
 
 export interface IWordDescription{
@@ -87,6 +123,7 @@ export interface IWordDescription{
 
 export interface IWord extends IWordDescription {
   id: string,  
+  userWord?: IUserWordOptions,
 }
 
 export interface IPagenatedResult extends IWordDescription{
@@ -95,4 +132,9 @@ export interface IPagenatedResult extends IWordDescription{
 
 export interface IUserWord extends IPagenatedResult{
   userWord?: IUserWordOptions,
+}
+
+export interface IUserWordUpload{
+  wordId: string,
+  wordOptions: IUserWordOptions
 }
