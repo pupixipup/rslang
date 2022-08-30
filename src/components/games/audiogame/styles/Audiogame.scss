@@ -1,0 +1,16 @@
+.audiogame {
+  height: 100%;
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  &__audio {
+
+  }
+  &__audio-icon {
+    max-width: 80px;
+    width: 100%;
+  }
+}
