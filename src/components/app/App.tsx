@@ -1,7 +1,7 @@
 import './app.scss';
 import '../../style/normalize.scss';
 import '../../style/fonts.scss';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { API } from '../API/api';
 import { UserData } from '../API/userData';
 import { IUserData } from '../../common/interfaces';
@@ -20,17 +20,17 @@ export const authContext = createContext(
 
 
 function App () {
-  let initValue = false;
+  const [isAuth, setIsAuth] = useState(false);
 
-  // if (localStorage.getItem('userData')) {
-  //   API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string))
-  //   API.getRefreshToken();
-  //   initValue = true;
-  // }
-  /*useEffect(()=>{
-    testAPI();
-  })*/
-  const [isAuth, setIsAuth] = useState(initValue);
+  
+  useEffect(()=>{
+     if (localStorage.getItem('userData')) {
+     API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string))
+     API.getRefreshToken();
+     setIsAuth(true);
+   }
+  },[])
+  
   const changeIsAuth = (val:boolean) => {
     setIsAuth(val);
   }
@@ -43,8 +43,7 @@ function App () {
         <main className="main">
           <AppRouter />     
         </main>
-        <Footer />
-      </div>
+       </div>
     </authContext.Provider>
   );
 }

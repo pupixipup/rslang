@@ -1,0 +1,23 @@
+@import "../../style/abstract";
+@import "../../style/base";
+@import "../../style/layouts";
+
+.gamestats__heading{
+    width: 250px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+table{
+    font-size: 2rem;
+    & td{
+        padding: 0.5rem;
+        vertical-align: middle;
+    }
+    & .col1{
+        max-width: calc($min-width-mobile - 60px);
+    }
+}

@@ -1,3 +1,4 @@
+import "./statistics.scss";
 import { useContext, useEffect, useState } from "react";
 import { IUserStats, IWordsStats } from "../../common/interfaces";
 import { API } from "../API/api";
@@ -30,9 +31,13 @@ function Statistics() {
   } as IWordsStats);
 
   useEffect(() => {
+    console.log('use effect');
+    console.log("iaAuth" + isAuth);
     if(isAuth){
       API.getUserStats()
       .then((data) => {
+        console.log(data);
+        console.log('data');
         setStats(data);
         const now = new Date();
         //const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
@@ -42,7 +47,7 @@ function Statistics() {
         } else {
           setIsTodayStatsExists(true);
           const items = data.optional.daystats.gamestats.map((item) =>
-          <section key={item.game}>
+          <section className="gamestats-container" key={item.game}>
             {<GameStats stats={item} />}
           </section>
         )
@@ -53,35 +58,45 @@ function Statistics() {
 
     }
     
-  });
+  },[isAuth]);
 
+  console.log(isTodayStatsExists);
+  console.log(stats);
   if(isTodayStatsExists) return (
+    <div>
     <div className="statistics">
-      <div className="wrapper">
+      <div className="wrapper statistics__wrapper">
         <h1>Статистика</h1>
-        <h3>Всего выучено {stats.learnedWords}</h3>
+        <h3>Всего слов выучено: {stats.learnedWords}</h3>
         <h2>Статистика по играм за день</h2>
+        <div className="gamestats-container">
         {gamesItems}
+        </div>
         <h2>Статистика по словам за день</h2>
-        {<WordsStats stats = {wordsStats}/>}
-      </div>      
+        {<WordsStats stats={wordsStats} />}
+      </div>     
+      </div> 
       <Footer />
     </div>
   );
   if(isAuth) return (
+    <div >
     <div className="statistics">
-      <div className="wrapper">
+      <div className="wrapper statistics__wrapper">
         <h1>Статистика</h1>
         <h3>Всего выучено {stats.learnedWords}</h3>
         <h2>на сегодня статистики нет</h2>
+      </div>
       </div>
       <Footer />
     </div>  
   );
   return (
+    <div>
     <div className="statistics">
-      <div className="wrapper">
+      <div className="wrapper statistics__wrapper">
         <h1>Авторизуйтесь для получения статистики</h1>
+       </div>
        </div>
       <Footer />
     </div>  

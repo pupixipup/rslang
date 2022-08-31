@@ -1,0 +1,26 @@
+@import "../../style/abstract";
+@import "../../style/base";
+@import "../../style/layouts";
+
+.statistics {
+  color: $dark-color;
+  background: -webkit-radial-gradient(top left, #c1c1f966 30%, #5656A6);
+  //background: -moz-radial-gradient(top left, #B8B8ED, #5656A6);
+  min-height: calc(100vh - $header-height - $footer-height); 
+  &__wrapper{
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  h1, h2, h3{
+    text-align: center;
+  }
+  h1, h2{
+    margin: 20px auto;
+  }
+  
+  
+}
+

@@ -1,10 +1,14 @@
 //colors
-$main-bg-color: rgb(86, 86, 166);
+$main-bg-color: #5656a6;
 $light-bg-color:rgb(201, 201, 246);
 $light-color: rgb(201, 201, 246);
+$dark-color: #26264a;
+
 
 //constants
 
 $max-width-desktop: 1280px;
+$max-width-mobile: 768px;
+$min-width-mobile: 320px;
 $header-height: 100px;
 $footer-height: 60px;

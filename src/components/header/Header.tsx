@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from '../../assets/img/6_1.jpg';
+import { authContext } from "../app/App";
 import "./header.scss";
 
-class Header extends React.Component{
-    render() {
+function Header() {
+  const {isAuth,changeIsAuth} = useContext(authContext);
+  
+  
       return (
         <React.StrictMode>
           <header className="header">
@@ -14,11 +17,11 @@ class Header extends React.Component{
               </h1>
               <h5>
                 учим английские слова  
-              </h5>          
+              </h5>  
+              <h5>{isAuth ? 'Auth' : 'not auth'}</h5>        
             </div>
           </header>
         </React.StrictMode>
       );
-    }  
   }
   export default Header;

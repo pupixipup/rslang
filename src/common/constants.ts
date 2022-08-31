@@ -8,3 +8,12 @@ export enum ERROR {
 }
 export const GROUP_DIFFICULT = 6;
 export const SERIES_FOR_UPD = 3;
+export const GAMES = [{
+    game: "sprint",
+    img: "../../assets/img/6_1.jpg"
+},
+{
+
+}
+
+]
