@@ -14,5 +14,8 @@ export class gameUtils {
     chunkedArray.push(chunk);
   }
   return chunkedArray;
- } 
+ }
+ static getRandomElement<T>(array: Array<T>) {
+  return array[Math.floor(Math.random() * array.length)];
+ }
 }

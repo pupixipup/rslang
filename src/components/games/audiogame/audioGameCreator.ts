@@ -11,6 +11,7 @@ export class audioGame {
   wordsTotal: number;
   location: { page: number; section: number; };
   sectionsTotal: number;
+  rightWord: IUserWord | null;
   
   constructor(includeLearned: boolean, location: {page: number, section: number}) {
     this.includeLearned = includeLearned;
@@ -18,6 +19,7 @@ export class audioGame {
     this.gameProvider = new GameWordsProvider(GAMES_NAMES.audio, this.includeLearned);
     this.words = [];
     this.chunkedWords = [];
+    this.rightWord = null;
     this.sectionsTotal = 6;
     this.wordsTotal = 40;
   }

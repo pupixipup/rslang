@@ -4,7 +4,7 @@ import icon from './assets/volume.svg';
 import './styles/Audiogame.scss';
 import { audioGame } from './audioGameCreator';
 import { gameUtils } from '../utils';
-import { IWord, IUserWord } from '../../../common/interfaces';
+import { IWord, IUserWord, IUser } from '../../../common/interfaces';
 
 interface IGameLocationProps {
    gameMenu: boolean,
@@ -17,21 +17,29 @@ let location = useLocation();
 const locs = location.state as IGameLocationProps;
 const [game] = useState(new audioGame(false, {page: locs.page, section: locs.section}));
 // const [words, setWords] = useState<IUserWord[]>([]);
-const [wordsRow, setWordsRow] = useState(0);
+const [wordsRow, setWordsRow] = useState(-1);
+const [wordChunk, setWordChunk] = useState<IUserWord[]>([]);
+const [rightWord, setRightWord] = useState<IUserWord>();
 
 useEffect(() => {
   const fetchWords = async () => {
     const data = await game.getFullWordlist();
-    // await setWords(data);
     game.chunkedWords = gameUtils.chunkArray(data, 4);
     console.log(game.chunkedWords);
+    setWordsRow(0);
   }
   fetchWords();
 }, []);
 
 useEffect(() => {
-// смена слов
+setWordChunk(game.chunkedWords[wordsRow]);
 }, [wordsRow]);
+
+useEffect(() => {
+  if (wordChunk) {
+    setRightWord(gameUtils.getRandomElement(wordChunk));
+  }
+}, [wordChunk]);
 
 return (
  <div className='audiogame'>
@@ -39,6 +47,23 @@ return (
       <button className="audiogame__audio">
         <img src={icon} alt='play audio' className="audiogame__audio-icon" />
       </button>
+      <div> {rightWord?.word}</div>
+      <div className="audiogame__options">
+          {wordChunk ? wordChunk.map((word, ndx) => {
+            return(<button
+             onClick={() => {
+              if ( wordsRow < game.chunkedWords.length - 1) {
+                setWordsRow(wordsRow + 1);
+              } else {
+                // finish game
+              }
+            }}
+             key={word.word + ndx + '-audio'}
+             className="audiogame__options-option">
+              {word.word}
+            </button>);
+          }) : ''}
+      </div>
     </div>
   </div>
 )
