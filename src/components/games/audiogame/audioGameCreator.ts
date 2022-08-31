@@ -27,12 +27,12 @@ export class audioGame {
     let iterationCount = 0;
     while (this.words.length < this.wordsTotal && iterationCount < MAX_PAGE) {
       iterationCount += 1;
-      page -= 1
       if (page < 0) page = MAX_PAGE;
       newWords = await this.gameProvider.getUserWordList(this.location.section, page);
       this.words = [...this.words, ...newWords];
     }
-    
+    page -= 1;
+
     const trimmedWords = gameUtils.trimArrayLength(this.words, 20);
     return trimmedWords;
   }
