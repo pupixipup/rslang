@@ -18,4 +18,7 @@ export class gameUtils {
  static getRandomElement<T>(array: Array<T>) {
   return array[Math.floor(Math.random() * array.length)];
  }
+ static areWordsEqual(name1: string, name2: string) {
+  return name1 === name2;
+}
 }
