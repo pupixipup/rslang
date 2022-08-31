@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import icon from './assets/volume.svg';
 import './styles/Audiogame.scss';
@@ -14,7 +14,14 @@ export function Audiogame () {
 let location = useLocation();
 const locs = location.state as IGameLocationProps;
 const [game] = useState(new audioGame(false, {page: locs.page, section: locs.section}));
-console.log(game);
+
+useEffect(() => {
+  const fetchWords = async () => {
+    const data = await game.getFullWordlist();
+    console.log(data, 'fetched words');
+  }
+  fetchWords();
+}, [])
 return (
  <div className='audiogame'>
     <div className='audiogame__wrapper'>
