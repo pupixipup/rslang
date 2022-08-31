@@ -7,6 +7,7 @@ export class audioGame {
   includeLearned: boolean;
   gameProvider: GameWordsProvider;
   words: IUserWord[];
+  chunkedWords: Array<IUserWord>[];
   wordsTotal: number;
   location: { page: number; section: number; };
   sectionsTotal: number;
@@ -16,8 +17,9 @@ export class audioGame {
     this.location = location;
     this.gameProvider = new GameWordsProvider(GAMES_NAMES.audio, this.includeLearned);
     this.words = [];
+    this.chunkedWords = [];
     this.sectionsTotal = 6;
-    this.wordsTotal = 20;
+    this.wordsTotal = 40;
   }
   async getFullWordlist() {
     let newWords = await this.gameProvider.getUserWordList(this.location.section, this.location.page);
@@ -33,7 +35,7 @@ export class audioGame {
     }
     page -= 1;
 
-    const trimmedWords = gameUtils.trimArrayLength(this.words, 20);
+    const trimmedWords = gameUtils.trimArrayLength(this.words, this.wordsTotal);
     return trimmedWords;
   }
 }
