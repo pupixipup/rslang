@@ -20,6 +20,8 @@ const [game] = useState(new audioGame(false, {page: locs.page, section: locs.sec
 const [wordsRow, setWordsRow] = useState(-1);
 const [wordChunk, setWordChunk] = useState<IUserWord[]>([]);
 const [attempts, setAttempts] = useState(5);
+const [failedWords, setFailedWords] = useState<IUserWord[]>([]);
+const [solvedWords, setSolvedWords] = useState<IUserWord[]>([]);
 const [rightWord, setRightWord] = useState<IUserWord>();
 
 useEffect(() => {
@@ -54,16 +56,18 @@ return (
       <button className="audiogame__audio">
         <img src={icon} alt='play audio' className="audiogame__audio-icon" />
       </button>
-      <div> {rightWord?.word} - {attempts}</div>
+      <div> right word: {rightWord?.word} - attempts: {attempts}</div>
       <div className="audiogame__options">
           {wordChunk ? wordChunk.map((word, ndx) => {
             return(<button
              onClick={() => {
-              if (wordsRow < game.chunkedWords.length - 1) {
+              if (wordsRow < game.chunkedWords.length) {
                 setWordsRow(wordsRow + 1);
                 if (gameUtils.areWordsEqual(rightWord!.word, word.word)) {
+                  setSolvedWords([...solvedWords, word]);
                 } else {
                   setAttempts(attempts - 1);
+                  setFailedWords([...failedWords, word]);
                 }
               } else {
                 // finish game
