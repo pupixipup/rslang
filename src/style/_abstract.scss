@@ -1,8 +1,8 @@
 //colors
 $main-bg-color: #5656a6;
 $light-bg-color:rgb(201, 201, 246);
-$light-color: rgb(201, 201, 246);
-$dark-color: #26264a;
+$light-color: rgb(226, 226, 252);
+$dark-color: rgb(53, 53, 102);
 
 
 //constants
@@ -12,3 +12,9 @@ $max-width-mobile: 768px;
 $min-width-mobile: 320px;
 $header-height: 100px;
 $footer-height: 60px;
+
+//mixin
+
+@mixin media-mobile {
+    @media screen and (max-width: $max-width-mobile) { @content; }
+}

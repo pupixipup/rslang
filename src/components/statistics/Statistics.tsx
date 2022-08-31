@@ -47,7 +47,7 @@ function Statistics() {
         } else {
           setIsTodayStatsExists(true);
           const items = data.optional.daystats.gamestats.map((item) =>
-          <section className="gamestats-container" key={item.game}>
+          <section  key={item.game}>
             {<GameStats stats={item} />}
           </section>
         )
@@ -95,7 +95,7 @@ function Statistics() {
     <div>
     <div className="statistics">
       <div className="wrapper statistics__wrapper">
-        <h1>Авторизуйтесь для получения статистики</h1>
+        <h2 className="no-statistics">Авторизуйтесь для получения статистики</h2>
        </div>
        </div>
       <Footer />
