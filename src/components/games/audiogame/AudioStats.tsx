@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import { IWord, IUserWord } from '../../../common/interfaces';
+import WordAudio from '../../textbook/WordAudio';
 import { gameUtils } from '../utils';
 import './styles/AudioStats.scss';
 
@@ -23,13 +24,38 @@ function AudioStats() {
       <div className="stats__rightwords">
       <h3 className="stats__rightwords-title words-title">Правильные ответы:</h3>
       <div className="stats__words-container">
-      {rightWordNames.map((word) => <div className="stats__rightwords-word stats-word">{word}</div>)}
+      {stats.solvedWords.map((word, i) => {
+      return (
+      <div key={`right-${word}${i}`} className="stats__rightwords-word stats-word">
+        <WordAudio
+            audioLink={word?.audio}
+            audioMeaningLink={undefined}
+            audioExampleLink={undefined}
+          />
+        <div className="stats__rightwords-name word-name">
+        {word.word}
+        </div>
+      </div>
+      
+      )})}
       </div>
       </div>
       <div className="stats__wrongwords">
         <h3 className="stats__wrongwords-title words-title">Неправильные ответы:</h3>
         <div className="stats__words-container">
-      {wrongWordNames.map((word) => <div className="stats__wrongwords-word stats-word">{word}</div>)}
+      {stats.failedWords.map((word, i) =>  {
+       return (
+      <div key={`failed-${word}${i}`} className="stats__wrongwords-word stats-word">
+        <WordAudio
+            audioLink={word?.audio}
+            audioMeaningLink={undefined}
+            audioExampleLink={undefined}
+          />
+        <div className="stats__wrongwords-name word-name">
+        {word.word}
+        </div>
+      </div>
+      )})}
         </div>
       </div>
     </div>

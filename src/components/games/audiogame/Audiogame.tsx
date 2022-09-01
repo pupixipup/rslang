@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import icon from './assets/volume.svg';
 import './styles/Audiogame.scss';
 import { audioGame } from './audioGameCreator';
 import { gameUtils } from '../utils';
-import { IWord, IUserWord, IUser } from '../../../common/interfaces';
-import { wordUtils } from '../../textbook/utils';
+import { IUserWord } from '../../../common/interfaces';
+import WordAudio from '../../textbook/WordAudio';
+import playAudios from '../../textbook/playAudios';
 
 interface IGameLocationProps {
    gameMenu: boolean,
@@ -24,6 +24,7 @@ const [attempts, setAttempts] = useState(5);
 const [failedWords, setFailedWords] = useState<IUserWord[]>([]);
 const [solvedWords, setSolvedWords] = useState<IUserWord[]>([]);
 const [rightWord, setRightWord] = useState<IUserWord>();
+const [isPlaying, setPlaying] = useState(false);
 
 useEffect(() => {
   const fetchWords = async () => {
@@ -55,12 +56,19 @@ useEffect(() => {
   }
 }, [wordChunk]);
 
+useEffect(() => {
+  playAudios([`${rightWord?.audio}`], setPlaying);
+}, [rightWord]);
 
 return (
  <div className='audiogame'>
     <div className='audiogame__wrapper'>
       <button className="audiogame__audio">
-        <img src={icon} alt='play audio' className="audiogame__audio-icon" />
+        <WordAudio
+            audioLink={rightWord?.audio}
+            audioMeaningLink={undefined}
+            audioExampleLink={undefined}
+          />
       </button>
       <div> right word: {rightWord?.word} - attempts: {attempts}</div>
       <div className="audiogame__options">

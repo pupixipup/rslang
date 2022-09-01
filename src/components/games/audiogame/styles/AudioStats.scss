@@ -3,10 +3,42 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  &__rightwords {
-
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    padding: 50px 70px;
+    border: 2px solid rgb(77, 74, 113);
+    box-shadow: 4px 18px 15px 6px rgba(34, 60, 80, 0.2);
+    border-radius: 25px;
   }
+  &__rightwords {
+  }
+  &__rightwords-title {
+  color: rgb(8, 144, 60);
+  }
+  &__wrongwords-title {
+    color: rgb(146, 48, 48);
+    }
   &__wrongwords {
 
   }
+  &__words-container {
+    margin-top: 15px;
+  }
+}
+
+.word-name {
+  text-transform: capitalize;
+}
+
+.stats-word {
+  font-size: 20px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.words-title {
+  font-size: 22px;
 }
