@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import icon from './assets/volume.svg';
 import './styles/Audiogame.scss';
 import { audioGame } from './audioGameCreator';
@@ -15,6 +15,7 @@ interface IGameLocationProps {
 
 export function Audiogame () {
 let location = useLocation();
+let navigate = useNavigate();
 const locs = location.state as IGameLocationProps;
 const [game] = useState(new audioGame(false, {page: locs.page, section: locs.section}));
 const [wordsRow, setWordsRow] = useState(-1);
@@ -36,7 +37,17 @@ useEffect(() => {
 
 useEffect(() => {
 setWordChunk(game.chunkedWords[wordsRow]);
+if (wordsRow === game.chunkedWords.length) {
+  navigate('/games/audiostats', { state: {failedWords, solvedWords} });
+}
 }, [wordsRow]);
+
+useEffect(() => {
+ if (attempts === 0) {
+  console.log('game lost');
+  navigate('/games/audiostats', { state: {failedWords, solvedWords} });
+ }
+}, [attempts]);
 
 useEffect(() => {
   if (wordChunk) {
@@ -44,11 +55,6 @@ useEffect(() => {
   }
 }, [wordChunk]);
 
-useEffect(() => {
- if (attempts === 0) {
-  console.log('game lost');
- }
-}, [attempts]);
 
 return (
  <div className='audiogame'>
@@ -61,7 +67,7 @@ return (
           {wordChunk ? wordChunk.map((word, ndx) => {
             return(<button
              onClick={() => {
-              if (wordsRow < game.chunkedWords.length) {
+              if (wordsRow < game.chunkedWords.length && attempts > 0) {
                 setWordsRow(wordsRow + 1);
                 if (gameUtils.areWordsEqual(rightWord!.word, word.word)) {
                   setSolvedWords([...solvedWords, word]);
@@ -69,8 +75,6 @@ return (
                   setAttempts(attempts - 1);
                   setFailedWords([...failedWords, word]);
                 }
-              } else {
-                // finish game
               }
             }}
              key={word.word + ndx + '-audio'}

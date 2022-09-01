@@ -1,7 +1,7 @@
 import { GameWordsProvider } from "../../API/GameWordsProvider";
 import { GAMES_NAMES } from "../interfaces";
 import { IUserWord } from '../../../common/interfaces';
-import { gameUtils } from '../utils';
+import { gameUtils } from "../utils";
 
 export class audioGame {
   includeLearned: boolean;
@@ -40,4 +40,5 @@ export class audioGame {
     const trimmedWords = gameUtils.trimArrayLength(this.words, this.wordsTotal);
     return trimmedWords;
   }
+  
 }

@@ -1,3 +1,5 @@
+import { IUserWord } from "../../common/interfaces";
+
 export class gameUtils {
 
  static trimArrayLength<T>(array: Array<T>, length: number) {
@@ -20,5 +22,8 @@ export class gameUtils {
  }
  static areWordsEqual(name1: string, name2: string) {
   return name1 === name2;
+}
+static getWordNames(words: Array<IUserWord>) {
+  return words.map((word) => word.word);
 }
 }
