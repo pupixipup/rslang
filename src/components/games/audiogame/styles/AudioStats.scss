@@ -46,7 +46,8 @@
 }
 
 .word-name {
-  text-transform: capitalize;
+  // text-transform: capitalize;
+  color: #2582e7;
 }
 
 .stats-word {
@@ -58,4 +59,14 @@
 }
 .words-title {
   font-size: 22px;
+}
+
+.word-translate {
+  font-size: 18px;
+  opacity: .7;
+}
+
+h3:hover {
+  cursor: default;
+  user-select: none;
 }

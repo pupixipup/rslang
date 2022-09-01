@@ -32,8 +32,10 @@ function AudioStats() {
         <div className="stats__rightwords-name word-name">
         {word.word}
         </div>
+        <div className="word-translate">
+        {word.wordTranslate}
+        </div>
       </div>
-      
       )})}
       </div>
       </div>
@@ -50,6 +52,9 @@ function AudioStats() {
           />
         <div className="stats__wrongwords-name word-name">
         {word.word}
+        </div>
+        <div className="word-translate">
+        {word.wordTranslate}
         </div>
       </div>
       )})}
