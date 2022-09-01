@@ -44,6 +44,7 @@ function Card(props: wordProps) {
           className="words__interact-hard"
           onClick={() => {
             const newLocalWord = wordUtils.createLocalDifficultyWord(currentWord);
+            console.log(currentWord);
             wordUtils.updateLocalWord(localWords, newLocalWord, updateLocalWords);
             WordsApi.setWord(newLocalWord._id, newLocalWord.userWord, newLocalWord.isUserWord);
             setCurrentWord({
