@@ -38,7 +38,10 @@ export class audioGame {
     page -= 1;
 
     const trimmedWords = gameUtils.trimArrayLength(this.words, this.wordsTotal);
-    return trimmedWords;
+    const filteredWords = gameUtils.filterRepeatedWords(trimmedWords);
+    console.log(filteredWords.length);
+    return filteredWords;
+    
   }
   
 }

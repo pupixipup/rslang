@@ -26,4 +26,10 @@ export class gameUtils {
 static getWordNames(words: Array<IUserWord>) {
   return words.map((word) => word.word);
 }
+static filterRepeatedWords(words: Array<IUserWord>) {
+  return words.filter((word, index) => {
+    return words.findIndex((w) => w.word === word.word) === index;
+  }
+  );
+}
 }
