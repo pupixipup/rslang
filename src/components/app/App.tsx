@@ -8,6 +8,7 @@ import { IUserData } from '../../common/interfaces';
 import Header from '../header/Header';
 import AppRouter from '../approuter/Approuter';
 import Footer from '../footer/Footer';
+import { WordsApi } from '../API/wordsapi';
 
 
 
@@ -26,10 +27,16 @@ function App () {
   useEffect(()=>{
      if (localStorage.getItem('userData')) {
      API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string))
-     API.getRefreshToken();
-     setIsAuth(true);
+     API.getRefreshToken()
+     .then(() => {setIsAuth(true);})
+     .catch(() => {setIsAuth(false)})
+     
    }
   },[])
+
+  // useEffect(()=>{
+  //   WordsApi.addLearntWordStats(1);
+  // },[])
   
   const changeIsAuth = (val:boolean) => {
     setIsAuth(val);
@@ -38,12 +45,9 @@ function App () {
 
   return (
     <authContext.Provider value={value}>
-      <div className="App">
-        <Header />
-        <main className="main">
+      <div className="App">      
           <AppRouter />     
-        </main>
-       </div>
+      </div>
     </authContext.Provider>
   );
 }

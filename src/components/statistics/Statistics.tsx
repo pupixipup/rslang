@@ -40,8 +40,8 @@ function Statistics() {
         console.log('data');
         setStats(data);
         const now = new Date();
-        //const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-        const date = "2022-8-30";
+        const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        //const date = "2022-8-30";
         if ((data.optional.daystats.date === undefined) || (date !== data.optional.daystats.date)) {
           setIsTodayStatsExists(false);
         } else {
@@ -85,7 +85,7 @@ function Statistics() {
       <div className="wrapper statistics__wrapper">
         <h1>Статистика</h1>
         <h3>Всего выучено {stats.learnedWords}</h3>
-        <h2>на сегодня статистики нет</h2>
+        <h2 className="no-statistics">на сегодня статистики нет</h2>
       </div>
       </div>
       <Footer />

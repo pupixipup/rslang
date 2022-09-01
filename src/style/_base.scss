@@ -3,6 +3,11 @@
   }
   html{
     font-size: 10px;
+    overflow-x: hidden;
+    margin-right: calc(-1 * (100vw - 100%));
+    @media screen and (max-width: $min-width-mobile) { 
+      overflow-x: auto;
+    }
   }
   body{
     font-size: 1.6rem;

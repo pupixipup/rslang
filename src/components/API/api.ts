@@ -48,7 +48,11 @@ export class API {
     API.refreshToken = "";
     console.log("signed out");
   }
-
+  static logout(): void  {    
+    localStorage.removeItem('userData');
+    API.signOut();
+    localStorage.removeItem('isAuth');
+  }
 
 /**
  * return all words from page and group

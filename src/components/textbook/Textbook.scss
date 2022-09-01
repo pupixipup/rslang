@@ -114,7 +114,7 @@
 }
 
 .textbook {
-  padding: 0 16px;
+  padding: 0 32px 0 16px; // 01/09/22 BlueOwll
 }
 @media (max-width: 700px) {
   .sections__section {
@@ -148,6 +148,7 @@
   cursor: default;
   user-select: none;
 }
+
 
 .textbook-wrapper.allWordsHard {
   background: rgba(red, .1);

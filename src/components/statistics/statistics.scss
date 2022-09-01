@@ -6,7 +6,7 @@
   color: $dark-color;
   background: -webkit-radial-gradient(top left, #c1c1f966 30%, #5656A6);
   //background: -moz-radial-gradient(top left, #B8B8ED, #5656A6);
-  min-height: calc(100vh - $header-height - $footer-height); 
+  min-height: $min-content-height; 
   &__wrapper{
     padding: 30px 20px;
     display: flex;
@@ -19,6 +19,9 @@
   }
   h1, h2{
     margin: 20px auto;
+  }
+  h3{
+    font-weight: 400;
   }
 
   

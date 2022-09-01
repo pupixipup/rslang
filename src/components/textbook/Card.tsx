@@ -74,6 +74,7 @@ function Card(props: wordProps) {
               ...currentWord,
               userWord: newLocalWord.userWord,
             });
+            WordsApi.addLearntWordStats(currentWord.userWord?.optional?.learnt ? -1 : 1)
           }}
         >
           {(currentWord as IUserWord).userWord?.optional?.learnt === true
