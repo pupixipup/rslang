@@ -7,9 +7,6 @@
     justify-content: center;
     height: 100%;
   }
-  &__audio {
-
-  }
   &__audio-icon {
     max-width: 80px;
     width: 100%;
@@ -30,7 +27,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    &:hover {
+    &:hover, &:focus, &:active {
       background-color: #000;
       color: #fff;
     }

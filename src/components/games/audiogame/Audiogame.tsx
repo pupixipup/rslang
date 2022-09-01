@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './styles/Audiogame.scss';
 import { audioGame } from './audioGameCreator';
@@ -26,11 +26,32 @@ const [solvedWords, setSolvedWords] = useState<IUserWord[]>([]);
 const [rightWord, setRightWord] = useState<IUserWord>();
 const [isPlaying, setPlaying] = useState(false);
 
+
+const inputRefs: Array<React.RefObject<HTMLButtonElement>> = [];
+for (let i = 0; i < 4; i++) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    inputRefs.push(useRef<HTMLButtonElement>(null));
+}
+
+
+function goNextWord(word: IUserWord) {
+    if (wordsRow < game.chunkedWords.length && attempts > 0) {
+      setWordsRow(wordsRow + 1);
+      if (gameUtils.areWordsEqual(rightWord!.word, word.word)) {
+        setSolvedWords([...solvedWords, rightWord!]);
+        game.gameProvider.guessed(rightWord!._id);
+      } else {
+        setAttempts(attempts - 1);
+        setFailedWords([...failedWords, rightWord!]);
+        game.gameProvider.notGuessed(rightWord!._id);
+      }
+    }
+}
+
 useEffect(() => {
   const fetchWords = async () => {
     const data = await game.getFullWordlist();
     game.chunkedWords = gameUtils.chunkArray(data, 4);
-    console.log(game.chunkedWords);
     setWordsRow(0);
   }
   fetchWords();
@@ -38,7 +59,6 @@ useEffect(() => {
 
 useEffect(() => {
 setWordChunk(game.chunkedWords[wordsRow]);
-console.log(game.gameProvider.getGameStats(), 'stats');
 if (wordsRow === game.chunkedWords.length) {
   navigate('/games/audiostats', { state: {failedWords, solvedWords} });
   game.gameProvider.uploadStats();
@@ -47,7 +67,6 @@ if (wordsRow === game.chunkedWords.length) {
 
 useEffect(() => {
  if (attempts === 0) {
-  console.log('game lost');
   navigate('/games/audiostats', { state: {failedWords, solvedWords} });
   game.gameProvider.uploadStats();
  }
@@ -56,6 +75,41 @@ useEffect(() => {
 useEffect(() => {
   if (wordChunk) {
     setRightWord(gameUtils.getRandomElement(wordChunk));
+  }
+
+  function listenFirstWordClicked(event: KeyboardEvent) {
+    if (event.code === 'Digit1') {
+      inputRefs[0].current!.click();
+      inputRefs[0].current!.style.backgroundColor = 'black !important';
+    }
+  }
+  function listenSecondWordClicked(event: KeyboardEvent) {
+    if (event.code === 'Digit2') {
+      inputRefs[1].current!.click();
+    }
+  }
+  function listenThirdWordClicked(event: KeyboardEvent) {
+    if (event.code === 'Digit3') {
+      inputRefs[2].current!.click();
+    }
+  }
+  function listenFourthWordClicked(event: KeyboardEvent) {
+    if (event.code === 'Digit4') {
+      // @ts-ignore
+      inputRefs[3].current!.click();
+    }
+  }
+
+  document.addEventListener('keyup', listenFirstWordClicked);
+  document.addEventListener('keyup', listenSecondWordClicked);
+  document.addEventListener('keyup', listenThirdWordClicked);
+  document.addEventListener('keyup', listenFourthWordClicked);
+
+  return () => {
+    document.removeEventListener('keyup', listenFirstWordClicked);
+  document.removeEventListener('keyup', listenSecondWordClicked);
+  document.removeEventListener('keyup', listenThirdWordClicked);
+  document.removeEventListener('keyup', listenFourthWordClicked);
   }
 }, [wordChunk]);
 
@@ -77,18 +131,9 @@ return (
       <div className="audiogame__options">
           {wordChunk ? wordChunk.map((word, ndx) => {
             return(<button
+             ref={(inputRefs[ndx])}
              onClick={() => {
-              if (wordsRow < game.chunkedWords.length && attempts > 0) {
-                setWordsRow(wordsRow + 1);
-                if (gameUtils.areWordsEqual(rightWord!.word, word.word)) {
-                  setSolvedWords([...solvedWords, word]);
-                  game.gameProvider.guessed(word._id);
-                } else {
-                  setAttempts(attempts - 1);
-                  setFailedWords([...failedWords, word]);
-                  game.gameProvider.notGuessed(word._id);
-                }
-              }
+              goNextWord(word)
             }}
              key={word.word + ndx + '-audio'}
              className="audiogame__options-option">
