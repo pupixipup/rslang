@@ -7,10 +7,10 @@ import { Timer } from "../timer/Timer";
 import pathCorrectAnswer from '../../../assets/audio/correct-answer.mp3';
 import pathWrongAnswer from '../../../assets/audio/wrong-answer.mp3'
 import { ResultsGame } from "../results/ResultsGame";
+import useEventListener from "@use-it/event-listener";
 
 export function SprintGame () {
   let navigate = useNavigate();
-  window.addEventListener('beforeunload', () => navigate('/games/sprint', { state: {gameMenu: true} }));
   const levelPoints = [10, 20, 40, 80];
   const [totalPoints, setTotalPoints] = useState(0);
   const [index, setIndex] = useState(0);
@@ -22,8 +22,7 @@ export function SprintGame () {
   const [audioWrong] = useState(new Audio(pathWrongAnswer));
   const [time, setTime] = useState(true);
 
-  console.log(index, indexRu);
-
+  console.log(index, indexRu)
 
   const renderWords = () => {
     setIndex((index) => index + 1);
@@ -96,6 +95,22 @@ export function SprintGame () {
   const updateTime = (value: boolean) => {
     setTime(value);
   }
+
+  const onKeypress = (e: KeyboardEvent) => {
+    console.log(index, indexRu);
+    if (e.code === 'ArrowLeft') {
+      isWrong();
+    }
+    if (e.code === 'ArrowRight') {
+      isRight();
+    }
+  }
+
+  const navigateToSprint = ():void => navigate('/games/sprint', { state: {gameMenu: true} });
+
+  useEventListener('keydown', (e:KeyboardEvent) => onKeypress(e));
+  useEventListener('beforeunload', navigateToSprint);
+
 
   return time ? (
     <div className='sprint-wrapper'>

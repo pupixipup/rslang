@@ -14,7 +14,7 @@ export class SprintApi {
     return Math.floor(Math.random() * NUMBER_OF_PAGES_IN_GROUP);
   }
   static setGroup(group: number): void {
-    this.group = group - 1;
+    this.group = group;
   }
   static setPage(page: number):void {
     this.page = page;
@@ -26,10 +26,16 @@ export class SprintApi {
       this.wordsRu.push(word.wordTranslate);
     });
   }
-  static async getWords() {
+  static async getWordsRandome() {
     await API.getWords(this.getRandomPage(), this.group).then(async(data) => {
       this.setWords(data);
       await API.getWords(this.getRandomPage(), this.group).then((data) => this.setWords(data));
+    });
+  }
+
+  static async getWords() {
+    await API.getWords(this.page, this.group).then(async(data) => {
+      this.setWords(data);
     });
   }
 

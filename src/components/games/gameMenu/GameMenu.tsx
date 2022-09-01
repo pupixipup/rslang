@@ -8,8 +8,8 @@ export function GameMenu () {
   SprintApi.clearWords();
   const choiceOfGroup = async (e: React.MouseEvent) => {
     const group = Number((e.target as HTMLElement).textContent);
-    SprintApi.setGroup(group);
-    await SprintApi.getWords();
+    SprintApi.setGroup(group - 1);
+    await SprintApi.getWordsRandome();
     navigate('/games/sprint', { state: {gameMenu: false} });
   }
   return (

@@ -12,6 +12,7 @@ import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
 import "./Textbook.scss";
+import { SprintApi } from "../API/sprintApi";
 
 function Textbook() {
   const wordsLocation = JSON.parse(
@@ -105,6 +106,18 @@ function Textbook() {
      + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
   }, [wordsAreLoaded, localWords]);
 
+  const choiceOfGroup = async () => {
+    SprintApi.setGroup(numbers.section);
+    SprintApi.setPage(numbers.page);
+    if(API.isAuth()) {
+      console.log('yes');
+    } else {
+      await SprintApi.getWords();
+      console.log(SprintApi.wordsAll);
+    }
+    navigate('/games/sprint', { state: {gameMenu: false} });
+  }
+
   return (
     <React.StrictMode>
       <div className={wrapperClass}>
@@ -112,7 +125,9 @@ function Textbook() {
         <div className="textbook__games">
           <div
             className="textbook__games-game game-sprint"
-            onClick={() => navigate("/games/sprint", { replace: true })}
+            onClick={() => {
+              choiceOfGroup();
+            }}
           >
             Спринт
           </div>
