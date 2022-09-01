@@ -38,8 +38,10 @@ useEffect(() => {
 
 useEffect(() => {
 setWordChunk(game.chunkedWords[wordsRow]);
+console.log(game.gameProvider.getGameStats(), 'stats');
 if (wordsRow === game.chunkedWords.length) {
   navigate('/games/audiostats', { state: {failedWords, solvedWords} });
+  game.gameProvider.uploadStats();
 }
 }, [wordsRow]);
 
@@ -47,6 +49,7 @@ useEffect(() => {
  if (attempts === 0) {
   console.log('game lost');
   navigate('/games/audiostats', { state: {failedWords, solvedWords} });
+  game.gameProvider.uploadStats();
  }
 }, [attempts]);
 
@@ -79,9 +82,11 @@ return (
                 setWordsRow(wordsRow + 1);
                 if (gameUtils.areWordsEqual(rightWord!.word, word.word)) {
                   setSolvedWords([...solvedWords, word]);
+                  game.gameProvider.guessed(word._id);
                 } else {
                   setAttempts(attempts - 1);
                   setFailedWords([...failedWords, word]);
+                  game.gameProvider.notGuessed(word._id);
                 }
               }
             }}
