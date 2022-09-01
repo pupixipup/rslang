@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { IUserWord } from '../../../common/interfaces';
 import WordAudio from '../../textbook/WordAudio';
 import './styles/AudioStats.scss';
@@ -12,6 +12,7 @@ interface IGameStats {
 
 function AudioStats() {
   let location = useLocation();
+  let navigate = useNavigate();
   const stats = location.state as IGameStats;
 
   return (
@@ -54,6 +55,10 @@ function AudioStats() {
       )})}
         </div>
       </div>
+    </div>
+    <div className="stats__nav">
+    <button onClick={() => navigate('../../')} className="stats__nav-link">Домой</button>
+    <button onClick={() => navigate('/textbook')} className="stats__nav-link">Слова</button>
     </div>
   </div>
   )
