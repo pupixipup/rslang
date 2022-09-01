@@ -79,7 +79,7 @@ return (
             }}
              key={word.word + ndx + '-audio'}
              className="audiogame__options-option">
-              {word.word}
+              {word.wordTranslate}
             </button>);
           }) : ''}
       </div>

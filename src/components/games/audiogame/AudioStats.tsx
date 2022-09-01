@@ -12,15 +12,12 @@ interface IGameStats {
 function AudioStats() {
   let location = useLocation();
   const stats = location.state as IGameStats;
-  console.log(stats);
   
-  if (stats) {
-    const rightWordNames = gameUtils.getWordNames(stats.solvedWords);
-    const wrongWordNames = gameUtils.getWordNames(stats.failedWords);
-  }
+  const rightWordNames = gameUtils.getWordNames(stats.solvedWords);
+  const wrongWordNames = gameUtils.getWordNames(stats.failedWords);
 
   return (
-    <div>{ JSON.stringify(location)}</div>
+    <div>{ JSON.stringify(rightWordNames)}</div>
   )
 }
 
