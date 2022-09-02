@@ -44,9 +44,14 @@ export function Auth () {
           <button
             className="auth__button"
             onClick={async () => {
-              await userApi.login(email, password);
-              changeIsAuth(true);  // NT 2022-08-31
-              navigate("/", { replace: true });
+              userApi.login(email, password)
+              .then(()=> {
+                changeIsAuth(true);                   // NT 2022-09-02
+                navigate("/", { replace: true });     // NT 2022-09-02
+              })
+                // NT 2022-08-31
+              .catch((e: Error) => alert(e.message));   // NT 2022-08-31
+              //navigate("/", { replace: true });
             }}>
             Войти
           </button>
@@ -54,8 +59,12 @@ export function Auth () {
             className="auth__button"
             onClick={() => {
               userApi.registerUser(email, password)
-                .then(() => changeIsAuth(true));   // NT 2022-08-31
-              navigate("/", { replace: true });
+                .then(() =>{
+                  changeIsAuth(true);                   // NT 2022-09-02
+                  navigate("/", { replace: true });
+                })
+                .catch((e: Error) => alert(e.message));   // NT 2022-08-31
+              
             }}>
             Регистрация
           </button>

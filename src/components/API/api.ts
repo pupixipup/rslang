@@ -1,5 +1,5 @@
 import { UserData } from './userData';
-import { BASELINK, PORT, RESERVE_TIME } from "../../common/constants";
+import { BASELINK, ERROR, PORT, RESERVE_TIME } from "../../common/constants";
 import { IAggrResp, IGetUserStats, IUser, IUserSignin, IUserStats, IUserToken, IUserWord,  IUserWordOptions, IUserWordRecord, IWord } from "../../common/interfaces";
 
 
@@ -104,7 +104,36 @@ export class API {
  * @param {string} password - user password
  * @returns {Promise<IUser>} user info
  */
-  static async createUser(email:string, password: string) {    
+
+  static createUserAndLogin(email:string, password: string){
+    return API.createUser(email,password)
+    .then(() => API.signIn(email, password))
+    .then(()=> API.setUserStats({
+        learnedWords: 0,
+        optional: {
+          daystats:
+          {
+            date: "",
+            gamestats:[],
+            wordsstats: {
+              learnedWords: 0,
+              newWords: 0
+            }
+          },
+          //longstats: [],
+        }
+      } as IUserStats))         
+      .then(() => {})  
+      .catch((err: Error) =>{
+        if(err.message.includes(ERROR.already_exist)) throw new Error("Такой пользователь уже зарегстрирован");
+        if(err.message.includes(ERROR.forbidden)) throw new Error("Неверный логин или пароль");
+        if(err.message.includes(ERROR.notfound)) throw new Error("Такой пользователь не найден");
+        
+      })
+  }
+
+
+  private static async createUser(email:string, password: string) {    
     return fetch(
       `${API.baseUrl}/${ENDPOINTS.users}`,
       {
@@ -116,8 +145,16 @@ export class API {
       })
       .then((res) => API.errorHandler(res))  // 
       .then((res) => res.json())
-      .then((data) => data as IUser)
+      .then((data) => data as IUser) 
       .catch((err: Error) => {throw new Error(err.message)});
+  }
+  static logIn(email:string, password: string){
+    return API.signIn(email,password)   
+      .catch((err: Error) =>{       
+        if(err.message.includes(ERROR.forbidden)) throw new Error("Неверный логин или пароль");
+        if(err.message.includes(ERROR.notfound)) throw new Error("Такой пользователь не найден");
+        throw new Error("Ошибка авторизации")
+      })
   }
 
   /**
@@ -127,7 +164,7 @@ export class API {
  * @param {string} password - user password
  * @returns {Promise<IUserToken>} user info
  */
-  static async signIn(email:string, password: string){
+  private static async signIn(email:string, password: string){
     return fetch(
       `${API.baseUrl}/${ENDPOINTS.signin}`,
       {
@@ -143,11 +180,12 @@ export class API {
       .then((data) => {API.saveToken(data); console.log("signed in"); console.log(data); return data;})
       .catch((err: Error) => {throw new Error(err.message)});
   }
+
+  
+
   /**
  * get token
- * @signIn
- * @param {string} email - user email
- * @param {string} password - user password
+ * @getToken
  * @returns {Promise<IUserToken>} user info
  */
   static async getToken() {

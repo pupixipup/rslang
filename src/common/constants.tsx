@@ -9,7 +9,10 @@ export const RESERVE_TIME = 5000;
 export const WORD_PER_PAGE = 20;
 export const TOTAL_WORD = 3600;
 export enum ERROR {
-    already_exist = '417'
+    already_exist = '417',
+    forbidden = '403',
+    unauthorized = '401',
+    notfound = '404'
 }
 export const GROUP_DIFFICULT = 6;
 export const SERIES_FOR_UPD = 3;
