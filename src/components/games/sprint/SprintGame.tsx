@@ -65,7 +65,8 @@ export function SprintGame () {
 
   useEffect(() => {
     if (!time) {
-      // wordsProvider.uploadStats();
+      wordsProvider.getGameStats();
+      wordsProvider.uploadStats();
     }
   })
   const renderWords = async () => {
@@ -73,7 +74,6 @@ export function SprintGame () {
     setIndexRu(random());
     if(wordEn.length === index + 1) {
       setTime(false);
-      // await wordsProvider.uploadStats();
     }
   };
 
