@@ -28,13 +28,13 @@ export function ResultsGame (props: IProps) {
     <div className='results'>
       <div className="results-card">
         <div className="results-block results-wrong">
-          <div className="results-title">Неправильные ответы: <span className='right-answers'>{notGuessed.length}</span></div>
+          <div className="results-title">Неправильные ответы: <span className='wrong-answers'>{notGuessed.length}</span></div>
           <div className="results-list">
             {notGuessed ? notGuessed.map((item, idx) => resultItem(item, idx)) : ''}
           </div>
         </div>
         <div className="results-block results-right">
-          <div className="results-title">Правильные ответы: <span className='wrong-answers'>{guessed.length}</span></div>
+          <div className="results-title">Правильные ответы: <span className='right-answers'>{guessed.length}</span></div>
           <div className="results-list">
           {guessed ? guessed.map((item, idx) => resultItem(item, idx)) : ''}
           </div>

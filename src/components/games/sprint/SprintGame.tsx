@@ -39,16 +39,23 @@ export function SprintGame () {
       SprintApi.setGroup(state.group);
       SprintApi.setPage(state.page);
       if(API.isAuth()) {
-        await wordsProvider.getUserWordList(SprintApi.group, SprintApi.page).then((data) => {
-          SprintApi.setWordsUser(data);
-        });
+        for(let i = SprintApi.page; i >= 0; i--) {
+          await wordsProvider.getUserWordList(SprintApi.group, i).then((data) => {
+            SprintApi.setWordsUser(data);
+          });
+        }
         setWordEn(SprintApi.wordsEn);
         setWordRu(SprintApi.wordsRu);
         console.log(SprintApi.wordsAllUser);
       } else {
-        await SprintApi.getWords();
+        for(let i = SprintApi.page; i >= 0; i--) {
+          await API.getWords(i, SprintApi.group).then((data) => {
+            SprintApi.setWords(data);
+          });
+        }
         setWordEn(SprintApi.wordsEn);
         setWordRu(SprintApi.wordsRu);
+        console.log(SprintApi.wordsAll);
       }
     }
     fetchData();
@@ -64,9 +71,9 @@ export function SprintGame () {
   const renderWords = async () => {
     setIndex((index) => index + 1);
     setIndexRu(random());
-    if(SprintApi.wordsEn.length === index) {
+    if(wordEn.length === index + 1) {
       setTime(false);
-      // wordsProvider.uploadStats();
+      // await wordsProvider.uploadStats();
     }
   };
 

@@ -6,8 +6,6 @@ import './GameMenu.scss';
 export function GameMenu () {
   let navigate = useNavigate();
 
-  SprintApi.clearWords();
-
   const navigateToSprint = async (e: React.MouseEvent) => {
     navigate('/games/sprint', { state: {gameMenu: false, group: (Number((e.target as HTMLElement).textContent) - 1), page: SprintApi.getRandomPage(), learned: true} });
   }
