@@ -75,9 +75,9 @@ export class WordsApi {
       console.log(data);
       const newLearnWordsTotal = data.learnedWords + quantity;
       data = {...data, learnedWords: newLearnWordsTotal};
-      //const now = new Date();
-      //const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-      const date = "2022-9-1";
+      const now = new Date();
+      const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+      //const date = "2022-9-1";
       console.log(data.optional.daystats.date + date);
       if((data.optional.daystats.date !== undefined) && (data.optional.daystats.date === date)){
         console.log("добавляем " + quantity);

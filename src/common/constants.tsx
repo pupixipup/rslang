@@ -49,3 +49,7 @@ export const MENUITEMS =[
       element: (<Statistics/>) // to do
     },
 ]
+export enum GAMES_NAMES {
+    sprint = "Спринт",
+    audio = "Аудиовызов"
+  }

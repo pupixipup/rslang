@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import logo from '../../assets/img/RSlang_logo.svg';
+import logo from '../../assets/img/rsl-logo.svg';
 import { MENUITEMS } from "../../common/constants";
 import { API } from "../API/api";
 import { authContext } from "../app/App";

@@ -21,17 +21,14 @@ export const authContext = createContext(
 
 
 function App () {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(() => {
+    return API.init();
+  });
 
   
   useEffect(()=>{
-     if (localStorage.getItem('userData')) {
-     API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string))
-     API.getRefreshToken()
-     .then(() => {setIsAuth(true);})
-     .catch(() => {setIsAuth(false)})
+    
      
-   }
   },[])
 
   // useEffect(()=>{

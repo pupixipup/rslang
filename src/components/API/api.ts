@@ -31,6 +31,20 @@ export class API {
     API.userId = "";
   })();*/
 
+  static init(){
+    if (localStorage.getItem('userData')) {
+      API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string));
+      if (API.isExpired(API.getExpirationDateToken(API.userToken))) {
+        API.logout();
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+ 
+
   static isAuth(){
     return !!API.userId;
   }
@@ -48,6 +62,7 @@ export class API {
     API.refreshToken = "";
     console.log("signed out");
   }
+
   static logout(): void  {    
     localStorage.removeItem('userData');
     API.signOut();
