@@ -1,14 +1,14 @@
 import "./gamestats.scss";
 import { IGameStats } from "../../common/interfaces";
-import { GAMES } from "../../common/constants";
+import { GAMES_NAMES } from "../../common/constants";
 
 
 export function GameStats(props: {stats:IGameStats}){
   const {stats} = props;
-  
+  const bg = (stats.game === GAMES_NAMES.sprint) ? "game1" : "game2";
   return (
     <div className="gamestats">
-      <div className="gamestats__heading" style={{backgroundImage: `url(require(require(${GAMES[0].img}))`}}>
+      <div className={"gamestats__heading" +" "+ bg} >
         <h3 className="gamestats__headingtext">{stats.game}</h3>
       </div>
       <table>

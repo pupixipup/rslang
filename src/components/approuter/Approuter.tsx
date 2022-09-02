@@ -54,31 +54,27 @@ function AppRouter() {
     const routeItems = MENUITEMS.map((item) =>
       <Route key={item.value} path={'/' + item.link} element ={item.element}/>
     )
-    return (
-        <BrowserRouter>
-        <header className="header">
-            <div className="wrapper header__wrapper">
-                            <Link  to={MENUITEMS[2].link}>
-                 <img src={logo} className="header__logo" alt="logo" />
-              </Link>
-              <h5>
-                учим английские слова  
-              </h5>  
-              <h5>{isAuth ? btnLogout : btnLogIn}</h5>   
-                        
-            </div>
-          </header>
-          <div className="menu">
-            <ul className="menu__list wrapper">{listItems}</ul>
-          </div>
-          <section className="content">
-            <Routes>
-              {routeItems}
-            </Routes>
-          </section>
-          </BrowserRouter>
-        
-      );
+  return (
+    <BrowserRouter>
+      <header className="header">
+        <div className="wrapper header__wrapper">
+          <Link to={MENUITEMS[2].link}>
+            <img src={logo} className="header__logo" alt="logo" />
+          </Link>
+          <h5>{isAuth ? btnLogout : btnLogIn}</h5>
+        </div>
+      </header>
+      <div className="menu">
+        <ul className="menu__list wrapper">{listItems}</ul>
+      </div>
+      <section className="content">
+        <Routes>
+          {routeItems}
+        </Routes>
+      </section>
+    </BrowserRouter>
+
+  );
 }
 
 export default AppRouter;

@@ -40,8 +40,9 @@ function Statistics() {
         console.log('data');
         setStats(data);
         const now = new Date();
-        const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-        //const date = "2022-8-30";
+       // const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        const date = "2022-9-2";
+        console.log(data.optional.daystats.date + 'date' + date);
         if ((data.optional.daystats.date === undefined) || (date !== data.optional.daystats.date)) {
           setIsTodayStatsExists(false);
         } else {
