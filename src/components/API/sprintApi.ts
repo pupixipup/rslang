@@ -1,3 +1,4 @@
+import { IUserWord } from './../../common/interfaces';
 import { NUMBER_OF_PAGES_IN_GROUP } from "../../common/constants";
 import { IWord } from "../../common/interfaces";
 import { API } from "./api";
@@ -5,10 +6,11 @@ import { API } from "./api";
 export class SprintApi {
 
   static wordsAll: IWord[] = [];
+  static wordsAllUser: IUserWord[] = [];
   static wordsEn: string[] = [];
   static wordsRu: string[] = [];
-  private static group = 0;
-  private static page = 0;
+  static group = 0;
+  static page = 0;
 
   static getRandomPage (): number {
     return Math.floor(Math.random() * NUMBER_OF_PAGES_IN_GROUP);
@@ -26,10 +28,11 @@ export class SprintApi {
       this.wordsRu.push(word.wordTranslate);
     });
   }
-  static async getWordsRandome() {
-    await API.getWords(this.getRandomPage(), this.group).then(async(data) => {
-      this.setWords(data);
-      await API.getWords(this.getRandomPage(), this.group).then((data) => this.setWords(data));
+  static setWordsUser(words: IUserWord[]):void {
+    this.wordsAllUser = this.wordsAllUser.concat([...words]);
+    words.forEach((word: IUserWord) => {
+      this.wordsEn.push(word.word);
+      this.wordsRu.push(word.wordTranslate);
     });
   }
 
@@ -45,6 +48,7 @@ export class SprintApi {
 
   static clearWords () {
     this.wordsAll = [];
+    this.wordsAllUser = [];
     this.wordsEn = [];
     this.wordsRu = [];
   }

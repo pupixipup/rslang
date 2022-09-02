@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 import { SprintApi } from "../../API/sprintApi";
 import star from '../../../assets/icon/star.svg';
 import './SprintGame.scss';
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Timer } from "../timer/Timer";
 import pathCorrectAnswer from '../../../assets/audio/correct-answer.mp3';
 import pathWrongAnswer from '../../../assets/audio/wrong-answer.mp3'
 import { ResultsGame } from "../results/ResultsGame";
 import useEventListener from "@use-it/event-listener";
+import { API } from "../../API/api";
+import { GameWordsProvider } from "../../API/GameWordsProvider";
+import { GAMES } from "../../../common/constants";
+import { IUserWord, IWord } from "../../../common/interfaces";
 
 export function SprintGame () {
-  let navigate = useNavigate();
+  let {state} = useLocation() as {state: {gameMenu: boolean, group: number, page: number, learned: boolean}};
   const levelPoints = [10, 20, 40, 80];
   const [totalPoints, setTotalPoints] = useState(0);
   const [index, setIndex] = useState(0);
@@ -21,14 +25,48 @@ export function SprintGame () {
   const [audioCorrect] = useState(new Audio(pathCorrectAnswer));
   const [audioWrong] = useState(new Audio(pathWrongAnswer));
   const [time, setTime] = useState(true);
+  const [wordEn, setWordEn] = useState<string[]>([]);
+  const [wordRu, setWordRu] = useState<string[]>([]);
+  const [wordsProvider] = useState(new GameWordsProvider(GAMES.sprint, state.learned));
+  const [guessedWord, setGuessedWord] = useState<IWord[] | IUserWord[]>([]);
+  const [notGuessedWord, setNotGuessedWord] = useState<IUserWord[] | IWord[]>([]);
 
-  console.log(index, indexRu)
+  console.log(index, indexRu);
 
-  const renderWords = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      SprintApi.clearWords();
+      SprintApi.setGroup(state.group);
+      SprintApi.setPage(state.page);
+      if(API.isAuth()) {
+        await wordsProvider.getUserWordList(SprintApi.group, SprintApi.page).then((data) => {
+          SprintApi.setWordsUser(data);
+        });
+        setWordEn(SprintApi.wordsEn);
+        setWordRu(SprintApi.wordsRu);
+        console.log(SprintApi.wordsAllUser);
+      } else {
+        await SprintApi.getWords();
+        setWordEn(SprintApi.wordsEn);
+        setWordRu(SprintApi.wordsRu);
+      }
+    }
+    fetchData();
+  }, [])
+
+
+
+  useEffect(() => {
+    if (!time) {
+      // wordsProvider.uploadStats();
+    }
+  })
+  const renderWords = async () => {
     setIndex((index) => index + 1);
     setIndexRu(random());
     if(SprintApi.wordsEn.length === index) {
-      navigate('/games/results');
+      setTime(false);
+      // wordsProvider.uploadStats();
     }
   };
 
@@ -40,27 +78,49 @@ export function SprintGame () {
     setCircleIndex(0);
   };
 
+  const isGuessed = async (index: number) => {
+    if(API.isAuth()) {
+      await wordsProvider.guessed(SprintApi.wordsAllUser[index]._id);
+      setGuessedWord(() => (guessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
+    } else {
+      setGuessedWord(() => (guessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
+    }
+  }
+
+  const isNotGuessed = async (index: number) => {
+    if(API.isAuth()) {
+      await wordsProvider.notGuessed(SprintApi.wordsAllUser[index]._id);
+      setNotGuessedWord(() => (notGuessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
+    } else {
+      setNotGuessedWord(() => (notGuessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
+    }
+  }
+
   const isRight = () => {
     if (index === indexRu) {
       setTotalPoints(totalPoints + levelPoints[levelIndex]);
       checkCircle(circleIndex);
       audioCorrect.play();
+      isGuessed(index);
     } else {
       removeActiveCircles();
       audioWrong.play();
+      isNotGuessed(index);
     }
     renderWords();
   };
 
   const isWrong = () => {
+    console.log(index, indexRu);
     if (index !== indexRu) {
       setTotalPoints(totalPoints + levelPoints[levelIndex]);
       checkCircle(circleIndex);
       audioCorrect.play();
-
+      isGuessed(index);
     } else {
       removeActiveCircles();
       audioWrong.play();
+      isNotGuessed(index);
     }
     renderWords();
   };
@@ -97,7 +157,6 @@ export function SprintGame () {
   }
 
   const onKeypress = (e: KeyboardEvent) => {
-    console.log(index, indexRu);
     if (e.code === 'ArrowLeft') {
       isWrong();
     }
@@ -106,10 +165,7 @@ export function SprintGame () {
     }
   }
 
-  const navigateToSprint = ():void => navigate('/games/sprint', { state: {gameMenu: true} });
-
   useEventListener('keydown', (e:KeyboardEvent) => onKeypress(e));
-  useEventListener('beforeunload', navigateToSprint);
 
 
   return time ? (
@@ -136,8 +192,8 @@ export function SprintGame () {
           <img className='card-star-img' src={star} alt="star" />
         </div>
         <div className="card-words">
-          <div className="card-word word-en">{SprintApi.wordsEn[index]}</div>
-          <div className="card-word word-ru">{SprintApi.wordsRu[indexRu]}</div>
+          <div className="card-word word-en">{wordEn[index]}</div>
+          <div className="card-word word-ru">{wordRu[indexRu]}</div>
         </div>
         <div className="card-buttons">
           <button className='button btn-false' onClick={() => {
@@ -150,6 +206,6 @@ export function SprintGame () {
       </div>
     </div>
   ) : (
-    <ResultsGame />
+    <ResultsGame guessed={guessedWord} notGuessed={notGuessedWord} />
   )
 }

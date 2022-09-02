@@ -32,8 +32,6 @@ export class GameWordsProvider {
       })
       .then((data) => {
         const tmp = data.map(({_id, userWord, ...rest}) => { return {wordId: _id, wordOptions: userWord} as IUserWordUpload});
-        console.log(tmp);
-        console.log(this.startWordsList);
         this.startWordsList = [ ...this.startWordsList, ...tmp];
         console.log(this.startWordsList);
         return data;
@@ -42,7 +40,8 @@ export class GameWordsProvider {
 
   }
   guessed(id: string) {
-    //console.log(this.currWordsList);
+    // console.log(this.currWordsList);
+    console.log(this.startWordsList);
     this.correctAnswers += 1;
     this.answers += 1;
     this.series += 1;
@@ -78,7 +77,6 @@ export class GameWordsProvider {
         wordToUp = this.createNewWordItem(id, isGuessed);
         isUserWord = false;
       } else {
-
         wordToUp = this.updateWordItem(id, isGuessed, wordItem);
       }
       this.currWordsList.push(wordToUp);
@@ -173,6 +171,7 @@ export class GameWordsProvider {
       newWords: this.newWordsNumber,
       longestSeries: this.series
     } as IGameStats;
+    console.log(res);
     return res;
   }
 

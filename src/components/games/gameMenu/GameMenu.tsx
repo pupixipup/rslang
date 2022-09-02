@@ -5,12 +5,11 @@ import './GameMenu.scss';
 
 export function GameMenu () {
   let navigate = useNavigate();
+
   SprintApi.clearWords();
-  const choiceOfGroup = async (e: React.MouseEvent) => {
-    const group = Number((e.target as HTMLElement).textContent);
-    SprintApi.setGroup(group - 1);
-    await SprintApi.getWordsRandome();
-    navigate('/games/sprint', { state: {gameMenu: false} });
+
+  const navigateToSprint = async (e: React.MouseEvent) => {
+    navigate('/games/sprint', { state: {gameMenu: false, group: (Number((e.target as HTMLElement).textContent) - 1), page: SprintApi.getRandomPage(), learned: true} });
   }
   return (
     <div className='game-menu'>
@@ -19,12 +18,12 @@ export function GameMenu () {
           Тренировка быстрого перевода.<br/>Выберите уровень сложности
         </div>
         <div className="game-menu-level">
-          <button className='game-menu-btn' onClick={(e) => choiceOfGroup(e)}>1</button>
-          <button className='game-menu-btn' onClick={(e) => choiceOfGroup(e)}>2</button>
-          <button className='game-menu-btn' onClick={(e) => choiceOfGroup(e)}>3</button>
-          <button className='game-menu-btn' onClick={(e) => choiceOfGroup(e)}>4</button>
-          <button className='game-menu-btn' onClick={(e) => choiceOfGroup(e)}>5</button>
-          <button className='game-menu-btn' onClick={(e) => choiceOfGroup(e)}>6</button>
+          <button className='game-menu-btn' onClick={(e) => navigateToSprint(e)}>1</button>
+          <button className='game-menu-btn' onClick={(e) => navigateToSprint(e)}>2</button>
+          <button className='game-menu-btn' onClick={(e) => navigateToSprint(e)}>3</button>
+          <button className='game-menu-btn' onClick={(e) => navigateToSprint(e)}>4</button>
+          <button className='game-menu-btn' onClick={(e) => navigateToSprint(e)}>5</button>
+          <button className='game-menu-btn' onClick={(e) => navigateToSprint(e)}>6</button>
         </div>
       </div>
     </div>

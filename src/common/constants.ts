@@ -9,3 +9,5 @@ export enum ERROR {
 }
 export const GROUP_DIFFICULT = 6;
 export const SERIES_FOR_UPD = 3;
+
+export enum GAMES{ sprint= "Спринт", audio = "Аудиовызов" }
