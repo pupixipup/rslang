@@ -6,10 +6,11 @@ import './ResultsGame.scss';
 interface IProps {
   guessed: IWord[] | IUserWord[]; 
   notGuessed: IWord[] | IUserWord[];
+  totalPoints: number;
 }
 
 export function ResultsGame (props: IProps) {
-  const {guessed, notGuessed} = props;
+  const {guessed, notGuessed, totalPoints} = props;
   const [sound] = useState(new Audio());
   const resultItem = (el: IWord | IUserWord, idx: number) => {
     return(
@@ -20,13 +21,16 @@ export function ResultsGame (props: IProps) {
         }}></div>
         <div className="results-en">{el.word}</div>
         <div className="hyphen">&mdash;</div>
-        <div className="word-ru">{el.wordTranslate}</div>
+        <div className="results-ru">{el.wordTranslate}</div>
       </div>
     )
   }
   return (
     <div className='results'>
       <div className="results-card">
+        <div className="results-total">
+          <div className="results-total-title">Количество очков: <span className='total-points'>{totalPoints}</span></div>
+        </div>
         <div className="results-block results-wrong">
           <div className="results-title">Неправильные ответы: <span className='wrong-answers'>{notGuessed.length}</span></div>
           <div className="results-list">

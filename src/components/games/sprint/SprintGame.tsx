@@ -219,6 +219,6 @@ export function SprintGame () {
       </div>
     </div>
   ) : (
-    <ResultsGame guessed={guessedWord} notGuessed={notGuessedWord} />
+    <ResultsGame guessed={guessedWord} notGuessed={notGuessedWord} totalPoints={totalPoints} />
   )
 }

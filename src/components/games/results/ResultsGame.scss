@@ -4,14 +4,21 @@
   padding: 30px;
   height: 100%;
   background-color: $light-bg-color;
+  @include media-mobile() {
+    padding: 30px 5px;
+  }
   &-card {
     padding: 20px;
     margin: 0 auto;
     width: 700px;
-    height: 600px;
+    max-height: 600px;
     background-color: #fefefefe;
     border-radius: 20px;
     box-shadow: rgb(0 0 0 / 20%) 0px 0px 20px;
+    @include media-mobile() {
+      padding: 10px;
+      width: 100%;
+    }
   }
   &-block {
     padding: 20px;
@@ -19,16 +26,31 @@
     width: 100%;
     color: #938e8e;
     font-size: 20px;
+    @include media-mobile() {
+      padding: 10px;
+      font-size: 16px;
+    }
   }
   &-list {
     max-height: 200px;
     overflow-y: scroll;
   }
-  &-wrong {
+  &-wrong, &-total {
     border-bottom: 1px solid #938e8e;;
   }
-  &-title {
+  &-total {
+    padding: 10px 20px;
+    height: 50px;
+    width: 100%;
+    color: #938e8e;
+    font-size: 20px;
+    height: 50px;
+  }
+  &-title, &-total-title {
     font-size: 26px;
+    @include media-mobile() {
+      font-size: 20px;
+    }
   }
   &-item {
     display: flex;
@@ -43,9 +65,20 @@
     background-image: url(../../../assets/icon/sound.svg);
     background-size: cover;
     background-repeat: no-repeat;
+    transition: all 0.5s;
+    @include media-mobile() {
+      height: 20px;
+      width: 20px;
+    }
+  }
+  &-sound:hover {
+    cursor: pointer;
   }
   &-en {
     color: #2f2c2c;
+  }
+  &-ru {
+    color: #938e8e;
   }
 }
 .right-answers {
@@ -53,4 +86,8 @@
 }
 .wrong-answers {
   color: rgb(202, 99, 78);
+}
+.total-points {
+  padding-left: 10px;
+  color: rgb(173, 140, 226);
 }
