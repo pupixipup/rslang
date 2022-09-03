@@ -22,8 +22,8 @@ export function SprintGame () {
   const [indexRu, setIndexRu] = useState(() => random());
   const [circleIndex, setCircleIndex] = useState(0);
   const [levelIndex, setLevelIndex] = useState(0);
-  const [audioCorrect] = useState(new Audio(pathCorrectAnswer));
-  const [audioWrong] = useState(new Audio(pathWrongAnswer));
+  const [audioCorrect] = useState(new Audio());
+  const [audioWrong] = useState(new Audio());
   const [time, setTime] = useState(true);
   const [wordEn, setWordEn] = useState<string[]>([]);
   const [wordRu, setWordRu] = useState<string[]>([]);
@@ -59,16 +59,14 @@ export function SprintGame () {
       }
     }
     fetchData();
-  }, [])
-
-
+  }, []);
 
   useEffect(() => {
     if (!time) {
       wordsProvider.getGameStats();
       wordsProvider.uploadStats();
     }
-  })
+  });
   const renderWords = async () => {
     setIndex((index) => index + 1);
     setIndexRu(random());
@@ -101,17 +99,25 @@ export function SprintGame () {
     } else {
       setNotGuessedWord(() => (notGuessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
     }
-  }
+  };
+  const playAudioCorrect = () => {
+    audioCorrect.src = pathCorrectAnswer;
+    audioCorrect.play();
+  };
+  const playAudioWrong = () => {
+    audioWrong.src = pathWrongAnswer;
+    audioWrong.play();
+  };
 
   const isRight = () => {
     if (index === indexRu) {
       setTotalPoints(totalPoints + levelPoints[levelIndex]);
       checkCircle(circleIndex);
-      audioCorrect.play();
+      playAudioCorrect();
       isGuessed(index);
     } else {
       removeActiveCircles();
-      audioWrong.play();
+      playAudioWrong()
       isNotGuessed(index);
     }
     renderWords();
@@ -122,11 +128,11 @@ export function SprintGame () {
     if (index !== indexRu) {
       setTotalPoints(totalPoints + levelPoints[levelIndex]);
       checkCircle(circleIndex);
-      audioCorrect.play();
+      playAudioCorrect();
       isGuessed(index);
     } else {
       removeActiveCircles();
-      audioWrong.play();
+      playAudioWrong()
       isNotGuessed(index);
     }
     renderWords();
@@ -161,7 +167,7 @@ export function SprintGame () {
 
   const updateTime = (value: boolean) => {
     setTime(value);
-  }
+  };
 
   const onKeypress = (e: KeyboardEvent) => {
     if (e.code === 'ArrowLeft') {
@@ -170,7 +176,7 @@ export function SprintGame () {
     if (e.code === 'ArrowRight') {
       isRight();
     }
-  }
+  };
 
   useEventListener('keydown', (e:KeyboardEvent) => onKeypress(e));
 
