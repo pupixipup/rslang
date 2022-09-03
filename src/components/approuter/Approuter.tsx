@@ -58,7 +58,7 @@ function AppRouter() {
     <BrowserRouter>
       <header className="header">
         <div className="wrapper header__wrapper">
-          <Link to={MENUITEMS[2].link}>
+          <Link to={MENUITEMS[0].link}>
             <img src={logo} className="header__logo" alt="logo" />
           </Link>
           <h5>{isAuth ? btnLogout : btnLogIn}</h5>

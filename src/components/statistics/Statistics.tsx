@@ -8,7 +8,9 @@ import { GameStats } from "./GameStats";
 import { WordsStats } from "./WordsStats";
 
 function Statistics() {
-  const {isAuth,changeIsAuth} = useContext(authContext);
+  const ctx = useContext(authContext);
+  const isAuth = ctx.isAuth;
+  //const [isAuth, setIsAuth] = useState(ctx.isAuth);
   const [stats, setStats] = useState({
     learnedWords: 0,
     optional: {
@@ -30,18 +32,22 @@ function Statistics() {
     newWords: 0
   } as IWordsStats);
 
+//  / if(isAuth !== ctx.isAuth){
+//     setIsAuth(ctx.isAuth);
+//   }
   useEffect(() => {
     console.log('use effect');
     console.log("iaAuth" + isAuth);
     if(isAuth){
+      console.log(isAuth);
       API.getUserStats()
       .then((data) => {
         console.log(data);
         console.log('data');
         setStats(data);
         const now = new Date();
-       // const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-        const date = "2022-9-2";
+        const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        //const date = "2022-9-2";
         console.log(data.optional.daystats.date + 'date' + date);
         if ((data.optional.daystats.date === undefined) || (date !== data.optional.daystats.date)) {
           setIsTodayStatsExists(false);
@@ -59,10 +65,12 @@ function Statistics() {
 
     }
     
-  },[isAuth]);
+  });
 
-  console.log(isTodayStatsExists);
-  console.log(stats);
+  // console.log("today " + isTodayStatsExists);
+  // console.log(stats);
+  // console.log("iaAuth render " + isAuth);
+  if(isAuth){
   if(isTodayStatsExists) return (
     <div>
     <div className="statistics">
@@ -80,7 +88,7 @@ function Statistics() {
       <Footer />
     </div>
   );
-  if(isAuth) return (
+  return (
     <div >
     <div className="statistics">
       <div className="wrapper statistics__wrapper">
@@ -92,6 +100,7 @@ function Statistics() {
       <Footer />
     </div>  
   );
+  }
   return (
     <div>
     <div className="statistics">
