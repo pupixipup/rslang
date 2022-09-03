@@ -9,7 +9,7 @@ const playAudios = (sounds: (string | undefined)[], setState: React.Dispatch<Rea
   });
   audio.onended = () => { 
   index += 1;
-  if (index < sounds.length) {
+  if (index < sounds.length && sounds[1] !== undefined) {
     audio.src = `${API.baseUrl}/${sounds[index]}`;
     audio.play().catch((err) => {
       console.log(err);
