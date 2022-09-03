@@ -16,10 +16,37 @@
   align-self: start;
   position: sticky;
   top: 50px;
+
+
+  &__section:nth-child(1) {
+    background-color: $section1-color;
+  }
+  &__section:nth-child(2) {
+    background-color: $section2-color;
+  }
+  &__section:nth-child(3) {
+    background-color: $section3-color;
+  }
+  &__section:nth-child(4) {
+    background-color: $section4-color;    
+  }
+  &__section:nth-child(5) {
+    background-color: $section5-color;
+  }
+  &__section:nth-child(6) {
+    background-color: $section6-color;
+  }
+  &__section:nth-child(7) {
+    background-color: $section7-color;
+  }
 }
 
+
+
 .sections__section:hover {
-  background-color: $light-bg-color;
+  //background-color: $light-bg-color;
+  box-shadow: rgb(0 0 0 / 20%) 0px 0px 15px;
+  box-shadow: 10px 10px 10px -6px rgba(0,0,0,0.25);
   transition: .3s;
   cursor: pointer;
 }
@@ -74,7 +101,13 @@
 }
 
 .sections__section.--active {
-  background-color: $light-bg-color;
+  //background-color: $light-bg-color;
+  box-shadow: 10px 10px 10px -6px rgba(0,0,0,0.25) inset;
+  transition: .3s;
+}
+.sections__section :active {
+  //background-color: $light-bg-color;
+  box-shadow: 10px 10px 10px -6px rgba(0,0,0,0.25) inset;
   transition: .3s;
 }
 
@@ -86,35 +119,43 @@
 }
 
 .section-displayer.section-0 { 
- background: #b33dc6;
+  background-color: $section1-color;
+ //background: #b33dc6;
 }
 
 .section-displayer.section-1 { 
-  background: #27aeef;
+  background-color: $section2-color;
+  //background: #27aeef;
 }
 
 .section-displayer.section-2 { 
-  background: #87bc45;
+  background-color: $section3-color;
+  
+  //background: #87bc45;
 }
 
 .section-displayer.section-3 { 
-  background: #bdcf32;
+  background-color: $section4-color;
+  //background: #bdcf32;
 }
 
 .section-displayer.section-4 { 
-  background: #ede15b;
+  background-color: $section5-color;
+  //background: #ede15b;
 }
 
 .section-displayer.section-5 { 
-  background: #ef9b20;
+  background-color: $section6-color;
+  //background: #ef9b20;
 }
 
 .section-displayer.section-6, .section-6 { 
-  background: #ff9a8e;
+  background-color: $section7-color;
+  //background: #ff9a8e;
 }
 
 .textbook {
-  padding: 0 16px;
+  padding: 0 32px 0 16px; // 01/09/22 BlueOwll
 }
 @media (max-width: 700px) {
   .sections__section {
@@ -148,6 +189,7 @@
   cursor: default;
   user-select: none;
 }
+
 
 .textbook-wrapper.allWordsHard {
   background: rgba(red, .1);

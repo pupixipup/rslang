@@ -1,66 +1,78 @@
+import { useContext } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { Auth } from "../auth/Auth";
-import { Games } from "../games/Games";
-import { ResultsGame } from "../games/results/ResultsGame";
+import logo from '../../assets/img/rsl-logo.svg';
+import { MENUITEMS, ROUTEITEMS } from "../../common/constants";
+import { API } from "../API/api";
+import { authContext } from "../app/App";
 import { Sprint } from "../games/sprint/Sprint";
 import Home from "../home/Home";
-import Textbook from "../textbook/Textbook";
 import "./Approuter.scss";
+import "./header.scss";
 
 
-const MENUITEMS =[
-    {
-        value: 'HOME',
-        link: ''
-    },
-    {
-        value: 'SIGN IN',
-        link: 'signin'
-    },
-    {
-        value: 'TEXTBOOK',
-        link: 'textbook'
-    },
-    {
-      value: 'Игры',
-      link: 'games'
-  },
-]
-const ROUTEITEMS = [
-  {
-    value: 'Sprint',
-    link: 'sprint'
-  },
-  {
-    value: 'Audio',
-    link: 'audio'
-  },
-]
-
+const HomePage = (<Home/>);
   
 function AppRouter() {
-    const listItems = MENUITEMS.map((item) =>
+  const {isAuth,changeIsAuth} = useContext(authContext);
+    /*const listItems = MENUITEMS.map((item) =>
       <li key={item.value}>
         <Link className="menu__item" to={item.link}> {item.value}</Link>
       </li>
+    )*/
+    const btnLogIn = (
+      <Link className="menu__item" to={MENUITEMS[1].link}> {MENUITEMS[1].value}</Link>
+    );
+    const btnLogout = (
+      <div className="menu__item" onClick={() => {
+        API.logout();
+        changeIsAuth(false); // NT 2022-08-31        
+        }}>
+          Выйти
+      </div>
     )
-    return (
-        <BrowserRouter>
-          <div className="menu">
-            <ul className="menu__list">{listItems}</ul>
-          </div>
-          <section className="content">
-            <Routes>
-              <Route path="/" element ={<Home />}/>
-              <Route path={'/' + MENUITEMS[1].link} element ={<Auth />}/>
-              <Route path={'/' + MENUITEMS[2].link} element ={<Textbook />}/>
-              <Route path={'/' + MENUITEMS[3].link} element ={<Games />}/>
-              <Route path={'/' + MENUITEMS[3].link + '/' + ROUTEITEMS[0].link} element ={<Sprint />}/>
-            </Routes>
-          </section>
-          </BrowserRouter>
+    const listItems = [(
+      <li key={MENUITEMS[2].value}>
+        <Link className="menu__item" to={MENUITEMS[2].link}> {MENUITEMS[2].value}</Link>
+      </li> 
+    )];
+    listItems.push((  
+       <li key={MENUITEMS[3].value}>
+      <Link className="menu__item" to={MENUITEMS[3].link}> {MENUITEMS[3].value}</Link>
+    </li> 
+    ));
+    if (isAuth) {
+      listItems.push((  
+      <li key={MENUITEMS[4].value}>
+     <Link className="menu__item" to={MENUITEMS[4].link}> {MENUITEMS[4].value}</Link>
+   </li> 
+   ));
         
-      );
+      }
+    const routeItems = MENUITEMS.map((item) =>
+      <Route key={item.value} path={'/' + item.link} element ={item.element}/>
+    )
+  return (
+    <BrowserRouter>
+      <header className="header">
+        <div className="wrapper header__wrapper">
+          <Link to={MENUITEMS[0].link}>
+            <img src={logo} className="header__logo" alt="logo" />
+          </Link>
+          <h5>{isAuth ? btnLogout : btnLogIn}</h5>
+        </div>
+      </header>
+      <div className="menu">
+        <ul className="menu__list wrapper">{listItems}</ul>
+      </div>
+      <section className="content">
+        <Routes>
+          {routeItems}
+          <Route path={'/' + MENUITEMS[3].link + '/' + ROUTEITEMS[0].link} element ={<Sprint />}/>
+        </Routes>
+      </section>
+    </BrowserRouter>
+
+  );
 }
 
 export default AppRouter;

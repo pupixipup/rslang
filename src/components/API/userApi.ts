@@ -10,23 +10,22 @@ export class UserApi {
   }
 
   async registerUser(email: string, password: string): Promise<void> {
-    await API.createUser(email, password).catch((e) => console.log(e));
-    await this.login(email, password);
+    return API.createUserAndLogin(email, password).catch((e) => {throw new Error(e.message)});    
   }
   async login(email: string, password: string): Promise<void>  {
-      await API.signIn(email, password).then((data) => {
+      await API.logIn(email, password).then((data) => {
         localStorage.setItem('userData', JSON.stringify(data));
         this.user.setUser(data);
         this.user.setAuth(true);
         localStorage.setItem('isAuth', 'true');
-      }).catch((e) => console.log(e));
+      }).catch((e) => {throw new Error(e.message)});
   }
-  logout(): void  {
-    this.user.setUser({} as IUserSignin);
-    localStorage.removeItem('userData');
-    API.signOut();
-    this.user.setAuth(false);
-    localStorage.removeItem('isAuth');
-  }
+  // logout(): void  {
+  //   this.user.setUser({} as IUserSignin);
+  //   localStorage.removeItem('userData');
+  //   API.signOut();
+  //   this.user.setAuth(false);
+  //   localStorage.removeItem('isAuth');
+  // }
 
 }

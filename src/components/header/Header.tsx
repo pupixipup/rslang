@@ -1,24 +1,31 @@
-import React from "react";
-import logo from '../../assets/img/6_1.jpg';
+import React, { useContext } from "react";
+import { BrowserRouter, Link } from "react-router-dom";
+import logo from '../../assets/img/RSlang_logo.svg';
+import { MENUITEMS } from "../../common/constants";
+import { authContext } from "../app/App";
+
 import "./Header.scss";
 
-class Header extends React.Component{
-    render() {
+function Header() {
+  const {isAuth,changeIsAuth} = useContext(authContext);
+  
+  
       return (
         <React.StrictMode>
           <header className="header">
             <div className="wrapper header__wrapper">
-              <img src={logo} className="header__logo" alt="logo" />
-              <h1>
-                RS-Lang
-              </h1>
+              <BrowserRouter>
+              <Link  to={MENUITEMS[2].link}>
+                 <img src={logo} className="header__logo" alt="logo" />
+              </Link>
               <h5>
                 учим английские слова  
-              </h5>          
+              </h5>  
+              <h5>{isAuth ? 'Auth' : 'not auth'}</h5>   
+              </BrowserRouter>              
             </div>
           </header>
         </React.StrictMode>
       );
-    }  
   }
   export default Header;

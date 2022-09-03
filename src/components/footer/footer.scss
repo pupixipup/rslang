@@ -28,7 +28,31 @@
     background-repeat: no-repeat;
   }
   .footer__team {
+    font-size: 1.6rem;
     display:flex;
     justify-content: flex-end;
-    gap: 15px;
+    gap: 3.5rem;
+    // @include media-mobile{
+    //   flex-direction: column;
+    //   gap: 0.75rem
+    // }
   }
+  .git-nickname{
+    position: relative;
+    text-decoration: none;
+}
+.git-nickname::before{
+    content:"";
+    position: absolute;
+    left: -2.5rem;
+    top: -0.1rem;
+    background-image: url("../../assets/icon/github_white.svg");
+    height: 2rem;
+    width: 2rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.git-nickname:hover{
+  transform: scale(1.1);
+}

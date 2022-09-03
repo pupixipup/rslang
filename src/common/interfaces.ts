@@ -54,13 +54,14 @@ export interface IUserStats {
     {
       date: string,
       gamestats: IGameStats[],
-      wordsstats: {
-        learnedWords: number,
-        newWords: number
-      }
+      wordsstats: IWordsStats
     },
     longstats?: ILongStats[]
  }
+}
+export interface IWordsStats{
+  learnedWords: number,
+  newWords: number
 }
 export interface IGetUserStats extends IUserStats{
   id: string,

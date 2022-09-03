@@ -10,8 +10,8 @@ import { ResultsGame } from "../results/ResultsGame";
 import useEventListener from "@use-it/event-listener";
 import { API } from "../../API/api";
 import { GameWordsProvider } from "../../API/GameWordsProvider";
-import { GAMES } from "../../../common/constants";
 import { IUserWord, IWord } from "../../../common/interfaces";
+import { GAMES_NAMES } from "../../../common/constants";
 
 export function SprintGame () {
   let {state} = useLocation() as {state: {gameMenu: boolean, group: number, page: number, learned: boolean}};
@@ -27,7 +27,7 @@ export function SprintGame () {
   const [time, setTime] = useState(true);
   const [wordEn, setWordEn] = useState<string[]>([]);
   const [wordRu, setWordRu] = useState<string[]>([]);
-  const [wordsProvider] = useState(new GameWordsProvider(GAMES.sprint, state.learned));
+  const [wordsProvider] = useState(new GameWordsProvider(GAMES_NAMES.sprint, state.learned));
   const [guessedWord, setGuessedWord] = useState<IWord[] | IUserWord[]>([]);
   const [notGuessedWord, setNotGuessedWord] = useState<IUserWord[] | IWord[]>([]);
 
