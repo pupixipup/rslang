@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API } from "../API/api";
 import { WordsApi } from "../API/wordsapi";
@@ -12,6 +12,8 @@ import { createSectionsArray, Section } from "./Section";
 import ReactPaginate from "react-paginate";
 import Card from "./Card";
 import "./Textbook.scss";
+import { authContext } from "../app/App";
+
 
 function Textbook() {
   const wordsLocation = JSON.parse(
@@ -22,11 +24,15 @@ function Textbook() {
   const [wrapperClass, setWrapperClass] = useState('textbook-wrapper')
   const [data, updateData] = useState<wordsList>([]);
   const [localWords, updateLocalWords] = useState<localWord[]>([]);
-  const [isLoggedIn] = useState<boolean>(API.isAuth());
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(API.isAuth());
   const [learntWordsCounter, setLearntWordsCounter] = useState(0);
   const [hardWordsCounter, setHardWordsCounter] = useState(0);
   const [wordsAreLoaded, setLoadedState] = useState(false);
 
+  const ctx = useContext(authContext);
+  if(ctx.isAuth !== isLoggedIn){
+    setIsLoggedIn(ctx.isAuth);
+  }
   let navigate = useNavigate();
   const totalSections = 6;
   const sectionsArray: number[] = createSectionsArray(totalSections);
@@ -106,6 +112,14 @@ function Textbook() {
      + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
   }, [wordsAreLoaded, localWords]);
 
+  const navigateToSprint = () => {
+    if(API.isAuth()) {
+      navigate('/games/sprint', { state: {gameMenu: false, group: Number(numbers.section), page: numbers.page, length: false} });
+    } else {
+      navigate('/games/sprint', { state: {gameMenu: false, group: Number(numbers.section), page: numbers.page, length: true} });
+    }
+  }
+
   return (
     <React.StrictMode>
       <div className={wrapperClass}>
@@ -113,7 +127,7 @@ function Textbook() {
         <div className="textbook__games">
           <div
             className="textbook__games-game game-sprint"
-            onClick={() => navigate("/games/sprint", { replace: true })}
+            onClick={navigateToSprint}
           >
             Спринт
           </div>

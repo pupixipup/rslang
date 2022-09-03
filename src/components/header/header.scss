@@ -3,8 +3,10 @@
 @import "../../style/layouts";
 
 .header__logo {
-    height: 100px;
+  margin-top: 20px;
+    height: $header-height;
     pointer-events: none;
+    cursor: pointer;
   }
   
   .header {

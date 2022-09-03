@@ -48,7 +48,7 @@ export class wordUtils {
       ? "easy"
       : (difficultWord as IUserWord).userWord?.difficulty!;
     const newIsLearnt = !oldIsLearnt;
-
+    
     return {
       _id: (difficultWord as IUserWord)._id,
       userWord: {

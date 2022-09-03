@@ -83,7 +83,7 @@ function Card(props: wordProps) {
               );
             }
             console.log(currentWord, 'current word');
-            
+            WordsApi.addLearntWordStats(currentWord.userWord?.optional?.learnt ? -1 : 1)
           }}
         >
           {(currentWord as IUserWord).userWord?.optional?.learnt === true
