@@ -1,5 +1,5 @@
 import { GameWordsProvider } from "../../API/GameWordsProvider";
-import { GAMES_NAMES } from "../interfaces";
+import { GAMES_NAMES } from '../../../common/constants';
 import { IUserWord } from '../../../common/interfaces';
 import { gameUtils } from "../utils";
 import { API } from "../../API/api";
