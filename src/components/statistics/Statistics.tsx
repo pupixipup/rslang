@@ -105,7 +105,7 @@ function Statistics() {
     <div>
     <div className="statistics">
       <div className="wrapper statistics__wrapper">
-        <h2 className="no-statistics">Авторизуйтесь для получения статистики</h2>
+        <p className="no-statistics">Авторизуйтесь для получения статистики</p>
        </div>
        </div>
       <Footer />
