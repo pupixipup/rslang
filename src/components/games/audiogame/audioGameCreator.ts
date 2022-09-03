@@ -2,6 +2,7 @@ import { GameWordsProvider } from "../../API/GameWordsProvider";
 import { GAMES_NAMES } from "../interfaces";
 import { IUserWord } from '../../../common/interfaces';
 import { gameUtils } from "../utils";
+import { API } from "../../API/api";
 
 export class audioGame {
   includeLearned: boolean;
@@ -24,18 +25,28 @@ export class audioGame {
     this.wordsTotal = 40;
   }
   async getFullWordlist() {
-    let newWords = await this.gameProvider.getUserWordList(this.location.section, this.location.page);
+    // if user is logged in get userlist, otherwise get default list
+    let newWords;
+    if (API.isAuth()) {
+      newWords = await this.gameProvider.getUserWordList(this.location.section, this.location.page);
+    } else {
+      newWords = await API.getWords(this.location.page, this.location.section);
+    }
     const MAX_PAGE = 29;
     let page = MAX_PAGE;
-    this.words = [...this.words, ...newWords];
+    this.words = [...this.words, ...newWords] as IUserWord[];
     let iterationCount = 0;
     while (this.words.length < this.wordsTotal && iterationCount < MAX_PAGE) {
       iterationCount += 1;
       if (page < 0) page = MAX_PAGE;
-      newWords = await this.gameProvider.getUserWordList(this.location.section, page);
-      this.words = [...this.words, ...newWords];
+      if (API.isAuth()) {
+        newWords = await this.gameProvider.getUserWordList(this.location.section, page);
+      } else {
+        newWords = await API.getWords(page, this.location.section);
+      }
+      this.words = [...this.words, ...newWords] as IUserWord[];
+      page -= 1;
     }
-    page -= 1;
 
     const trimmedWords = gameUtils.trimArrayLength(this.words, this.wordsTotal);
     const filteredWords = gameUtils.filterRepeatedWords(trimmedWords);

@@ -6,6 +6,7 @@ import { gameUtils } from '../utils';
 import { IUserWord } from '../../../common/interfaces';
 import WordAudio from '../../textbook/WordAudio';
 import playAudios from '../../textbook/playAudios';
+import { API } from '../../API/api';
 
 interface IGameLocationProps {
    gameMenu: boolean,
@@ -39,11 +40,15 @@ function goNextWord(word: IUserWord) {
       setWordsRow(wordsRow + 1);
       if (gameUtils.areWordsEqual(rightWord!.word, word.word)) {
         setSolvedWords([...solvedWords, rightWord!]);
-        game.gameProvider.guessed(rightWord!._id);
+        if (API.isAuth()) {
+          game.gameProvider.guessed(rightWord!._id);
+        }
       } else {
         setAttempts(attempts - 1);
         setFailedWords([...failedWords, rightWord!]);
-        game.gameProvider.notGuessed(rightWord!._id);
+        if (API.isAuth()) {
+          game.gameProvider.notGuessed(rightWord!._id);
+        }
       }
     }
 }
@@ -61,14 +66,18 @@ useEffect(() => {
 setWordChunk(game.chunkedWords[wordsRow]);
 if (wordsRow === game.chunkedWords.length) {
   navigate('/games/audiostats', { state: {failedWords, solvedWords} });
-  game.gameProvider.uploadStats();
+  if (API.isAuth()) {
+    game.gameProvider.uploadStats();
+  }
 }
 }, [wordsRow]);
 
 useEffect(() => {
  if (attempts === 0) {
   navigate('/games/audiostats', { state: {failedWords, solvedWords} });
+  if (API.isAuth()) {
   game.gameProvider.uploadStats();
+  }
  }
 }, [attempts]);
 
