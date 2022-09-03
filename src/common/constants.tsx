@@ -1,8 +1,12 @@
 import { Auth } from "../components/auth/Auth";
-import { GameMenu } from "../components/games/gameMenu/GameMenu";
+import { Games } from "../components/games/Games";
 import Home from "../components/home/Home";
 import Statistics from "../components/statistics/Statistics";
 import Textbook from "../components/textbook/Textbook";
+import { Audiogame } from "../components/games/audiogame/Audiogame";
+import AudiogameMenu from "../components/games/audiogame/AudiogameMenu";
+import { Sprint } from "../components/games/sprint/Sprint";
+import AudioStats from "../components/games/audiogame/AudioStats";
 
 export const BASELINK = "http://localhost";
 export const PORT = "5500";
@@ -38,13 +42,33 @@ export const MENUITEMS =[
     {
       value: 'Игры',
       link: 'games',
-      element: (<GameMenu/>) // to do
+      element: (<Games/>) // to do
     },
     {
       value: 'Статистика',
       link: 'statistics',
       element: (<Statistics/>) // to do
     },
+    {
+      value: 'Спринт',
+      link: 'games/sprint',
+      element: (<Sprint/>)
+    },
+    {
+      value: 'Аудиовызов',
+      link: 'games/audio',
+      element: (<Audiogame/>)
+    },
+    {
+      value: 'Аудиовызов - меню',
+      link: 'games/audio-menu',
+      element: (<AudiogameMenu/>)
+    },
+    {
+      value: 'Аудиовызов - статистика',
+      link: 'games/audiostats',
+      element: (<AudioStats/>)
+    }
 ]
 export const ROUTEITEMS = [
     {
