@@ -4,9 +4,9 @@ import './styles/Audiogame.scss';
 import { audioGame } from './audioGameCreator';
 import { gameUtils } from '../utils';
 import { IUserWord } from '../../../common/interfaces';
-import WordAudio from '../../textbook/WordAudio';
-import playAudios from '../../textbook/playAudios';
 import { API } from '../../API/api';
+import playAudio from './playAudio';
+import AudioPlay from './AudioPlay';
 
 interface IGameLocationProps {
    gameMenu: boolean,
@@ -107,7 +107,6 @@ useEffect(() => {
   }
   function listenFourthWordClicked(event: KeyboardEvent) {
     if (event.code === 'Digit4') {
-      // @ts-ignore
       inputRefs[3].current!.click();
     }
   }
@@ -126,18 +125,16 @@ useEffect(() => {
 }, [wordChunk]);
 
 useEffect(() => {
-  playAudios([`${rightWord?.audio}`], setPlaying);
+    playAudio(`${rightWord?.audio}`, setPlaying);
 }, [rightWord]);
 
 return (
  <div className='audiogame'>
     <div className='audiogame__wrapper'>
       <button className="audiogame__audio">
-        <WordAudio
-            audioLink={rightWord?.audio}
-            audioMeaningLink={undefined}
-            audioExampleLink={undefined}
-          />
+           <AudioPlay
+            audioLink={`${rightWord?.audio}`}
+          /> 
       </button>
       <div className="audiogame__options">
           {wordChunk ? wordChunk.map((word, ndx) => {
