@@ -1,16 +1,8 @@
-import './app.scss';
 import '../../style/normalize.scss';
 import '../../style/fonts.scss';
 import { createContext, useEffect, useState } from 'react';
 import { API } from '../API/api';
-import { UserData } from '../API/userData';
-import { IUserData } from '../../common/interfaces';
-import Header from '../header/Header';
 import AppRouter from '../approuter/Approuter';
-import Footer from '../footer/Footer';
-import { WordsApi } from '../API/wordsapi';
-
-
 
 
 export const authContext = createContext(
@@ -25,11 +17,6 @@ function App () {
     return API.init();
   });
 
-  
-  useEffect(()=>{
-    
-     
-  },[])
 
   // useEffect(()=>{
   //   WordsApi.addLearntWordStats(1);

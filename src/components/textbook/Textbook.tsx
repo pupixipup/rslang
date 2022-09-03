@@ -14,6 +14,7 @@ import Card from "./Card";
 import "./Textbook.scss";
 import { authContext } from "../app/App";
 
+
 function Textbook() {
   const wordsLocation = JSON.parse(
     window.localStorage.getItem("wordsLocation") as string
@@ -110,6 +111,14 @@ function Textbook() {
      + wordUtils.countLearntWords(localWords as localWord[] & IUserWord[]));
   }, [wordsAreLoaded, localWords]);
 
+  const navigateToSprint = () => {
+    if(API.isAuth()) {
+      navigate('/games/sprint', { state: {gameMenu: false, group: Number(numbers.section), page: numbers.page, length: false} });
+    } else {
+      navigate('/games/sprint', { state: {gameMenu: false, group: Number(numbers.section), page: numbers.page, length: true} });
+    }
+  }
+
   return (
     <React.StrictMode>
       <div className={wrapperClass}>
@@ -117,7 +126,7 @@ function Textbook() {
         <div className="textbook__games">
           <div
             className="textbook__games-game game-sprint"
-            onClick={() => navigate("/games/sprint", { replace: true })}
+            onClick={navigateToSprint}
           >
             Спринт
           </div>

@@ -3,7 +3,8 @@ import { BrowserRouter, Link } from "react-router-dom";
 import logo from '../../assets/img/RSlang_logo.svg';
 import { MENUITEMS } from "../../common/constants";
 import { authContext } from "../app/App";
-import "./header.scss";
+
+import "./Header.scss";
 
 function Header() {
   const {isAuth,changeIsAuth} = useContext(authContext);

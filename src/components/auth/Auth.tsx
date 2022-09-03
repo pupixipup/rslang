@@ -75,10 +75,3 @@ export function Auth () {
     </div>
   )
 }
- /*<button onClick={() => {
-          userApi.logout();
-          changeIsAuth(false); // NT 2022-08-31
-          navigate("/", { replace: true });
-          }}>
-            Выйти
-        </button>*/
