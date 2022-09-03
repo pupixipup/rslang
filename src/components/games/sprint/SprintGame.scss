@@ -32,6 +32,7 @@
   }
   &-card {
     margin: auto;
+    margin-top: 10px;
     width: 600px;
     height: 500px;
     border-radius: 15px;
@@ -159,3 +160,6 @@
   filter: invert(100%) sepia(59%) saturate(1691%) hue-rotate(0deg) brightness(84%) contrast(86%);
 }
 
+.hide {
+  display: none;
+}
