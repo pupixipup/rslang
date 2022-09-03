@@ -28,11 +28,14 @@ const [rightWord, setRightWord] = useState<IUserWord>();
 const [isPlaying, setPlaying] = useState(false);
 
 
-const inputRefs: Array<React.RefObject<HTMLButtonElement>> = [];
-for (let i = 0; i < 4; i++) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    inputRefs.push(useRef<HTMLButtonElement>(null));
-}
+let inputRefs: Array<React.RefObject<HTMLButtonElement>> = [];
+
+inputRefs = [
+  useRef<HTMLButtonElement>(null),
+  useRef<HTMLButtonElement>(null),
+  useRef<HTMLButtonElement>(null),
+  useRef<HTMLButtonElement>(null)
+];
 
 
 function goNextWord(word: IUserWord) {
@@ -136,14 +139,11 @@ return (
             audioExampleLink={undefined}
           />
       </button>
-      <div> right word: {rightWord?.word} - attempts: {attempts}</div>
       <div className="audiogame__options">
           {wordChunk ? wordChunk.map((word, ndx) => {
             return(<button
              ref={(inputRefs[ndx])}
-             onClick={() => {
-              goNextWord(word)
-            }}
+             onClick={() => {goNextWord(word)}}
              key={word.word + ndx + '-audio'}
              className="audiogame__options-option">
               {word.wordTranslate}
