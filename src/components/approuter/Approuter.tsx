@@ -4,7 +4,6 @@ import logo from '../../assets/img/rsl-logo.svg';
 import { MENUITEMS, ROUTEITEMS } from "../../common/constants";
 import { API } from "../API/api";
 import { authContext } from "../app/App";
-import { Sprint } from "../games/sprint/Sprint";
 import Home from "../home/Home";
 import "./Approuter.scss";
 import "./header.scss";
@@ -67,7 +66,6 @@ function AppRouter() {
       <section className="content">
         <Routes>
           {routeItems}
-          <Route path={'/' + MENUITEMS[3].link + '/' + ROUTEITEMS[0].link} element ={<Sprint />}/>
         </Routes>
       </section>
     </BrowserRouter>
