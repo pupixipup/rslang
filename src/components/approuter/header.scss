@@ -3,10 +3,11 @@
 @import "../../style/layouts";
 
 .header__logo {
-  margin-top: 20px;
+  margin-top: 1rem;
     height: $header-height;
     pointer-events: none;
     cursor: pointer;
+    height: calc($header-height + $menu-height - 1rem);
   }
   
   .header {

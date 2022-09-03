@@ -1,17 +1,26 @@
+@import "../../style/abstract";
+
+.container{
+  height: 100%;
+  min-height: $min-content-height; 
+  padding-top: 100px;
+}
+
 .auth {
   display: flex;
   flex-direction: column;
   align-items: space-between;
   justify-content: center;
   gap: 10px;
-  margin-top: 100px;
-  margin: 100px auto 0;
+  margin: 0 auto;
+  
   width: 400px;
 }
 .auth__block {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
 }
 .auth__lable {
   color: rgb(154, 154, 205);
