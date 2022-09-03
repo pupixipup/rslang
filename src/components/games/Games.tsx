@@ -10,7 +10,7 @@ export function Games () {
       <div className='game game-sprint' onClick={() => navigate('/games/sprint', { state: {gameMenu: true} })}>
         <div className='game-title'>Спринт</div>
       </div>
-      <div className='game game-audio'>
+      <div className='game game-audio' onClick={() => navigate('/games/audio-menu')}>
         <div className='game-title'>Аудиовызов</div>
       </div>
     </div>
