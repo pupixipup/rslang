@@ -73,6 +73,7 @@ export function SprintGame () {
     if(wordEn.length === index + 1) {
       setTime(false);
     }
+    console.log(wordEn[index] +" index "+wordRu[indexRu]);
   };
 
   const removeActiveCircles = () => {

@@ -34,6 +34,7 @@ export class SprintApi {
       this.wordsEn.push(word.word);
       this.wordsRu.push(word.wordTranslate);
     });
+
   }
 
   static async getWords() {

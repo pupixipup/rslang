@@ -31,8 +31,11 @@
     transform: scale(1.05);  
   }  
 }
+.menu__logout{
+ font-size: 1.6rem;
+ 
+}
 .content {
-  flex-grow: 1;
   width: 100%;
   height: calc(100vh - $header-height - $menu-height);
 }

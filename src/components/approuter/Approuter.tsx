@@ -6,28 +6,22 @@ import { API } from "../API/api";
 import { authContext } from "../app/App";
 import { Sprint } from "../games/sprint/Sprint";
 import Home from "../home/Home";
-import "./Approuter.scss";
+import "./approuter.scss";
 import "./header.scss";
 
 
-const HomePage = (<Home/>);
-  
+
 function AppRouter() {
   const {isAuth,changeIsAuth} = useContext(authContext);
-    /*const listItems = MENUITEMS.map((item) =>
-      <li key={item.value}>
-        <Link className="menu__item" to={item.link}> {item.value}</Link>
-      </li>
-    )*/
     const btnLogIn = (
       <Link className="menu__item" to={MENUITEMS[1].link}> {MENUITEMS[1].value}</Link>
     );
     const btnLogout = (
-      <div className="menu__item" onClick={() => {
+      <div className="menu__logout" onClick={() => {
         API.logout();
         changeIsAuth(false); // NT 2022-08-31        
         }}>
-          Выйти
+          Выйти          
       </div>
     )
     const listItems = [(
