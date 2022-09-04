@@ -183,7 +183,8 @@ export class GameWordsProvider {
 
   private uploadGameStat() {
     const now = new Date();
-    const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    //const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    const date = "2022-09-06"
     let newStat: IUserStats;
     console.log(date);
     return WordsApi.getUserStats()
@@ -192,18 +193,21 @@ export class GameWordsProvider {
         // console.log(" this.locLearned" + this.locLearned + " newStat.learnedWords"+ newStat.learnedWords );
         newStat.learnedWords += this.locLearned;
         if (data.optional.daystats.date !== date){
+          
+          const dayStat = {
+            date: data.optional.daystats.date,  
+            learnedWords: data.optional.daystats.wordsstats.learnedWords,
+            newWords: data.optional.daystats.wordsstats.newWords,            
+          }
+          newStat.optional.longstats.longStatsArray.push(dayStat);
+
+          newStat.optional.daystats.wordsstats.learnedWords =  this.locLearned;
+          newStat.optional.daystats.wordsstats.newWords = this.newWordsNumber;
           newStat.optional.daystats.date = date;
           newStat.optional.daystats.gamestats = [];
           newStat.optional.daystats.gamestats.push(this.createNewDayStats());
-         /* const dayStat = {
-            date: data.optional.daystats.date,  
-            learnedWords: data.optional.daystats.wordsstats.learnedWords,
-            newWords: data.optional.daystats.wordsstats.newWords
-          };*/
-          newStat.optional.daystats.wordsstats.learnedWords =  this.locLearned;
-          newStat.optional.daystats.wordsstats.newWords = this.newWordsNumber;
           
-          //newStat.optional.longstats.push(dayStat);
+          console.log("новая статистика");
           console.log(data.optional.daystats);
           console.log(newStat);
         }else{
@@ -218,8 +222,8 @@ export class GameWordsProvider {
           newStat.optional.daystats.wordsstats.newWords += this.newWordsNumber;
         }
         
-        //console.log("после присвоения newstat" +data.optional.daystats.date);
-        //console.log(newStat);
+        console.log("после присвоения newstat" +data.optional.daystats.date);
+        console.log(newStat);
         return WordsApi.setUserStats(newStat);
       })
       

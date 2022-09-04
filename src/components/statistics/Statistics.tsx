@@ -22,6 +22,10 @@ function Statistics() {
           learnedWords: 0,
           newWords: 0
         }
+      },
+      longstats:
+      {
+        longStatsArray:[]
       }
    }
   } as IUserStats);

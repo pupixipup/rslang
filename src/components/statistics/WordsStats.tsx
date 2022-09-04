@@ -15,7 +15,7 @@ export function WordsStats(props: {value: {stats:IWordsStats, corrAnswersShare: 
     </tr>
     <tr>
       <td>Процент правильных ответов:</td>
-      <td>{value.corrAnswersShare}</td>
+      <td>{value.corrAnswersShare}%</td>
     </tr>
 
     </tbody>

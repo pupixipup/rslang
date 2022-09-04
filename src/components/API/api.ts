@@ -33,17 +33,20 @@ export class API {
 
   static init(){
     if (localStorage.getItem('userData')) {
+      console.log("local" + localStorage.getItem('userData'));
       API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string));
       if (API.isTokenExpired()) {
+        console.log("local expired" );
         API.logout();
         return false;
       } else {
+        console.log("local = все живо" );
         return true;
       }
     }
     return false;
   }
-  
+
  static isTokenExpired(){
   return API.isExpired(API.getExpirationDateToken(API.userToken))
   }
@@ -124,7 +127,10 @@ export class API {
               newWords: 0
             }
           },
-          //longstats: [],
+          longstats:
+          {
+            longStatsArray:[]
+          },
         }
       } as IUserStats))         
       .then(() => {})  

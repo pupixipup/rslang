@@ -56,7 +56,9 @@ export interface IUserStats {
       gamestats: IGameStats[],
       wordsstats: IWordsStats
     },
-    longstats?: ILongStats[]
+    longstats:{
+      longStatsArray: ILongStats[]
+    } 
  }
 }
 export interface IWordsStats{
