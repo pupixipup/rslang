@@ -1,0 +1,70 @@
+@import '../../style/abstract';
+
+.about{
+    min-height: $min-content-height; 
+    & h2{
+        text-align: center;        
+        
+    }
+    &__wrapper{
+        padding: 30px;
+        height: 100%;
+    }
+}
+.section{
+    display: flex;
+    padding: 20px;
+    height: 100%;
+    align-items: center;
+    justify-content: space-around;
+    align-items: center;
+    @include media-mobile() {
+        flex-direction: column;
+      }
+}
+.about__img{
+    width: 30vw;
+    height: 30vw;
+    border-radius: 15vw;
+    background-image: url("../../assets/img/6_1.jpg");
+    overflow: hidden;
+    background-size: cover;
+    background-position: right;
+}
+.team{
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 30px;
+    &__git-nickname{
+        text-shadow: 2px 2px 2px rgb(0 0 0 / 20%);
+        align-self: end;
+    }
+    &__card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;        
+        padding: 20px;
+        gap:10px;
+        width: 40vw;
+        max-width: 400px;
+        height: 15vh;
+        
+        border-radius: 20px;
+        box-shadow: rgb(0 0 0 / 20%) 0px 0px 30px;
+        & h3{
+            color: $dark-color;
+        }
+        & p{
+            text-align: center;
+
+        }
+      
+        @include media-mobile() {
+          width: 100%;
+        }
+      }
+    
+}
