@@ -11,7 +11,7 @@ export function Home () {
       <div className="home">
         <div className="home-wrapper">
           <div className="home-content">
-            <h1 className="home-title">RSLang</h1>
+            <h1 className="home-title"><span>RS</span><span>L</span><span>a</span><span>n</span><span>g</span></h1>
             <div className="home-description">Повторение - мать учения. Наше приложение превратит изучение английских слов в увлекательный процесс.</div>
             <button className="home-btn" onClick={() => navigate(MENUITEMS[9].link)}>О команде</button>
           </div>
