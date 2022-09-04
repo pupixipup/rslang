@@ -79,6 +79,7 @@ function Textbook() {
       let words: wordsList;
       if (numbers.section === 6) {
         words = API.isAuth() ? await WordsApi.getDifficultWords() : [];
+        console.log(words);
       } else {
         if (API.isAuth()) {
           words = await WordsApi.getUserWords(
@@ -132,7 +133,7 @@ function Textbook() {
           </div>
           <div
             className="textbook__games-game game-audio"
-            onClick={() => navigate("/games/games/audio", { replace: true })}
+            onClick={() => navigate('/games/audio', { state: {gameMenu: false, section: numbers.section, page: numbers.page} })}
           >
             Аудиовызов
           </div>
