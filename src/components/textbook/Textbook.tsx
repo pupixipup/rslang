@@ -21,6 +21,7 @@ function Textbook() {
   ) || { page: 0, section: 0 };
 
   const [numbers, setNumbers] = useState(wordsLocation);
+  const [areButtonsDisabled, setButtonsDisabled] = useState(false);
   const [wrapperClass, setWrapperClass] = useState('textbook-wrapper')
   const [data, updateData] = useState<wordsList>([]);
   const [localWords, updateLocalWords] = useState<localWord[]>([]);
@@ -66,14 +67,6 @@ function Textbook() {
   }
 
   useEffect(() => {
-    const handleUnload = async () => {
-      window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
-    };
-    window.addEventListener("beforeunload", handleUnload);
-    return () => window.removeEventListener("beforeunload", handleUnload);
-  });
-
-  useEffect(() => {
     const fetchData = async () => {
       updateLocalWords([]);
       let words: wordsList;
@@ -94,12 +87,18 @@ function Textbook() {
       setLoadedState(!wordsAreLoaded);
   };
     fetchData();
+    window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
   }, [numbers]);
 
   useEffect(() => {
     let className = 'textbook-wrapper'
-    if (hardWordsCounter === 20) className += ' allWordsHard';
-    if (learntWordsCounter === 20) className += ' allWordsLearnt';
+    if (hardWordsCounter === 20) {
+      className += ' allWordsHard';
+    } 
+    if (learntWordsCounter === 20) {
+      className += ' allWordsLearnt';
+      setButtonsDisabled(true);
+    } 
     setWrapperClass(className);
   }, [hardWordsCounter, learntWordsCounter, numbers]);
 
@@ -125,18 +124,20 @@ function Textbook() {
       <div className={wrapperClass}>
         {sectionDisplayer}
         <div className="textbook__games">
-          <div
+          <button
+            disabled={areButtonsDisabled}
             className="textbook__games-game game-sprint"
             onClick={navigateToSprint}
           >
             Спринт
-          </div>
-          <div
+          </button>
+          <button
             className="textbook__games-game game-audio"
+            disabled={areButtonsDisabled}
             onClick={() => navigate('/games/audio', { state: {gameMenu: false, section: numbers.section, page: numbers.page} })}
           >
             Аудиовызов
-          </div>
+          </button>
         </div>
         <div className="textbook">
           {!API.isAuth() && numbers.section === 6 ? loginWindow : ""}

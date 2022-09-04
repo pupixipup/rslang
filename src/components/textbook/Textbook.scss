@@ -197,3 +197,7 @@
 .textbook-wrapper.allWordsLearnt {
   background: rgba(green, .1);
 }
+
+button:disabled {
+  opacity: .7;
+}
