@@ -18,9 +18,7 @@ function App () {
   });
 
 
-  // useEffect(()=>{
-  //   WordsApi.addLearntWordStats(1);
-  // },[])
+ 
   if (isAuth !== API.isAuth()) setIsAuth(API.isAuth);
   
   const changeIsAuth = (val:boolean) => {

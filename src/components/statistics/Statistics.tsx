@@ -31,6 +31,7 @@ function Statistics() {
     learnedWords: 0,
     newWords: 0
   } as IWordsStats);
+  const [correctAnswersShare, setCorrectAnswersShare] = useState(0);
 
 //  / if(isAuth !== ctx.isAuth){
 //     setIsAuth(ctx.isAuth);
@@ -53,13 +54,22 @@ function Statistics() {
           setIsTodayStatsExists(false);
         } else {
           setIsTodayStatsExists(true);
-          const items = data.optional.daystats.gamestats.map((item) =>
-          <section  key={item.game}>
-            {<GameStats stats={item} />}
-          </section>
+          let corrNum = 0;
+          let totalNum = 0;
+          const items = data.optional.daystats.gamestats.map((item) =>{
+            corrNum += item.correctAnswers;
+            totalNum += item.answers;
+            return (
+              <section  key={item.game}>
+              {<GameStats stats={item} />}
+            </section>
+            )
+          }
+         
         )
           setGamesItems(items);
           setWordStats(data.optional.daystats.wordsstats);
+          setCorrectAnswersShare(totalNum ? Math.round((corrNum / totalNum * 10000))/100 : 0);
         }
       })
 
@@ -70,6 +80,7 @@ function Statistics() {
   // console.log("today " + isTodayStatsExists);
   // console.log(stats);
   // console.log("iaAuth render " + isAuth);
+  const wordSt = {stats: wordsStats, corrAnswersShare: correctAnswersShare};
   if(isAuth){
   if(isTodayStatsExists) return (
     <div>
@@ -82,7 +93,7 @@ function Statistics() {
         {gamesItems}
         </div>
         <h2>Статистика по словам за день</h2>
-        {<WordsStats stats={wordsStats} />}
+        {<WordsStats  value = {wordSt} />}
       </div>     
       </div> 
       <Footer />
