@@ -11,13 +11,24 @@
     height: 100%;
   }
   &__audio-icon {
-    max-width: 80px;
+    max-width: 140px;
     width: 100%;
+    margin-bottom: 65px;
+    transition: .3s;
+  }
+  &__audio-icon:hover {
+    cursor: pointer;
+    transition: .3s;
+    opacity: .7;
+  }
+  &__audio-icon:focus, &__audio-icon:active {
+    transform: scale(1);
   }
   &__options {
     margin-top: 25px;
     display: flex;
     gap: 15px;
+    justify-content: start;
   }
   &__options-option {
     display: flex;

@@ -16,7 +16,7 @@ function WordAudio(props: linkProps) {
           setPlaying(!isPlaying); 
           playAudio(audioLink, setPlaying);
         }
-        }}> <img className="sound-icon" alt={'play sound'} src={ icon }/> </div>
+        }}> <img className="audiogame__audio-icon" alt={'play sound'} src={ icon }/> </div>
   </div>
   )
 }
