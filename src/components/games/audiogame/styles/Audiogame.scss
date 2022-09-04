@@ -1,7 +1,7 @@
 .audiogame {
   height: 100%;
   &__hearts {
-    margin-bottom: 35px;
+    margin-bottom: 55px;
   }
   &__heart {
     font-size: 28px;
@@ -19,7 +19,7 @@
   &__audio-icon {
     max-width: 140px;
     width: 100%;
-    margin-bottom: 65px;
+    margin-bottom: 55px;
     transition: .3s;
   }
   &__audio-icon:hover {
@@ -31,7 +31,6 @@
     transform: scale(1);
   }
   &__options {
-    margin-top: 25px;
     display: flex;
     gap: 15px;
     justify-content: start;

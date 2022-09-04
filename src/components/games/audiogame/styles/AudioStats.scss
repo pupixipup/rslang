@@ -26,6 +26,8 @@
     }
   }
   &__wrapper {
+    margin-top: 35px;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     gap: 35px;
@@ -69,4 +71,9 @@
 h3:hover {
   cursor: default;
   user-select: none;
+}
+
+.stats-word img {
+  width: 50px;
+  margin-bottom: 0;
 }
