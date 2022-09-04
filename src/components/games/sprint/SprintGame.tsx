@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SprintApi } from "../../API/sprintApi";
 import star from '../../../assets/icon/star.svg';
 import './SprintGame.scss';
@@ -12,6 +12,7 @@ import { API } from "../../API/api";
 import { GameWordsProvider } from "../../API/GameWordsProvider";
 import { IUserWord, IWord } from "../../../common/interfaces";
 import { GAMES_NAMES } from "../../../common/constants";
+import { authContext } from "../../app/App";
 
 export function SprintGame () {
   let {state} = useLocation() as {state: {gameMenu: boolean, group: number, page: number, learned: boolean}};
@@ -27,10 +28,10 @@ export function SprintGame () {
   const [audioCorrect] = useState(new Audio());
   const [audioWrong] = useState(new Audio());
   const [time, setTime] = useState(true);
-
   const [wordsProvider] = useState(new GameWordsProvider(GAMES_NAMES.sprint, state.learned));
   const [guessedWord, setGuessedWord] = useState<IWord[] | IUserWord[]>([]);
   const [notGuessedWord, setNotGuessedWord] = useState<IUserWord[] | IWord[]>([]);
+  const ctx = useContext(authContext);
 
   console.log(index, indexRu);
 
@@ -41,29 +42,33 @@ export function SprintGame () {
       SprintApi.setPage(state.page);
       if(API.isAuth()) {
         for(let i = SprintApi.page; i >= 0; i--) {
-          await wordsProvider.getUserWordList(SprintApi.group, i).then((data) => {
-            SprintApi.setWordsUser(data);
-          });
+          await wordsProvider.getUserWordList(SprintApi.group, i).then((data) => SprintApi.setWordsUser(data));
         }
         setWordEn(SprintApi.wordsEn);
         setWordRu(SprintApi.wordsRu);
       } else {
         for(let i = SprintApi.page; i >= 0; i--) {
-          await API.getWords(i, SprintApi.group).then((data) => {
-            SprintApi.setWords(data);
-          });
+          await API.getWords(i, SprintApi.group).then((data) => SprintApi.setWords(data));
         }
         setWordEn(SprintApi.wordsEn);
         setWordRu(SprintApi.wordsRu);
         console.log(SprintApi.wordsAll);
       }
     }
-    fetchData();
+    try {
+      fetchData();
+    } catch {
+      ctx.changeIsAuth(false);
+    }
   }, []);
 
   useEffect(() => {
-    if (!time && API.isAuth()) {
-      wordsProvider.uploadStats();
+    try {
+      if (!time && API.isAuth()) {
+        wordsProvider.uploadStats();
+      }
+    } catch {
+      ctx.changeIsAuth(false);
     }
   });
 
@@ -90,20 +95,28 @@ export function SprintGame () {
   };
 
   const isGuessed = async (index: number) => {
-    if(API.isAuth()) {
-      await wordsProvider.guessed(SprintApi.wordsAllUser[index]._id);
-      setGuessedWord(() => (guessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
-    } else {
-      setGuessedWord(() => (guessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
+    try {
+      if(API.isAuth()) {
+        await wordsProvider.guessed(SprintApi.wordsAllUser[index]._id);
+        setGuessedWord(() => (guessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
+      } else {
+        setGuessedWord(() => (guessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
+      }
+    } catch {
+      ctx.changeIsAuth(false);
     }
   }
 
   const isNotGuessed = async (index: number) => {
-    if(API.isAuth()) {
-      await wordsProvider.notGuessed(SprintApi.wordsAllUser[index]._id);
-      setNotGuessedWord(() => (notGuessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
-    } else {
-      setNotGuessedWord(() => (notGuessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
+    try {
+      if(API.isAuth()) {
+        await wordsProvider.notGuessed(SprintApi.wordsAllUser[index]._id);
+        setNotGuessedWord(() => (notGuessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
+      } else {
+        setNotGuessedWord(() => (notGuessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
+      }
+    } catch {
+      ctx.changeIsAuth(false);
     }
   };
   const playAudioCorrect = () => {
