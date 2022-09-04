@@ -90,6 +90,7 @@ function Textbook() {
     try {
       fetchData();
     } catch {
+      ctx.changeIsAuth(false);
       setIsLoggedIn(false);
     }
     window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));

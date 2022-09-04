@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './styles/Audiogame.scss';
 import DOMPurify from "dompurify";
@@ -8,7 +8,7 @@ import { IUserWord } from '../../../common/interfaces';
 import { API } from '../../API/api';
 import playAudio from './playAudio';
 import AudioPlay from './AudioPlay';
-
+import { authContext } from "../../app/App";
 interface IGameLocationProps {
    gameMenu: boolean,
    section: number,
@@ -18,6 +18,8 @@ interface IGameLocationProps {
 export function Audiogame () {
 let location = useLocation();
 let navigate = useNavigate();
+const {isAuth,changeIsAuth} = useContext(authContext);
+const [isLoggedIn, setIsLoggedIn] = useState<boolean>(API.isAuth());
 const locs = location.state as IGameLocationProps;
 const [game] = useState(new audioGame(false, {page: locs.page, section: locs.section}));
 const [wordsRow, setWordsRow] = useState(-1);
@@ -29,6 +31,10 @@ const [rightWord, setRightWord] = useState<IUserWord>();
 const [isPlaying, setPlaying] = useState(false);
 const [hearts, setHearts] = useState([	'&#128156;', '&#128156;', '&#128156;', '&#128156;', '&#128156;']);
 
+const ctx = useContext(authContext);
+if(ctx.isAuth !== isLoggedIn){
+  setIsLoggedIn(ctx.isAuth);
+}
 
 let inputRefs: Array<React.RefObject<HTMLButtonElement>> = [];
 
@@ -67,7 +73,12 @@ useEffect(() => {
     game.chunkedWords = gameUtils.chunkArray(data, 4);
     setWordsRow(0);
   }
-  fetchWords();
+  try {
+    fetchWords();
+  } catch {
+    ctx.changeIsAuth(false);
+    setIsLoggedIn(false);
+  }
 }, []);
 
 useEffect(() => {
