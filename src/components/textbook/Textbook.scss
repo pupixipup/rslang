@@ -116,6 +116,9 @@
   width: 100%;
   height: 50px;
   background: transparent;
+  filter: drop-shadow(3px 8px 7px #d4cdcd);
+-webkit-filter: drop-shadow(3px 8px 7px #d4cdcd);
+-moz-filter: drop-shadow(3px 8px 7px #d4cdcd);
 }
 
 .section-displayer.section-0 { 
