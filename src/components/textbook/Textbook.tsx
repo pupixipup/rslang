@@ -87,7 +87,11 @@ function Textbook() {
       updateData(words);
       setLoadedState(!wordsAreLoaded);
   };
-    fetchData();
+    try {
+      fetchData();
+    } catch {
+      setIsLoggedIn(false);
+    }
     window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
   }, [numbers]);
 
