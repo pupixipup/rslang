@@ -26,8 +26,7 @@ export interface IUserSignin {
   message: string,
   token: string,
   refreshToken: string,
-  userId: string,
-  name: string
+  userId: string
 }
 
 export interface IUserToken {

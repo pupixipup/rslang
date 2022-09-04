@@ -1,5 +1,5 @@
 import { UserData } from './userData';
-import { BASELINK, ERROR, PORT, RESERVE_TIME } from "../../common/constants";
+import { BASELINK, ERROR, PORT, REFRESH_TOKEN_LIFE, RESERVE_TIME } from "../../common/constants";
 import { IAggrResp, IGetUserStats, IUser, IUserSignin, IUserStats, IUserToken, IUserWord,  IUserWordOptions, IUserWordRecord, IWord } from "../../common/interfaces";
 
 
@@ -184,11 +184,11 @@ export class API {
   
 
   /**
- * get token
+ * get token using refresh token
  * @getToken
  * @returns {Promise<IUserToken>} user info
  */
-  static async getToken() {
+  private static async getToken() {
     return fetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.tokens}`,
     {
       method: METHODS.get,
@@ -201,7 +201,7 @@ export class API {
     .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
     .then((res) => res.json())
     .then((data) => data as IUserToken)
-    .then((data) => {API.saveRefreshToken(data); console.log("refreshed token"); console.log(data); return data;})
+    .then((data) => {API.saveRefreshedToken(data); console.log("refreshed token"); console.log(data); return data;})
     .catch((err: Error) => {throw new Error(err.message)});
 }
 
@@ -398,6 +398,7 @@ static deleteUserWord(wordId: string) {
 // args of fetch api are typed in typescrypt
   private static async authFetch(input: RequestInfo, init?: RequestInit) {
     //const token = await tokenProvider.getToken();
+
     init = init || {};
 
     init.headers = {
@@ -405,7 +406,12 @@ static deleteUserWord(wordId: string) {
         Authorization: `Bearer ${API.userToken}`,
     };
 
-    return fetch(input, init);
+    return API.actualizeToken()
+      .catch(() => {
+        API.logout();
+        throw new Error("Не авторизован")
+      })
+      .then(() =>fetch(input, init))    
   };
 
  
@@ -423,7 +429,7 @@ static deleteUserWord(wordId: string) {
     API.refreshToken = token.refreshToken;
   }
 
-  private static saveRefreshToken(token:IUserToken){
+  private static saveRefreshedToken(token:IUserToken){
     API.userToken = token.token;
     API.refreshToken = token.refreshToken;
   }
@@ -442,26 +448,31 @@ static deleteUserWord(wordId: string) {
     }
     return Date.now() > (exp - RESERVE_TIME);
   }
+  static isRefreshTokenExpired(exp?: number | null): boolean {
+    if (!exp) {
+      return false;
+    }
+    return Date.now() > (exp - RESERVE_TIME + REFRESH_TOKEN_LIFE);
+  }
 
-  static async getRefreshToken (): Promise<null | undefined> {
-    const userData = new UserData();
+  static async actualizeToken () {
+    //const userData = new UserData();
     console.log(API.userToken);
     if(!API.userToken) {
-      return null;
+      throw new Error("Не авторизован");
     }
-    console.log(API.isExpired(API.getExpirationDateToken(API.userToken)));
     if (API.isExpired(API.getExpirationDateToken(API.userToken))) {
-      userData.setAuth(false);
-      localStorage.removeItem('isAuth');
-      await API.getToken().then((resp) => {
-        userData.user.token = resp.token;
-        userData.user.refreshToken = resp.refreshToken;
+      if(API.isRefreshTokenExpired(API.getExpirationDateToken(API.userToken))){
+        throw new Error("Не авторизован"); 
+      }
+      //userData.setAuth(false);
+      return API.getToken().then((resp) => {
         API.userToken = resp.token;
         API.refreshToken = resp.refreshToken;
-        localStorage.setItem('userData', JSON.stringify(userData.user));
-        localStorage.setItem('isAuth', 'true');
-        userData.setAuth(true);
-      }).catch((e) => console.log(e));
+        //localStorage.setItem('userData', JSON.stringify(userData.user));
+        //localStorage.setItem('isAuth', 'true');
+        //userData.setAuth(true);
+      }).catch((e) => {throw new Error("Не авторизован")});
     }
   }
 }

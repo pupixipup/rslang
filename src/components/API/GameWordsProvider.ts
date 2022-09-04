@@ -204,7 +204,7 @@ export class GameWordsProvider {
           newStat.optional.daystats.wordsstats.learnedWords =  this.locLearned;
           newStat.optional.daystats.wordsstats.newWords = this.newWordsNumber;
           
-          //newStat.optional.longstats.push(dayStat);
+          //newStat.optional.longstats.database.push(dayStat);
           console.log(data.optional.daystats);
           console.log(newStat);
         }else{

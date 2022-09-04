@@ -7,10 +7,12 @@ import { Audiogame } from "../components/games/audiogame/Audiogame";
 import AudiogameMenu from "../components/games/audiogame/AudiogameMenu";
 import { Sprint } from "../components/games/sprint/Sprint";
 import AudioStats from "../components/games/audiogame/AudioStats";
+import About from "../components/about/About"
 
 export const BASELINK = "http://localhost";
 export const PORT = "5500";
 export const RESERVE_TIME = 5000;
+export const REFRESH_TOKEN_LIFE = 0.5 *60*60;
 export const WORD_PER_PAGE = 20;
 export const NUMBER_OF_PAGES_IN_GROUP = 30;
 export const TOTAL_WORD = 3600;
@@ -68,6 +70,11 @@ export const MENUITEMS =[
       value: 'Аудиовызов - статистика',
       link: 'games/audiostats',
       element: (<AudioStats/>)
+    },
+    {
+      value: 'О команде',
+      link: 'about',
+      element: (<About/>)
     }
 ]
 export const ROUTEITEMS = [
