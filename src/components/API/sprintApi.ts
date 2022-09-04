@@ -43,8 +43,8 @@ export class SprintApi {
     });
   }
 
-  static createRandomId(): number {
-    return Math.floor(Math.random() * this.wordsEn.length);
+  static createRandomId(words: string[]): number {
+    return Math.floor(Math.random() * words.length);
   }
 
   static clearWords () {

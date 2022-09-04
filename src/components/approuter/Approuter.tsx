@@ -4,6 +4,7 @@ import logo from '../../assets/img/rsl-logo.svg';
 import { MENUITEMS} from "../../common/constants";
 import { API } from "../API/api";
 import { authContext } from "../app/App";
+import Home from "../home/Home";
 import "./approuter.scss";
 import "./header.scss";
 

@@ -65,7 +65,9 @@ function Statistics() {
 
     }
     
-  },[isAuth]);
+
+  }, [isAuth]);
+
 
   // console.log("today " + isTodayStatsExists);
   // console.log(stats);
