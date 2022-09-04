@@ -1,11 +1,12 @@
 import "./statistics.scss";
 import { useContext, useEffect, useState } from "react";
-import { IUserStats, IWordsStats } from "../../common/interfaces";
+import { ILongStats, IUserStats, IWordsStats } from "../../common/interfaces";
 import { API } from "../API/api";
 import { authContext } from "../app/App";
 import Footer from "../footer/Footer";
 import { GameStats } from "./GameStats";
 import { WordsStats } from "./WordsStats";
+import { LongStats } from "./LongStats";
 
 function Statistics() {
   const ctx = useContext(authContext);
@@ -36,6 +37,7 @@ function Statistics() {
     newWords: 0
   } as IWordsStats);
   const [correctAnswersShare, setCorrectAnswersShare] = useState(0);
+  
 
 //  / if(isAuth !== ctx.isAuth){
 //     setIsAuth(ctx.isAuth);
@@ -85,6 +87,7 @@ function Statistics() {
   // console.log(stats);
   // console.log("iaAuth render " + isAuth);
   const wordSt = {stats: wordsStats, corrAnswersShare: correctAnswersShare};
+  const arr = stats.optional.longstats.longStatsArray;
   if(isAuth){
   if(isTodayStatsExists) return (
     <div>
@@ -98,6 +101,8 @@ function Statistics() {
         </div>
         <h2>Статистика по словам за день</h2>
         {<WordsStats  value = {wordSt} />}
+        <h2>Статистика за все время</h2>
+        {<LongStats longStatsArray = {arr} />}
       </div>     
       </div> 
       <Footer />
@@ -110,6 +115,8 @@ function Statistics() {
         <h1>Статистика</h1>
         <h3>Всего выучено {stats.learnedWords}</h3>
         <h2 className="no-statistics">на сегодня статистики нет</h2>
+        <h2>Статистика за все время</h2>
+        {<LongStats longStatsArray = {arr} />}
       </div>
       </div>
       <Footer />
