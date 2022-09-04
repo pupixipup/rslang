@@ -99,7 +99,9 @@ function Textbook() {
     if (learntWordsCounter === 20) {
       className += ' allWordsLearnt';
       setButtonsDisabled(true);
-    } 
+    }  else {
+      setButtonsDisabled(false);
+    }
     setWrapperClass(className);
   }, [hardWordsCounter, learntWordsCounter, numbers]);
 
