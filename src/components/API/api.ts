@@ -34,7 +34,7 @@ export class API {
   static init(){
     if (localStorage.getItem('userData')) {
       API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string));
-      if (API.isExpired(API.getExpirationDateToken(API.userToken))) {
+      if (API.isTokenExpired()) {
         API.logout();
         return false;
       } else {
@@ -42,6 +42,10 @@ export class API {
       }
     }
     return false;
+  }
+  
+ static isTokenExpired(){
+  return API.isExpired(API.getExpirationDateToken(API.userToken))
   }
  
 

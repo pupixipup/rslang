@@ -19,7 +19,7 @@ export function GameStats(props: {stats:IGameStats}){
     </tr>
     <tr>
       <td  className="col1">Процент правильных ответов:</td>
-      <td>{Math.round((stats.correctAnswers / stats.answers * 10000))/100} %</td>
+      <td>{stats.answers ? Math.round((stats.correctAnswers / stats.answers * 10000))/100 : 0} %</td>
     </tr>
     <tr>
       <td className="col1">Самая длинная серия правильных ответов:</td>
