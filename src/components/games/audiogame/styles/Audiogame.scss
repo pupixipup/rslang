@@ -1,5 +1,11 @@
 .audiogame {
   height: 100%;
+  &__hearts {
+    margin-bottom: 35px;
+  }
+  &__heart {
+    font-size: 28px;
+  }
   &__wrapper {
     background-image: url(../../../../assets/img/audio-game-bg.jpeg);
     background-repeat: no-repeat;

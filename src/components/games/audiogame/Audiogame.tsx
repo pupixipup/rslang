@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './styles/Audiogame.scss';
+import DOMPurify from "dompurify";
 import { audioGame } from './audioGameCreator';
 import { gameUtils } from '../utils';
 import { IUserWord } from '../../../common/interfaces';
@@ -26,6 +27,7 @@ const [failedWords, setFailedWords] = useState<IUserWord[]>([]);
 const [solvedWords, setSolvedWords] = useState<IUserWord[]>([]);
 const [rightWord, setRightWord] = useState<IUserWord>();
 const [isPlaying, setPlaying] = useState(false);
+const [hearts, setHearts] = useState([	'&#128156;', '&#128156;', '&#128156;', '&#128156;', '&#128156;']);
 
 
 let inputRefs: Array<React.RefObject<HTMLButtonElement>> = [];
@@ -49,6 +51,9 @@ function goNextWord(word: IUserWord) {
       } else {
         setAttempts(attempts - 1);
         setFailedWords([...failedWords, rightWord!]);
+        const updatedHearts = [...hearts];
+        updatedHearts.splice(updatedHearts.lastIndexOf('&#128156;'), 1, '&#128153;');
+        setHearts(updatedHearts);
         if (API.isAuth()) {
           game.gameProvider.notGuessed(rightWord!._id);
         }
@@ -131,6 +136,13 @@ useEffect(() => {
 return (
  <div className='audiogame'>
     <div className='audiogame__wrapper'>
+      <div className="audiogame__hearts">
+      {hearts.map((el: string) => <span
+       className='audiogame__heart'
+        dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(el),
+            }}/>)}
+      </div>
       <button className="audiogame__audio">
            <AudioPlay
             audioLink={`${rightWord?.audio}`}
