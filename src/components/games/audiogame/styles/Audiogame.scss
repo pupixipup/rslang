@@ -27,6 +27,20 @@
     transition: .3s;
     opacity: .7;
   }
+  &__revealed {
+    font-size: 36px;
+    margin-bottom: 35px;
+    text-transform: capitalize;
+  }
+  &__revealed-word {
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  &__revealed-translate {
+    opacity: .6;
+    text-align: center;
+  }
   &__audio-icon:focus, &__audio-icon:active {
     transform: scale(1);
   }

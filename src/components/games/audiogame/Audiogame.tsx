@@ -28,6 +28,7 @@ const [attempts, setAttempts] = useState(5);
 const [failedWords, setFailedWords] = useState<IUserWord[]>([]);
 const [solvedWords, setSolvedWords] = useState<IUserWord[]>([]);
 const [rightWord, setRightWord] = useState<IUserWord>();
+const [showRevealed, setShowRevealed] = useState(false);
 const [isPlaying, setPlaying] = useState(false);
 const [hearts, setHearts] = useState([	'&#128156;', '&#128156;', '&#128156;', '&#128156;', '&#128156;']);
 
@@ -47,6 +48,9 @@ inputRefs = [
 
 
 function goNextWord(word: IUserWord) {
+  setShowRevealed(true);
+  setTimeout(() => {
+
     if (wordsRow < game.chunkedWords.length && attempts > 0) {
       setWordsRow(wordsRow + 1);
       if (gameUtils.areWordsEqual(rightWord!.word, word.word)) {
@@ -65,6 +69,8 @@ function goNextWord(word: IUserWord) {
         }
       }
     }
+    setShowRevealed(false);
+  }, 1000);
 }
 
 useEffect(() => {
@@ -73,12 +79,7 @@ useEffect(() => {
     game.chunkedWords = gameUtils.chunkArray(data, 4);
     setWordsRow(0);
   }
-  try {
     fetchWords();
-  } catch {
-    ctx.changeIsAuth(false);
-    setIsLoggedIn(false);
-  }
 }, []);
 
 useEffect(() => {
@@ -160,9 +161,15 @@ return (
             audioLink={`${rightWord?.audio}`}
           /> 
       </button>
+      {showRevealed ? (
+      <div className="audiogame__revealed">
+         <div className="audiogame__revealed-word"> {rightWord?.word} </div>
+          <div className="audiogame__revealed-translate"> {rightWord?.wordTranslate} </div>
+      </div>) : null}
       <div className="audiogame__options">
           {wordChunk ? wordChunk.map((word, ndx) => {
             return(<button
+             disabled={showRevealed}
              ref={(inputRefs[ndx])}
              onClick={() => {goNextWord(word)}}
              key={word.word + ndx + '-audio'}
