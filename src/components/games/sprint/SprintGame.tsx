@@ -18,15 +18,16 @@ export function SprintGame () {
   const levelPoints = [10, 20, 40, 80];
   const [totalPoints, setTotalPoints] = useState(0);
   const [index, setIndex] = useState(0);
-  let random = (): number => (Math.random() > 0.5) ? (index + 1): SprintApi.createRandomId();
-  const [indexRu, setIndexRu] = useState(() => random());
+  const [wordEn, setWordEn] = useState<string[]>([]);
+  const [wordRu, setWordRu] = useState<string[]>([]);
+  let random = (words: string[]): number => (Math.random() > 0.5) ? (index + 1): SprintApi.createRandomId(words);
+  const [indexRu, setIndexRu] = useState(() => random(wordRu));
   const [circleIndex, setCircleIndex] = useState(0);
   const [levelIndex, setLevelIndex] = useState(0);
   const [audioCorrect] = useState(new Audio());
   const [audioWrong] = useState(new Audio());
   const [time, setTime] = useState(true);
-  const [wordEn, setWordEn] = useState<string[]>([]);
-  const [wordRu, setWordRu] = useState<string[]>([]);
+
   const [wordsProvider] = useState(new GameWordsProvider(GAMES_NAMES.sprint, state.learned));
   const [guessedWord, setGuessedWord] = useState<IWord[] | IUserWord[]>([]);
   const [notGuessedWord, setNotGuessedWord] = useState<IUserWord[] | IWord[]>([]);
@@ -46,7 +47,6 @@ export function SprintGame () {
         }
         setWordEn(SprintApi.wordsEn);
         setWordRu(SprintApi.wordsRu);
-        console.log(SprintApi.wordsAllUser);
       } else {
         for(let i = SprintApi.page; i >= 0; i--) {
           await API.getWords(i, SprintApi.group).then((data) => {
@@ -62,14 +62,20 @@ export function SprintGame () {
   }, []);
 
   useEffect(() => {
-    if (!time) {
-      wordsProvider.getGameStats();
+    if (!time && API.isAuth()) {
       wordsProvider.uploadStats();
     }
   });
+
+  useEffect(() => {
+    if (wordRu.length === 1) {
+      setIndexRu(0);
+    }
+  }, [wordRu.length]);
+
   const renderWords = async () => {
     setIndex((index) => index + 1);
-    setIndexRu(random());
+    setIndexRu(random(wordRu));
     if(wordEn.length === index + 1) {
       setTime(false);
     }
