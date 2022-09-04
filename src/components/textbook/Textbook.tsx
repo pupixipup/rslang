@@ -31,9 +31,9 @@ function Textbook() {
   const [hardWordsCounter, setHardWordsCounter] = useState(0);
   const [wordsAreLoaded, setLoadedState] = useState(false);
 
-  const ctx = useContext(authContext);
+  const ctx = useContext(authContext);  
   if(ctx.isAuth !== isLoggedIn){
-    setIsLoggedIn(ctx.isAuth);
+    ctx.changeIsAuth(isLoggedIn);
   }
   let navigate = useNavigate();
   const totalSections = 6;

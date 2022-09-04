@@ -74,45 +74,45 @@ function Statistics() {
   // console.log(stats);
   // console.log("iaAuth render " + isAuth);
   if(isAuth){
-  if(isTodayStatsExists) return (
-    <div>
-    <div className="statistics">
-      <div className="wrapper statistics__wrapper">
-        <h1>Статистика</h1>
-        <h3>Всего слов выучено: {stats.learnedWords}</h3>
-        <h2>Статистика по играм за день</h2>
-        <div className="gamestats-container">
-        {gamesItems}
+    if (isTodayStatsExists) return (
+      <div>
+        <div className="statistics">
+          <div className="wrapper statistics__wrapper">
+            <h1>Статистика</h1>
+            <h3>Всего слов выучено: {stats.learnedWords}</h3>
+            <h2>Статистика по играм за день</h2>
+            <div className="gamestats-container">
+              {gamesItems}
+            </div>
+            <h2>Статистика по словам за день</h2>
+            {<WordsStats stats={wordsStats} />}
+          </div>
         </div>
-        <h2>Статистика по словам за день</h2>
-        {<WordsStats stats={wordsStats} />}
-      </div>     
-      </div> 
-      <Footer />
-    </div>
-  );
-  return (
-    <div >
-    <div className="statistics">
-      <div className="wrapper statistics__wrapper">
-        <h1>Статистика</h1>
-        <h3>Всего выучено {stats.learnedWords}</h3>
-        <h2 className="no-statistics">на сегодня статистики нет</h2>
+        <Footer />
       </div>
+    );
+    return (
+      <div >
+        <div className="statistics">
+          <div className="wrapper statistics__wrapper">
+            <h1>Статистика</h1>
+            <h3>Всего выучено {stats.learnedWords}</h3>
+            <h2 className="no-statistics">на сегодня статистики нет</h2>
+          </div>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>  
-  );
+    );
   }
   return (
     <div>
-    <div className="statistics">
-      <div className="wrapper statistics__wrapper">
-        <p className="no-statistics">Авторизуйтесь для получения статистики</p>
-       </div>
-       </div>
+      <div className="statistics">
+        <div className="wrapper statistics__wrapper">
+          <p className="no-statistics">Авторизуйтесь для получения статистики</p>
+        </div>
+      </div>
       <Footer />
-    </div>  
+    </div>
   )
 }
 

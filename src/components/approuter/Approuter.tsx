@@ -5,7 +5,7 @@ import { MENUITEMS} from "../../common/constants";
 import { API } from "../API/api";
 import { authContext } from "../app/App";
 import Home from "../home/Home";
-import "./Approuter.scss";
+import "./approuter.scss";
 import "./header.scss";
 
 
@@ -33,14 +33,13 @@ function AppRouter() {
       <Link className="menu__item" to={MENUITEMS[3].link}> {MENUITEMS[3].value}</Link>
     </li> 
     ));
-    if (isAuth) {
+    
       listItems.push((  
       <li key={MENUITEMS[4].value}>
      <Link className="menu__item" to={MENUITEMS[4].link}> {MENUITEMS[4].value}</Link>
    </li> 
-   ));
-        
-      }
+   ));        
+   
     const routeItems = MENUITEMS.map((item) =>
       <Route key={item.value} path={'/' + item.link} element ={item.element}/>
     )
