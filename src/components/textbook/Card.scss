@@ -3,6 +3,10 @@
 @import "../../style/layouts";
 
 .word__word {
+  @media (max-width: 625px) {
+    flex-direction: column;
+    gap: 5px;
+  }
   display: flex;
   gap: 25px;
   align-items: baseline;
@@ -170,4 +174,13 @@ button:disabled {
 .textbook__games-game:hover {
   background-color: $light-bg-color;
   transition: .3s;
+}
+
+@media (max-width: 400px) {
+  .textbook__games {
+    gap: 20px;
+  }
+  .textbook__games button {
+    font-size: 18px;
+  }
 }

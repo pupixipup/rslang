@@ -9,8 +9,6 @@
 }
 .sections {
   margin-left: auto;
-}
-.sections {
   margin-top: 105px;
   margin-left: 25px;
   align-self: start;
@@ -54,7 +52,9 @@
 .sections__section {
   font-size: 32px;
   padding: 15px 25px;
-
+  @media (max-width: 625px) {
+    font-size: 24px;
+  }
   border: 3px solid $light-color;
   border-radius: 15px;
   display: block;
@@ -200,4 +200,12 @@
 
 button:disabled {
   opacity: .7;
+}
+
+@media (max-width: 380px) {
+  .sections { 
+    gap: 5px;
+    margin-left: 0;
+    justify-content: center;
+  }
 }
