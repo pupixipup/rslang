@@ -1,0 +1,45 @@
+@import '../../style/abstract';
+
+.home {
+  padding: 50px 30px 0px;
+  height: 100%;
+  display: flex;
+  max-width: $max-width-desktop;
+  margin: 0 auto;
+  // background-color: $light-bg-color;
+  // background-image: url(../../assets/img/pngaaa.com-2517587.png);
+  // background-size: cover;
+  background-repeat: no-repeat;
+  &-content {
+    margin-top: 200px;
+    padding-left: 20px;
+    width: 40%;
+    height: 100%;
+  }
+  &-title {
+    font-size: 42px;
+    color: rgb(81, 76, 76);
+  }
+  &-description {
+    margin-top: 20px;
+    padding-right: 20px;
+    font-size: 20px;
+    line-height: 26px;
+    color: rgb(81, 76, 76);
+  }
+  &-btn {
+    margin-top: 20px;
+    width: 130px;
+    height: 40px;
+    font-size: 16px;
+    background-color: rgb(232, 176, 113);
+    border-radius: 10px;
+  }
+  &-image {
+    width: 60%;
+    background-image: url(../../assets/img/home-bg.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom;
+  }
+}
