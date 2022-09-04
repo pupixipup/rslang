@@ -1,12 +1,15 @@
 @import '../../../style/abstract';
 .sprint {
+
+  background-image: url(../../../assets/img/sprint-bg.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  height: 100%;
   &-wrapper {
-    padding: 30px;
-    height: 100%;
-    background-image: url(../../../assets/img/sprint-bg.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: bottom;
+    padding: 50px;
+    margin: 0 auto;
+    max-width: $max-width-desktop;
     @include media-mobile() {
       padding: 10px;
     }

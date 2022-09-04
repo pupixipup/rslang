@@ -201,39 +201,41 @@ export function SprintGame () {
 
 
   return time ? (
-    <div className='sprint-wrapper'>
-      <div className="sprint-header">
-        <Timer updateTime={updateTime}/>
-        <div className="sprint-total">{totalPoints}</div>
-      </div>
-      <div className='sprint-card'>
-        <div className="card-header">
-          <div className="circle-block">
-            <div className="circle"></div>
-            <div className="circle"></div>
-            <div className="circle"></div>
+    <div className="sprint">
+      <div className='sprint-wrapper'>
+        <div className="sprint-header">
+          <Timer updateTime={updateTime}/>
+          <div className="sprint-total">{totalPoints}</div>
+        </div>
+        <div className='sprint-card'>
+          <div className="card-header">
+            <div className="circle-block">
+              <div className="circle"></div>
+              <div className="circle"></div>
+              <div className="circle"></div>
+            </div>
+            <div className="points">
+              {`+${levelPoints[levelIndex]} очков за слово`}
+            </div>
           </div>
-          <div className="points">
-            {`+${levelPoints[levelIndex]} очков за слово`}
+          <div className="card-star">
+            <img className='card-star-img active-star' src={star} alt="star" />
+            <img className='card-star-img' src={star} alt="star" />
+            <img className='card-star-img' src={star} alt="star" />
+            <img className='card-star-img' src={star} alt="star" />
           </div>
-        </div>
-        <div className="card-star">
-          <img className='card-star-img active-star' src={star} alt="star" />
-          <img className='card-star-img' src={star} alt="star" />
-          <img className='card-star-img' src={star} alt="star" />
-          <img className='card-star-img' src={star} alt="star" />
-        </div>
-        <div className="card-words">
-          <div className="card-word word-en">{wordEn[index]}</div>
-          <div className="card-word word-ru">{wordRu[indexRu]}</div>
-        </div>
-        <div className="card-buttons">
-          <button className='button btn-false' onClick={() => {
-            isWrong();
-          }}>Неверно</button>
-          <button className='button btn-true' onClick={() => {
-            isRight();
-            }}>Верно</button>
+          <div className="card-words">
+            <div className="card-word word-en">{wordEn[index]}</div>
+            <div className="card-word word-ru">{wordRu[indexRu]}</div>
+          </div>
+          <div className="card-buttons">
+            <button className='button btn-false' onClick={() => {
+              isWrong();
+            }}>Неверно</button>
+            <button className='button btn-true' onClick={() => {
+              isRight();
+              }}>Верно</button>
+          </div>
         </div>
       </div>
     </div>
