@@ -34,7 +34,7 @@ export function SprintGame () {
   const ctx = useContext(authContext);
 
   console.log(index, indexRu);
-
+  console.log("group = ", state.group);
   useEffect(() => {
     const fetchData = async () => {
       SprintApi.clearWords();
@@ -63,13 +63,12 @@ export function SprintGame () {
   }, []);
 
   useEffect(() => {
-    try {
+  
       if (!time && API.isAuth()) {
-        wordsProvider.uploadStats();
+        wordsProvider.uploadStats().catch((e) => {
+          ctx.changeIsAuth(false);});
       }
-    } catch {
-      ctx.changeIsAuth(false);
-    }
+  
   });
 
   useEffect(() => {
@@ -103,7 +102,7 @@ export function SprintGame () {
       } else {
         setGuessedWord(() => (guessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
       }
-    } catch {
+    } catch {      
       ctx.changeIsAuth(false);
     }
   }
@@ -117,6 +116,7 @@ export function SprintGame () {
         setNotGuessedWord(() => (notGuessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
       }
     } catch {
+      
       ctx.changeIsAuth(false);
     }
   };

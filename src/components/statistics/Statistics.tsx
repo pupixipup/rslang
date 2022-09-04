@@ -9,7 +9,8 @@ import { WordsStats } from "./WordsStats";
 
 function Statistics() {
   const ctx = useContext(authContext);
-  const isAuth = ctx.isAuth;
+  const isAuth = API.isAuth();
+  if(isAuth !== ctx.isAuth) ctx.changeIsAuth(isAuth);
   //const [isAuth, setIsAuth] = useState(ctx.isAuth);
   const [stats, setStats] = useState({
     learnedWords: 0,

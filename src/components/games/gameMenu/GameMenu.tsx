@@ -7,7 +7,7 @@ export function GameMenu () {
   let navigate = useNavigate();
 
   const navigateToSprint = async (section: number) => {
-    navigate('/games/sprint', { state: {gameMenu: false, section, page: SprintApi.getRandomPage() }});
+    navigate('/games/sprint', { state: {gameMenu: false, group: section, page: SprintApi.getRandomPage() }});
   }
   return (
     <div className='game-menu'>

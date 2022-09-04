@@ -24,6 +24,7 @@ export class GameWordsProvider {
   }
   getUserWordList(group: number, page?: number) {
     console.log("getUserWordlist group" + group+" page "+page);
+    
     return this.getWords(group, page)
       .then((data) => {
         if (!this.includeLearned) {
@@ -37,7 +38,7 @@ export class GameWordsProvider {
         console.log(this.startWordsList);
         return data;
       })
-      .catch((err: Error) => { throw new Error(err.message) });
+      .catch((err: Error) => { throw new Error(err.message + " errr") });
 
   }
   guessed(id: string) {

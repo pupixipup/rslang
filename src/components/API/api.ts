@@ -25,6 +25,8 @@ export class API {
   private static userId = "";
   private static refreshToken ="";
 
+  private static lastRefresh = 0;
+
   /*private static _init = (() => {
     API.baseUrl = BASELINK + ":" + PORT;
     API.userToken = "";
@@ -65,6 +67,7 @@ export class API {
 
   static logout(): void  {    
     localStorage.removeItem('userData');
+    console.log("logged out");
     API.signOut();
     localStorage.removeItem('isAuth');
   }
@@ -407,11 +410,13 @@ static deleteUserWord(wordId: string) {
     };
 
     return API.actualizeToken()
-      .catch(() => {
+      .catch((e) => {
+        console.log((e as Error).message + " ошибка");
         API.logout();
         throw new Error("Не авторизован")
       })
       .then(() =>fetch(input, init))    
+    
   };
 
  
@@ -461,18 +466,25 @@ static deleteUserWord(wordId: string) {
     if(!API.userToken) {
       throw new Error("Не авторизован");
     }
-    if (API.isExpired(API.getExpirationDateToken(API.userToken))) {
-      if(API.isRefreshTokenExpired(API.getExpirationDateToken(API.userToken))){
-        throw new Error("Не авторизован"); 
+    if(Date.now() > API.lastRefresh + RESERVE_TIME){
+      API.lastRefresh = Date.now();
+      if (API.isExpired(API.getExpirationDateToken(API.userToken))) {
+        if(API.isRefreshTokenExpired(API.getExpirationDateToken(API.userToken))){
+         // console.log("токен кончился");
+          throw new Error("Не авторизован: истек токен"); 
+        }
+        //console.log("токен кончился обновляем");
+        //userData.setAuth(false);
+        return API.getToken().then((resp) => {
+          API.userToken = resp.token;
+          API.refreshToken = resp.refreshToken;
+          //localStorage.setItem('userData', JSON.stringify(userData.user));
+          //localStorage.setItem('isAuth', 'true');
+          //userData.setAuth(true);
+        }).catch((e) => {throw new Error("Не авторизован: ошибка авторизации")
+          }); 
       }
-      //userData.setAuth(false);
-      return API.getToken().then((resp) => {
-        API.userToken = resp.token;
-        API.refreshToken = resp.refreshToken;
-        //localStorage.setItem('userData', JSON.stringify(userData.user));
-        //localStorage.setItem('isAuth', 'true');
-        //userData.setAuth(true);
-      }).catch((e) => {throw new Error("Не авторизован")});
     }
+    
   }
 }
