@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { API } from "../API/api";
 import { WordsApi } from "../API/wordsapi";
 import { wordUtils } from "./utils";
+import Footer from "../footer/Footer";
 import {
   IUserWord,
   wordsList,
@@ -172,6 +173,7 @@ function Textbook() {
           </div>
         </div>
         <div>{pagination}</div>
+        <Footer/>
       </div>
     </React.StrictMode>
   );
