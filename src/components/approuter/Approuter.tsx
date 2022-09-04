@@ -5,7 +5,7 @@ import { MENUITEMS, ROUTEITEMS } from "../../common/constants";
 import { API } from "../API/api";
 import { authContext } from "../app/App";
 import Home from "../home/Home";
-import "./approuter.scss";
+import "./Approuter.scss";
 import "./header.scss";
 
 
