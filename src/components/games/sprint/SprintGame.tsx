@@ -56,7 +56,6 @@ export function SprintGame () {
     }
     fetchData();
   }, []);
-console.log(wordEn);
 
   useEffect(() => {
     if (!time && API.isAuth()) {
