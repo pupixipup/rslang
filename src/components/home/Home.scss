@@ -3,7 +3,7 @@
 .home {
   height: 100%;
   &-wrapper {
-    padding: 80px 30px 100px 30px;
+    padding: 80px 30px auto 30px;
     min-height: $min-content-height; 
     display: flex;
     max-width: $max-width-desktop;
