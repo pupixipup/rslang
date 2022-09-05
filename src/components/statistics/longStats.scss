@@ -1,5 +1,17 @@
-.bar{
-    width: 70vw;
-    height: 500px;
-    margin:auto;
+@import "../../style/abstract";
+
+.chart{
+    width: 40vw !important;
+    height: 250px !important;
+    margin:20px;
+}
+.longstats-container{
+    display: flex;
+    justify-content: space-evenly;
+    & h4{
+        text-align: center;
+    }
+    @include media-mobile{
+        flex-direction: column;
+      }
 }

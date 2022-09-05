@@ -183,8 +183,7 @@ export class GameWordsProvider {
 
   private uploadGameStat() {
     const now = new Date();
-    //const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-    const date = "2022-09-06"
+    const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
     let newStat: IUserStats;
     console.log(date);
     return WordsApi.getUserStats()
