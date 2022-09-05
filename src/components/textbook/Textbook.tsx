@@ -33,7 +33,7 @@ function Textbook() {
 
   const ctx = useContext(authContext);
   if(ctx.isAuth !== isLoggedIn){
-    setIsLoggedIn(ctx.isAuth);
+    ctx.changeIsAuth(isLoggedIn);
   }
   let navigate = useNavigate();
   const totalSections = 6;

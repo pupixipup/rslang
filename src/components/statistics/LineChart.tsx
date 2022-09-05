@@ -25,7 +25,6 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
-
   plugins: {
     legend: {
         display: false,
@@ -35,6 +34,7 @@ export const options = {
       display: false,
       text: 'Изученные слова',
     },
+    
   },
 };
 

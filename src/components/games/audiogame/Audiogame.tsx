@@ -149,7 +149,8 @@ return (
     <div className='audiogame__wrapper'>
       <div className="audiogame__hearts">
       {hearts.map((el: string, key: number) => <span
-       className='audiogame__heart'
+        key = {key + el}
+        className='audiogame__heart'
         dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(el),
             }}/>)}

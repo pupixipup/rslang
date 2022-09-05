@@ -37,6 +37,7 @@ function Statistics() {
     newWords: 0
   } as IWordsStats);
   const [correctAnswersShare, setCorrectAnswersShare] = useState(0);
+  const [longStatsArr, setLongStatsArr] =useState<ILongStats[]>([]);
   
 
 //  / if(isAuth !== ctx.isAuth){
@@ -45,6 +46,7 @@ function Statistics() {
   useEffect(() => {
     console.log('use effect');
     console.log("iaAuth" + isAuth);
+    let longStat: ILongStats[];
     if(isAuth){
       console.log(isAuth);
       API.getUserStats()
@@ -52,6 +54,7 @@ function Statistics() {
         console.log(data);
         console.log('data');
         setStats(data);
+        longStat = [...data.optional.longstats.longStatsArray];
         const now = new Date();
         const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
         //const date = "2022-9-2";
@@ -60,6 +63,12 @@ function Statistics() {
           setIsTodayStatsExists(false);
         } else {
           setIsTodayStatsExists(true);
+          const todayStats = {
+            date: date,
+            newWords: data.optional.daystats.wordsstats.newWords,
+            learnedWords: data.optional.daystats.wordsstats.learnedWords,
+          } as ILongStats;
+          longStat.push(todayStats);
           let corrNum = 0;
           let totalNum = 0;
           const items = data.optional.daystats.gamestats.map((item) =>{
@@ -76,6 +85,7 @@ function Statistics() {
           setGamesItems(items);
           setWordStats(data.optional.daystats.wordsstats);
           setCorrectAnswersShare(totalNum ? Math.round((corrNum / totalNum * 10000))/100 : 0);
+          setLongStatsArr(longStat);
         }
       })
 
@@ -87,7 +97,7 @@ function Statistics() {
   // console.log(stats);
   // console.log("iaAuth render " + isAuth);
   const wordSt = {stats: wordsStats, corrAnswersShare: correctAnswersShare};
-  const arr = stats.optional.longstats.longStatsArray;
+  const arr = longStatsArr;
   if(isAuth){
   if(isTodayStatsExists) return (
     <div>
