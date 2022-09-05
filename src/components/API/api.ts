@@ -1,5 +1,5 @@
 import { UserData } from './userData';
-import { BASELINK, ERROR, PORT, RESERVE_TIME } from "../../common/constants";
+import { BASELINK, ERROR, RESERVE_TIME } from "../../common/constants";
 import { IAggrResp, IGetUserStats, IUser, IUserSignin, IUserStats, IUserToken, IUserWord,  IUserWordOptions, IUserWordRecord, IWord } from "../../common/interfaces";
 
 
@@ -20,7 +20,7 @@ const enum ENDPOINTS {
 
 export class API {
 
-  static baseUrl = BASELINK + ":" + PORT;
+  static baseUrl = BASELINK;
   private static userToken = "";
   private static userId = "";
   private static refreshToken ="";
