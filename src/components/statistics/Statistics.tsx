@@ -9,9 +9,13 @@ import { WordsStats } from "./WordsStats";
 import { LongStats } from "./LongStats";
 
 function Statistics() {
+  const isAuth = API.isAuth();
   const ctx = useContext(authContext);
-  const isAuth = ctx.isAuth;
-  //const [isAuth, setIsAuth] = useState(ctx.isAuth);
+  if(ctx.isAuth !== isAuth){
+    ctx.changeIsAuth(isAuth);
+  }
+  
+
   const [stats, setStats] = useState({
     learnedWords: 0,
     optional: {
@@ -40,9 +44,6 @@ function Statistics() {
   const [longStatsArr, setLongStatsArr] =useState<ILongStats[]>([]);
   
 
-//  / if(isAuth !== ctx.isAuth){
-//     setIsAuth(ctx.isAuth);
-//   }
   useEffect(() => {
     console.log('use effect');
     console.log("iaAuth" + isAuth);
@@ -57,8 +58,8 @@ function Statistics() {
         longStat = [...data.optional.longstats.longStatsArray];
         const now = new Date();
         const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-        //const date = "2022-9-2";
-        console.log(data.optional.daystats.date + 'date' + date);
+        
+        
         if ((data.optional.daystats.date === undefined) || (date !== data.optional.daystats.date)) {
           setIsTodayStatsExists(false);
         } else {
@@ -93,9 +94,7 @@ function Statistics() {
     
   }, [isAuth]);
 
-  // console.log("today " + isTodayStatsExists);
-  // console.log(stats);
-  // console.log("iaAuth render " + isAuth);
+ 
   const wordSt = {stats: wordsStats, corrAnswersShare: correctAnswersShare};
   const arr = longStatsArr;
   if(isAuth){

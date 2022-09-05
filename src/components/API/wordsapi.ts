@@ -66,9 +66,6 @@ export class WordsApi {
   }
   
 
-  /*static uploadUserWordStat(wordsStats: IWordStats[], longestSeries: number){
-    
-  }*/
   static addLearntWordStats(quantity: number){
     return WordsApi.getUserStats()
     .then((data) => {
@@ -77,8 +74,7 @@ export class WordsApi {
       data = {...data, learnedWords: newLearnWordsTotal};
       const now = new Date();
       const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-      //const date = "2022-9-1";
-      //console.log("add learnt words" + data.optional.daystats.date + date);
+ 
       if((data.optional.daystats.date !== undefined) && (data.optional.daystats.date === date)){
         console.log("добавляем " + quantity);
         data.optional.daystats.wordsstats.learnedWords += quantity;        

@@ -42,12 +42,12 @@ export const MENUITEMS =[
     {
       value: 'Игры',
       link: 'games',
-      element: (<Games/>) // to do
+      element: (<Games/>) 
     },
     {
       value: 'Статистика',
       link: 'statistics',
-      element: (<Statistics/>) // to do
+      element: (<Statistics/>) 
     },
     {
       value: 'Спринт',

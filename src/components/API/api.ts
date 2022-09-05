@@ -19,28 +19,22 @@ const enum ENDPOINTS {
 }
 
 export class API {
- // static instance: API;
+
   static baseUrl = BASELINK + ":" + PORT;
   private static userToken = "";
   private static userId = "";
   private static refreshToken ="";
-
-  /*private static _init = (() => {
-    API.baseUrl = BASELINK + ":" + PORT;
-    API.userToken = "";
-    API.userId = "";
-  })();*/
 
   static init(){
     if (localStorage.getItem('userData')) {
       console.log("local" + localStorage.getItem('userData'));
       API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string));
       if (API.isTokenExpired()) {
-        console.log("local expired" );
+        
         API.logout();
         return false;
       } else {
-        console.log("local = все живо" );
+        
         return true;
       }
     }
@@ -98,7 +92,6 @@ export class API {
  * @param {string} wordId - word id
  * @returns {Promise<IWord>} word
  */
-  // getWordById: (id: string) => Promise(IWord)
   static async getWordById(id: string) {   
     return fetch(`${API.baseUrl}/${ENDPOINTS.words}/${id}`)
       .then((res) => res.json())
@@ -321,20 +314,6 @@ export class API {
       .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
   }
 
-/*  static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
-    return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`,
-        {
-            method: METHODS.put,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(wordOptions)
-        })
-        .then((res) => API.errorHandler(res))  //
-        .then((res) => res.json())
-        .then((data) => data as IUserWordRecord)
-        .catch((err: Error) => {throw new Error(err.message)}); 
-}*/
 static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
   return API.authFetch(
       `${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`,
@@ -377,7 +356,6 @@ static deleteUserWord(wordId: string) {
     return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.statistics}`)
       .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
       .then((res) => res.json())
-      //.then((data) => data as IGetUserStats)
       .then(({ id, ...rest }: IGetUserStats) => { const tmpid = id; const data: IUserStats = rest; return data})
       .catch((err: Error) => { throw new Error(err.message) });
   }
@@ -391,7 +369,7 @@ static deleteUserWord(wordId: string) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(userStats),
-        // keepalive: true //проверить что работает.
+       
     })
     .then((res) => API.errorHandler(res))  //
     .then((res) => res.json())
@@ -423,8 +401,9 @@ static deleteUserWord(wordId: string) {
   private static errorHandler(res: Response) {
     const status = res.status.toString();
     if(res.ok) return res;
-      return res.text()
-        .then((data) => {throw new Error(`Error ${status}: ${data}`)})   
+    if(status === ERROR.unauthorized || status === ERROR.unauthorized) API.logout();
+    return res.text()
+      .then((data) => {throw new Error(`Error ${status}: ${data}`)})   
   }
 
   private static saveToken(token:IUserSignin){

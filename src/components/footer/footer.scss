@@ -31,10 +31,7 @@
     display:flex;
     justify-content: flex-end;
     gap: 3.5rem;
-    // @include media-mobile{
-    //   flex-direction: column;
-    //   gap: 0.75rem
-    // }
+
   }
   .git-nickname{
     position: relative;
