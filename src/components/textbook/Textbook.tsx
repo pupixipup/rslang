@@ -48,6 +48,12 @@ function Textbook() {
       Войдите, чтобы увидеть добавленные сложные слова
     </div>
   );
+  const addWordsWindow = (
+    <div className="textbook__login">
+     Начните изучать слова, чтобы они появились в этом разделе
+    </div>
+  );
+
 
   if (numbers.section !== 6) {
     pagination = (
@@ -156,7 +162,7 @@ function Textbook() {
           </button>
         </div>
         <div className="textbook">
-          {!API.isAuth() && numbers.section === 6 ? loginWindow : ""}
+          {!API.isAuth() && numbers.section === 6 ? loginWindow : API.isAuth() && numbers.section === 6 && localWords.length === 0 ? addWordsWindow : null}
           <div className="words">
             {data?.map((word) => {
               return (
