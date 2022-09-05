@@ -1,8 +1,9 @@
 import '../../style/normalize.scss';
-import '../../style/fonts.scss';
+import "./app.scss";
 import { createContext, useEffect, useState } from 'react';
 import { API } from '../API/api';
 import AppRouter from '../approuter/Approuter';
+
 
 
 export const authContext = createContext(
