@@ -19,29 +19,30 @@ const enum ENDPOINTS {
 }
 
 export class API {
- // static instance: API;
+
   static baseUrl = BASELINK + ":" + PORT;
   private static userToken = "";
   private static userId = "";
   private static refreshToken ="";
 
-  /*private static _init = (() => {
-    API.baseUrl = BASELINK + ":" + PORT;
-    API.userToken = "";
-    API.userId = "";
-  })();*/
-
   static init(){
     if (localStorage.getItem('userData')) {
+    
       API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string));
-      if (API.isExpired(API.getExpirationDateToken(API.userToken))) {
+      if (API.isTokenExpired()) {
+        
         API.logout();
         return false;
       } else {
+        
         return true;
       }
     }
     return false;
+  }
+
+ static isTokenExpired(){
+  return API.isExpired(API.getExpirationDateToken(API.userToken))
   }
  
 
@@ -53,14 +54,14 @@ export class API {
     API.userToken = token.token;
     API.userId = token.userId;
     API.refreshToken = token.refreshToken;
-    console.log("loaded");
+   
   }
 
   static signOut(){
     API.userToken = "";
     API.userId = "";
     API.refreshToken = "";
-    console.log("signed out");
+  
   }
 
   static logout(): void  {    
@@ -91,7 +92,6 @@ export class API {
  * @param {string} wordId - word id
  * @returns {Promise<IWord>} word
  */
-  // getWordById: (id: string) => Promise(IWord)
   static async getWordById(id: string) {   
     return fetch(`${API.baseUrl}/${ENDPOINTS.words}/${id}`)
       .then((res) => res.json())
@@ -120,7 +120,10 @@ export class API {
               newWords: 0
             }
           },
-          //longstats: [],
+          longstats:
+          {
+            longStatsArray:[]
+          },
         }
       } as IUserStats))         
       .then(() => {})  
@@ -177,7 +180,7 @@ export class API {
       .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
       .then((res) => res.json())
       .then((data) => data as IUserSignin)
-      .then((data) => {API.saveToken(data); console.log("signed in"); console.log(data); return data;})
+      .then((data) => {API.saveToken(data);  return data;})
       .catch((err: Error) => {throw new Error(err.message)});
   }
 
@@ -201,7 +204,7 @@ export class API {
     .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
     .then((res) => res.json())
     .then((data) => data as IUserToken)
-    .then((data) => {API.saveRefreshToken(data); console.log("refreshed token"); console.log(data); return data;})
+    .then((data) => {API.saveRefreshToken(data);  return data;})
     .catch((err: Error) => {throw new Error(err.message)});
 }
 
@@ -284,8 +287,7 @@ export class API {
       return API.authFetch(link)
         .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
         .then((res) => res.json())
-        .then((data:IAggrResp[]) => {console.log("после агрегации"); console.log(data[0]); return data[0].paginatedResults as IUserWord[]})
-        //.then((data: IAggrResp) =>  data.paginatedResults.map(({ _id, ...rest }: IUserWord ) => ({ id: _id, ...rest })as IWord))
+        .then((data:IAggrResp[]) => { return data[0].paginatedResults as IUserWord[]})
         .catch((err: Error) => {throw new Error(err.message)});
     }
  /**
@@ -311,20 +313,6 @@ export class API {
       .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
   }
 
-/*  static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
-    return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`,
-        {
-            method: METHODS.put,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(wordOptions)
-        })
-        .then((res) => API.errorHandler(res))  //
-        .then((res) => res.json())
-        .then((data) => data as IUserWordRecord)
-        .catch((err: Error) => {throw new Error(err.message)}); 
-}*/
 static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
   return API.authFetch(
       `${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.words}/${wordId}`,
@@ -338,7 +326,6 @@ static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
       .then((res) => API.errorHandler(res))  //
       .then((res) => res.json())
       .then((data) => data as IUserWord)
-      .then(data => console.log(data))
       .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
 }
    /**
@@ -367,7 +354,6 @@ static deleteUserWord(wordId: string) {
     return API.authFetch(`${API.baseUrl}/${ENDPOINTS.users}/${API.userId}/${ENDPOINTS.statistics}`)
       .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
       .then((res) => res.json())
-      //.then((data) => data as IGetUserStats)
       .then(({ id, ...rest }: IGetUserStats) => { const tmpid = id; const data: IUserStats = rest; return data})
       .catch((err: Error) => { throw new Error(err.message) });
   }
@@ -381,7 +367,7 @@ static deleteUserWord(wordId: string) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(userStats),
-        // keepalive: true //проверить что работает.
+       
     })
     .then((res) => API.errorHandler(res))  //
     .then((res) => res.json())
@@ -397,7 +383,7 @@ static deleteUserWord(wordId: string) {
 // https://www.codementor.io/@obabichev/react-token-auth-12os8txqo1
 // args of fetch api are typed in typescrypt
   private static async authFetch(input: RequestInfo, init?: RequestInit) {
-    //const token = await tokenProvider.getToken();
+   
     init = init || {};
 
     init.headers = {
@@ -413,8 +399,9 @@ static deleteUserWord(wordId: string) {
   private static errorHandler(res: Response) {
     const status = res.status.toString();
     if(res.ok) return res;
-      return res.text()
-        .then((data) => {throw new Error(`Error ${status}: ${data}`)})   
+    if(status === ERROR.unauthorized || status === ERROR.forbidden) API.logout();
+    return res.text()
+      .then((data) => {throw new Error(`Error ${status}: ${data}`)})   
   }
 
   private static saveToken(token:IUserSignin){
@@ -445,11 +432,11 @@ static deleteUserWord(wordId: string) {
 
   static async getRefreshToken (): Promise<null | undefined> {
     const userData = new UserData();
-    console.log(API.userToken);
+    
     if(!API.userToken) {
       return null;
     }
-    console.log(API.isExpired(API.getExpirationDateToken(API.userToken)));
+   
     if (API.isExpired(API.getExpirationDateToken(API.userToken))) {
       userData.setAuth(false);
       localStorage.removeItem('isAuth');

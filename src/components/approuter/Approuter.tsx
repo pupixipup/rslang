@@ -9,7 +9,7 @@ import "./approuter.scss";
 import "./header.scss";
 
 
-const HomePage = (<Home/>);
+
   
 function AppRouter() {
   const {isAuth,changeIsAuth} = useContext(authContext);

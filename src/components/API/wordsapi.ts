@@ -18,10 +18,8 @@ export class WordsApi {
   static async setWord(id: string, userWord: IUserWordOptions, isUserWord: boolean) {
     if (isUserWord) {
       API.updateUserWord(id, userWord)
-      console.log('updated ');
       
     } else {
-      console.log('created');
       API.createUserWord(id, { difficulty: userWord.difficulty, optional: { new: true, learnt: userWord?.optional?.learnt }});  
       }
   }
@@ -57,7 +55,6 @@ export class WordsApi {
 //если уже было то wordToUp.wordOptions = {smth, optional:{new: false}}
   static  uploadUserWord({wordToUp, isUserWord}: {wordToUp:IUserWordUpload, isUserWord: boolean}){  
     if(!isUserWord){
-      //wordToUp.wordOptions.optional.new = false;
       return API.createUserWord(wordToUp.wordId, wordToUp.wordOptions)
           .catch((err: Error) => {throw new Error(err.message)}); 
     }
@@ -66,26 +63,19 @@ export class WordsApi {
   }
   
 
-  /*static uploadUserWordStat(wordsStats: IWordStats[], longestSeries: number){
-    
-  }*/
   static addLearntWordStats(quantity: number){
     return WordsApi.getUserStats()
     .then((data) => {
-      console.log(data);
       const newLearnWordsTotal = data.learnedWords + quantity;
       data = {...data, learnedWords: newLearnWordsTotal};
       const now = new Date();
       const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-      //const date = "2022-9-1";
-      //console.log("add learnt words" + data.optional.daystats.date + date);
+ 
       if((data.optional.daystats.date !== undefined) && (data.optional.daystats.date === date)){
-        console.log("добавляем " + quantity);
         data.optional.daystats.wordsstats.learnedWords += quantity;        
       } else{
         data.optional.daystats = {date: date, gamestats: [], wordsstats: {learnedWords: quantity, newWords: 0}}
       }
-console.log(data);
       return WordsApi.setUserStats(data)
       .catch((err: Error) => {throw new Error(err.message)});   
     })

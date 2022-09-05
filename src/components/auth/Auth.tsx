@@ -46,12 +46,11 @@ export function Auth () {
             onClick={async () => {
               userApi.login(email, password)
               .then(()=> {
-                changeIsAuth(true);                   // NT 2022-09-02
-                navigate("/", { replace: true });     // NT 2022-09-02
+                changeIsAuth(true);                  
+                navigate("/", { replace: true });     
               })
                 // NT 2022-08-31
-              .catch((e: Error) => alert(e.message));   // NT 2022-08-31
-              //navigate("/", { replace: true });
+              .catch((e: Error) => alert(e.message)); 
             }}>
             Войти
           </button>
@@ -60,10 +59,10 @@ export function Auth () {
             onClick={() => {
               userApi.registerUser(email, password)
                 .then(() =>{
-                  changeIsAuth(true);                   // NT 2022-09-02
+                  changeIsAuth(true);                 
                   navigate("/", { replace: true });
                 })
-                .catch((e: Error) => alert(e.message));   // NT 2022-08-31
+                .catch((e: Error) => alert(e.message));  
               
             }}>
             Регистрация

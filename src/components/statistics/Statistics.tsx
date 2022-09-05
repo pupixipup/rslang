@@ -1,16 +1,20 @@
 import "./statistics.scss";
 import { useContext, useEffect, useState } from "react";
-import { IUserStats, IWordsStats } from "../../common/interfaces";
+import { ILongStats, IUserStats, IWordsStats } from "../../common/interfaces";
 import { API } from "../API/api";
 import { authContext } from "../app/App";
 import Footer from "../footer/Footer";
 import { GameStats } from "./GameStats";
 import { WordsStats } from "./WordsStats";
+import { LongStats } from "./LongStats";
+
 
 function Statistics() {
+ 
   const ctx = useContext(authContext);
   const isAuth = ctx.isAuth;
-  //const [isAuth, setIsAuth] = useState(ctx.isAuth);
+
+
   const [stats, setStats] = useState({
     learnedWords: 0,
     optional: {
@@ -22,6 +26,10 @@ function Statistics() {
           learnedWords: 0,
           newWords: 0
         }
+      },
+      longstats:
+      {
+        longStatsArray:[]
       }
    }
   } as IUserStats);
@@ -31,35 +39,51 @@ function Statistics() {
     learnedWords: 0,
     newWords: 0
   } as IWordsStats);
+  const [correctAnswersShare, setCorrectAnswersShare] = useState(0);
+  const [longStatsArr, setLongStatsArr] =useState<ILongStats[]>([]);
+  
 
-//  / if(isAuth !== ctx.isAuth){
-//     setIsAuth(ctx.isAuth);
-//   }
   useEffect(() => {
-    console.log('use effect');
-    console.log("iaAuth" + isAuth);
+   
+    let longStat: ILongStats[];
     if(isAuth){
-      console.log(isAuth);
+    
       API.getUserStats()
       .then((data) => {
-        console.log(data);
-        console.log('data');
+      
         setStats(data);
+        longStat = [...data.optional.longstats.longStatsArray];
         const now = new Date();
         const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-        //const date = "2022-9-2";
-        console.log(data.optional.daystats.date + 'date' + date);
+        
+        
         if ((data.optional.daystats.date === undefined) || (date !== data.optional.daystats.date)) {
           setIsTodayStatsExists(false);
         } else {
           setIsTodayStatsExists(true);
-          const items = data.optional.daystats.gamestats.map((item) =>
-          <section  key={item.game}>
-            {<GameStats stats={item} />}
-          </section>
+          const todayStats = {
+            date: date,
+            newWords: data.optional.daystats.wordsstats.newWords,
+            learnedWords: data.optional.daystats.wordsstats.learnedWords,
+          } as ILongStats;
+          longStat.push(todayStats);
+          let corrNum = 0;
+          let totalNum = 0;
+          const items = data.optional.daystats.gamestats.map((item) =>{
+            corrNum += item.correctAnswers;
+            totalNum += item.answers;
+            return (
+              <section  key={item.game}>
+              {<GameStats stats={item} />}
+            </section>
+            )
+          }
+         
         )
           setGamesItems(items);
           setWordStats(data.optional.daystats.wordsstats);
+          setCorrectAnswersShare(totalNum ? Math.round((corrNum / totalNum * 10000))/100 : 0);
+          setLongStatsArr(longStat);
         }
       })
 
@@ -67,9 +91,9 @@ function Statistics() {
     
   }, [isAuth]);
 
-  // console.log("today " + isTodayStatsExists);
-  // console.log(stats);
-  // console.log("iaAuth render " + isAuth);
+ 
+  const wordSt = {stats: wordsStats, corrAnswersShare: correctAnswersShare};
+  const arr = longStatsArr;
   if(isAuth){
   if(isTodayStatsExists) return (
     <div>
@@ -82,7 +106,9 @@ function Statistics() {
         {gamesItems}
         </div>
         <h2>Статистика по словам за день</h2>
-        {<WordsStats stats={wordsStats} />}
+        {<WordsStats  value = {wordSt} />}
+        <h2>Статистика за все время</h2>
+        {<LongStats longStatsArray = {arr} />}
       </div>     
       </div> 
       <Footer />
@@ -95,6 +121,8 @@ function Statistics() {
         <h1>Статистика</h1>
         <h3>Всего выучено {stats.learnedWords}</h3>
         <h2 className="no-statistics">на сегодня статистики нет</h2>
+        <h2>Статистика за все время</h2>
+        {<LongStats longStatsArray = {arr} />}
       </div>
       </div>
       <Footer />

@@ -20,12 +20,6 @@ export class UserApi {
         localStorage.setItem('isAuth', 'true');
       }).catch((e) => {throw new Error(e.message)});
   }
-  // logout(): void  {
-  //   this.user.setUser({} as IUserSignin);
-  //   localStorage.removeItem('userData');
-  //   API.signOut();
-  //   this.user.setAuth(false);
-  //   localStorage.removeItem('isAuth');
-  // }
+
 
 }

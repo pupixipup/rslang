@@ -1,9 +1,6 @@
-* {
-    box-sizing: border-box;
-  }
   html{
     font-size: 10px;
-    overflow-x: hidden;
+    overflow-x: hidden;// for header to not change when scrollbar appears
     margin-right: calc(-1 * (100vw - 100%));
     @media screen and (max-width: $min-width-mobile) { 
       overflow-x: auto;

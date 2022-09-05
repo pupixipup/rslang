@@ -33,7 +33,7 @@ export function SprintGame () {
   const [notGuessedWord, setNotGuessedWord] = useState<IUserWord[] | IWord[]>([]);
   const ctx = useContext(authContext);
 
-  console.log(index, indexRu);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,7 +126,7 @@ export function SprintGame () {
   };
 
   const isWrong = () => {
-    console.log(index, indexRu);
+   
     if (index !== indexRu) {
       setTotalPoints(totalPoints + levelPoints[levelIndex]);
       checkCircle(circleIndex);

@@ -13,6 +13,7 @@ export function ResultsGame (props: IProps) {
   const {guessed, notGuessed, totalPoints} = props;
   const [sound] = useState(new Audio());
   const resultItem = (el: IWord | IUserWord, idx: number) => {
+    if (el === undefined) return null;
     return(
       <div key={idx} className="results-item">
         <div className="results-sound" onClick={() => {

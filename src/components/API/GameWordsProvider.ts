@@ -20,7 +20,7 @@ export class GameWordsProvider {
     this.currWordsList = [];
     this.game = game;
     this.includeLearned = includeLearned;
-    //console.log(this.currWordsList);
+    
   }
   getUserWordList(group: number, page?: number) {
     return this.getWords(group, page)
@@ -39,14 +39,14 @@ export class GameWordsProvider {
 
   }
   guessed(id: string) {
-    // console.log(this.currWordsList);
-    console.log(this.startWordsList);
+   
+   
     this.correctAnswers += 1;
     this.answers += 1;
     this.series += 1;
     const tmp = this.createWordToUp(id, true);
-    console.log("угадано " + id);
-    //console.log(tmp);
+    
+    
 	  return WordsApi.uploadUserWord(tmp)
 		.catch((err: Error) => { throw new Error(err.message) });
 	
@@ -57,8 +57,7 @@ export class GameWordsProvider {
     if (this.series > this.longestSeries) this.longestSeries = this.series;
     this.series = 0;
     const tmp = this.createWordToUp(id, false);
-    console.log("не угадано " + id);
-    //console.log(tmp);
+    
     return WordsApi.uploadUserWord(tmp)
       .catch((err: Error) => { throw new Error(err.message) });
   }
@@ -70,7 +69,7 @@ export class GameWordsProvider {
     if (index === -1) {
       const wordItem = this.startWordsList.find((item) => item.wordId === id);
       if(wordItem === undefined) throw new Error("deverr: error in ID list");
-      console.log(wordItem);
+      
       if (wordItem.wordOptions === undefined) {
         this.newWordsNumber += 1;
         wordToUp = this.createNewWordItem(id, isGuessed);
@@ -80,7 +79,6 @@ export class GameWordsProvider {
       }
       this.currWordsList.push(wordToUp);
     } else {
-      //console.log(this.currWordsList);
       wordToUp = this.updateWordItem(id, isGuessed, this.currWordsList[index]);
       this.currWordsList[index] = wordToUp;
     }
@@ -134,25 +132,24 @@ export class GameWordsProvider {
   }
   
   private isLearned(isGuessed: boolean, startLearned: boolean, series: number) {
-    //let newLearned: boolean;
-    //console.log(" this.locLearned" + this.locLearned);
+   
     if (startLearned) {
-      //console.log("уже изучено");
+      
       if (!isGuessed) {
         this.locLearned -= 1;
-        //console.log(" this.locLearned" + this.locLearned);
+       
         return false
       } else {
-        //console.log(" this.locLearned" + this.locLearned);
+        
         return true
       }
     } else {
       if (series >= SERIES_FOR_UPD) {
         this.locLearned += 1;
-        //console.log(" this.locLearned" + this.locLearned);
+        
         return true
       }
-      //console.log(" this.locLearned" + this.locLearned);
+      
       return false
     }
   }
@@ -168,9 +165,8 @@ export class GameWordsProvider {
       answers: this.answers,
       correctAnswers: this.correctAnswers,
       newWords: this.newWordsNumber,
-      longestSeries: this.series
+      longestSeries: this.longestSeries,
     } as IGameStats;
-    console.log(res);
     return res;
   }
 
@@ -184,27 +180,27 @@ export class GameWordsProvider {
     const now = new Date();
     const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
     let newStat: IUserStats;
-    console.log(date);
     return WordsApi.getUserStats()
       .then((data) => {  
         newStat = {...data};  
-        // console.log(" this.locLearned" + this.locLearned + " newStat.learnedWords"+ newStat.learnedWords );
+       
         newStat.learnedWords += this.locLearned;
         if (data.optional.daystats.date !== date){
+          
+          const dayStat = {
+            date: data.optional.daystats.date,  
+            learnedWords: data.optional.daystats.wordsstats.learnedWords,
+            newWords: data.optional.daystats.wordsstats.newWords,            
+          }
+          newStat.optional.longstats.longStatsArray.push(dayStat);
+
+          newStat.optional.daystats.wordsstats.learnedWords =  this.locLearned;
+          newStat.optional.daystats.wordsstats.newWords = this.newWordsNumber;
           newStat.optional.daystats.date = date;
           newStat.optional.daystats.gamestats = [];
           newStat.optional.daystats.gamestats.push(this.createNewDayStats());
-         /* const dayStat = {
-            date: data.optional.daystats.date,  
-            learnedWords: data.optional.daystats.wordsstats.learnedWords,
-            newWords: data.optional.daystats.wordsstats.newWords
-          };*/
-          newStat.optional.daystats.wordsstats.learnedWords =  this.locLearned;
-          newStat.optional.daystats.wordsstats.newWords = this.newWordsNumber;
           
-          //newStat.optional.longstats.push(dayStat);
-          console.log(data.optional.daystats);
-          console.log(newStat);
+   
         }else{
           const startGameDayStatsInd = newStat.optional.daystats.gamestats.findIndex((item) => item.game === this.game);
           if(startGameDayStatsInd === -1) {
@@ -217,8 +213,7 @@ export class GameWordsProvider {
           newStat.optional.daystats.wordsstats.newWords += this.newWordsNumber;
         }
         
-        //console.log("после присвоения newstat" +data.optional.daystats.date);
-        //console.log(newStat);
+     
         return WordsApi.setUserStats(newStat);
       })
       
