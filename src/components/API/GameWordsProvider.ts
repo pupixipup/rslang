@@ -40,7 +40,7 @@ export class GameWordsProvider {
   }
   guessed(id: string) {
    
-    console.log(this.startWordsList);
+    //console.log(this.startWordsList);
     this.correctAnswers += 1;
     this.answers += 1;
     this.series += 1;
@@ -70,7 +70,7 @@ export class GameWordsProvider {
     if (index === -1) {
       const wordItem = this.startWordsList.find((item) => item.wordId === id);
       if(wordItem === undefined) throw new Error("deverr: error in ID list");
-      console.log(wordItem);
+      
       if (wordItem.wordOptions === undefined) {
         this.newWordsNumber += 1;
         wordToUp = this.createNewWordItem(id, isGuessed);

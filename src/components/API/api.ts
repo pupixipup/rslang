@@ -27,7 +27,7 @@ export class API {
 
   static init(){
     if (localStorage.getItem('userData')) {
-      console.log("local" + localStorage.getItem('userData'));
+      //console.log("local" + localStorage.getItem('userData'));
       API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string));
       if (API.isTokenExpired()) {
         
@@ -54,14 +54,14 @@ export class API {
     API.userToken = token.token;
     API.userId = token.userId;
     API.refreshToken = token.refreshToken;
-    console.log("loaded");
+   
   }
 
   static signOut(){
     API.userToken = "";
     API.userId = "";
     API.refreshToken = "";
-    console.log("signed out");
+  
   }
 
   static logout(): void  {    
@@ -180,7 +180,7 @@ export class API {
       .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
       .then((res) => res.json())
       .then((data) => data as IUserSignin)
-      .then((data) => {API.saveToken(data); console.log("signed in"); console.log(data); return data;})
+      .then((data) => {API.saveToken(data);  return data;})
       .catch((err: Error) => {throw new Error(err.message)});
   }
 
@@ -204,7 +204,7 @@ export class API {
     .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
     .then((res) => res.json())
     .then((data) => data as IUserToken)
-    .then((data) => {API.saveRefreshToken(data); console.log("refreshed token"); console.log(data); return data;})
+    .then((data) => {API.saveRefreshToken(data);  return data;})
     .catch((err: Error) => {throw new Error(err.message)});
 }
 
@@ -287,7 +287,7 @@ export class API {
       return API.authFetch(link)
         .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
         .then((res) => res.json())
-        .then((data:IAggrResp[]) => {console.log("после агрегации"); console.log(data[0]); return data[0].paginatedResults as IUserWord[]})
+        .then((data:IAggrResp[]) => { return data[0].paginatedResults as IUserWord[]})
         //.then((data: IAggrResp) =>  data.paginatedResults.map(({ _id, ...rest }: IUserWord ) => ({ id: _id, ...rest })as IWord))
         .catch((err: Error) => {throw new Error(err.message)});
     }
@@ -327,7 +327,7 @@ static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
       .then((res) => API.errorHandler(res))  //
       .then((res) => res.json())
       .then((data) => data as IUserWord)
-      .then(data => console.log(data))
+      //.then(data => console.log(data))
       .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
 }
    /**
@@ -434,11 +434,11 @@ static deleteUserWord(wordId: string) {
 
   static async getRefreshToken (): Promise<null | undefined> {
     const userData = new UserData();
-    console.log(API.userToken);
+    
     if(!API.userToken) {
       return null;
     }
-    console.log(API.isExpired(API.getExpirationDateToken(API.userToken)));
+   
     if (API.isExpired(API.getExpirationDateToken(API.userToken))) {
       userData.setAuth(false);
       localStorage.removeItem('isAuth');
