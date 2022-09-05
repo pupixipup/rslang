@@ -13,6 +13,7 @@ $section6-color: rgb(224, 94, 94);
 $section7-color: red;
 $text-color: #ffffff;
 $bg-transparent: rgba(255, 255, 255, 0.1);
+$box-shadow: rgb(0 0 0 / 20%) 0px 0px 15px;
 
 //constants
 
@@ -20,6 +21,7 @@ $max-width-desktop: 1280px;
 $max-width-mobile: 768px;
 $min-width-mobile: 360px;
 $header-height: 60px;
+$header-height-mobile: 120px;
 $footer-height: 60px;
 $menu-height: calc(2rem + 10px);
 $min-content-height: calc(100vh - ($header-height + $footer-height + $menu-height));

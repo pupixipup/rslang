@@ -7,6 +7,7 @@ import { Audiogame } from "../components/games/audiogame/Audiogame";
 import AudiogameMenu from "../components/games/audiogame/AudiogameMenu";
 import { Sprint } from "../components/games/sprint/Sprint";
 import AudioStats from "../components/games/audiogame/AudioStats";
+import About from "../components/about/About";
 
 export const BASELINK = "http://localhost";
 export const PORT = "5500";
@@ -68,7 +69,12 @@ export const MENUITEMS =[
       value: 'Аудиовызов - статистика',
       link: 'games/audiostats',
       element: (<AudioStats/>)
-    }
+    },
+    {
+        value: 'О команде',
+        link: 'about',
+        element: (<About/>)
+      }
 ]
 export const ROUTEITEMS = [
     {

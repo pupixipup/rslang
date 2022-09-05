@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import logo from '../../assets/img/rsl-logo.svg';
-import { MENUITEMS, ROUTEITEMS } from "../../common/constants";
+import { MENUITEMS } from "../../common/constants";
 import { API } from "../API/api";
 import { authContext } from "../app/App";
 import Home from "../home/Home";
@@ -19,10 +19,10 @@ function AppRouter() {
       </li>
     )*/
     const btnLogIn = (
-      <Link className="menu__item" to={MENUITEMS[1].link}> {MENUITEMS[1].value}</Link>
+      <Link className="menu__item menu__auth menu__logout" to={MENUITEMS[1].link}> {MENUITEMS[1].value}</Link>
     );
     const btnLogout = (
-      <div className="menu__item" onClick={() => {
+      <div className="menu__item menu__auth" onClick={() => {
         API.logout();
         changeIsAuth(false); // NT 2022-08-31        
         }}>

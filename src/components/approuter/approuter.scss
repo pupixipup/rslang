@@ -36,3 +36,15 @@
 .menu__list{
   margin: 0 auto;
 }
+.menu__auth {
+  padding-top: 7px;
+  width: 120px;
+  height: 35px;
+  border-radius: 10px;
+  background-color: $section2-color;
+  box-shadow: rgb(0 0 0 / 30%) 0px 0px 15px;
+}
+.menu__logout {
+  background-color: rgb(232, 176, 113);
+  box-shadow: rgb(0 0 0 / 30%) 0px 0px 15px;
+}
