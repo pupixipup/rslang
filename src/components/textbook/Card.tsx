@@ -50,7 +50,6 @@ function Card(props: wordProps) {
           className="words__interact-hard"
           onClick={() => {
             const newLocalWord = wordUtils.createLocalDifficultyWord(currentWord);
-            console.log(currentWord);
             wordUtils.updateLocalWord(localWords, newLocalWord, updateLocalWords);
             WordsApi.setWord(newLocalWord._id, newLocalWord.userWord, newLocalWord.isUserWord);
             setCurrentWord({
@@ -64,7 +63,6 @@ function Card(props: wordProps) {
                   )
                 );
               }
-              console.log(currentWord, 'current word');
           }}
         >
           {(currentWord as IUserWord).userWord?.difficulty === "hard" || numbers.section === 6
@@ -88,7 +86,6 @@ function Card(props: wordProps) {
                 )
               );
             }
-            console.log(currentWord, 'current word');
             WordsApi.addLearntWordStats(currentWord.userWord?.optional?.learnt ? -1 : 1)
           }}
         >
