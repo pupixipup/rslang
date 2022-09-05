@@ -34,7 +34,7 @@ const [hearts, setHearts] = useState([	'&#128156;', '&#128156;', '&#128156;', '&
 
 const ctx = useContext(authContext);
 if(ctx.isAuth !== isLoggedIn){
-  ctx.changeIsAuth(isLoggedIn);
+  setIsLoggedIn(ctx.isAuth);
 }
 
 let inputRefs: Array<React.RefObject<HTMLButtonElement>> = [];
@@ -76,8 +76,7 @@ function goNextWord(word: IUserWord) {
 useEffect(() => {
   const fetchWords = async () => {
     const data = await game.getFullWordlist().catch(() => {
-      ctx.changeIsAuth(false);
-      setIsLoggedIn(false);
+      ctx.changeIsAuth(isLoggedIn);
     });
     game.chunkedWords = gameUtils.chunkArray(data as IUserWord[], 4);
     setWordsRow(0);
