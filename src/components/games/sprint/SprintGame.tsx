@@ -52,11 +52,11 @@ export function SprintGame () {
         }
         setWordEn(SprintApi.wordsEn);
         setWordRu(SprintApi.wordsRu);
-        console.log(SprintApi.wordsAll);
       }
     }
     fetchData();
   }, []);
+console.log(wordEn);
 
   useEffect(() => {
     if (!time && API.isAuth()) {

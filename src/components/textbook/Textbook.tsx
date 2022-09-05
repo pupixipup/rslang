@@ -114,9 +114,9 @@ function Textbook() {
 
   const navigateToSprint = () => {
     if(API.isAuth()) {
-      navigate('/games/sprint', { state: {gameMenu: false, group: Number(numbers.section), page: numbers.page, length: false} });
+      navigate('/games/sprint', { state: {gameMenu: false, group: Number(numbers.section), page: numbers.page, learned: false} });
     } else {
-      navigate('/games/sprint', { state: {gameMenu: false, group: Number(numbers.section), page: numbers.page, length: true} });
+      navigate('/games/sprint', { state: {gameMenu: false, group: Number(numbers.section), page: numbers.page, learned: true} });
     }
   }
 
