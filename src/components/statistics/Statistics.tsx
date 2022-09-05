@@ -13,10 +13,7 @@ function Statistics() {
  
   const ctx = useContext(authContext);
   const isAuth = ctx.isAuth;
-  // if(ctx.isAuth !== isAuth){
-  //   isAuth = ctx.isAuth;
-  // }
-  
+
 
   const [stats, setStats] = useState({
     learnedWords: 0,

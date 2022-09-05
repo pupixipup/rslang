@@ -27,7 +27,7 @@ export class API {
 
   static init(){
     if (localStorage.getItem('userData')) {
-      //console.log("local" + localStorage.getItem('userData'));
+    
       API.loadAuthData(JSON.parse(localStorage.getItem('userData') as string));
       if (API.isTokenExpired()) {
         
@@ -288,7 +288,6 @@ export class API {
         .then((res) => API.errorHandler(res))  // 403 forbidden if other user or other token
         .then((res) => res.json())
         .then((data:IAggrResp[]) => { return data[0].paginatedResults as IUserWord[]})
-        //.then((data: IAggrResp) =>  data.paginatedResults.map(({ _id, ...rest }: IUserWord ) => ({ id: _id, ...rest })as IWord))
         .catch((err: Error) => {throw new Error(err.message)});
     }
  /**
@@ -327,7 +326,6 @@ static async updateUserWord(wordId: string, wordOptions: IUserWordOptions) {
       .then((res) => API.errorHandler(res))  //
       .then((res) => res.json())
       .then((data) => data as IUserWord)
-      //.then(data => console.log(data))
       .catch((err: Error) => {throw new Error(err.message)}); //Error 417: such user word already exists
 }
    /**
@@ -385,7 +383,7 @@ static deleteUserWord(wordId: string) {
 // https://www.codementor.io/@obabichev/react-token-auth-12os8txqo1
 // args of fetch api are typed in typescrypt
   private static async authFetch(input: RequestInfo, init?: RequestInit) {
-    //const token = await tokenProvider.getToken();
+   
     init = init || {};
 
     init.headers = {
@@ -401,7 +399,7 @@ static deleteUserWord(wordId: string) {
   private static errorHandler(res: Response) {
     const status = res.status.toString();
     if(res.ok) return res;
-    if(status === ERROR.unauthorized || status === ERROR.unauthorized) API.logout();
+    if(status === ERROR.unauthorized || status === ERROR.forbidden) API.logout();
     return res.text()
       .then((data) => {throw new Error(`Error ${status}: ${data}`)})   
   }

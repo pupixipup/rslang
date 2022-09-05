@@ -11,7 +11,6 @@ interface IProps {
 
 export function ResultsGame (props: IProps) {
   const {guessed, notGuessed, totalPoints} = props;
-  console.log(notGuessed);
   const [sound] = useState(new Audio());
   const resultItem = (el: IWord | IUserWord, idx: number) => {
     if (el === undefined) return null;

@@ -40,12 +40,12 @@ export class GameWordsProvider {
   }
   guessed(id: string) {
    
-    //console.log(this.startWordsList);
+   
     this.correctAnswers += 1;
     this.answers += 1;
     this.series += 1;
     const tmp = this.createWordToUp(id, true);
-    //console.log("угадано " + id);
+    
     
 	  return WordsApi.uploadUserWord(tmp)
 		.catch((err: Error) => { throw new Error(err.message) });
@@ -57,7 +57,6 @@ export class GameWordsProvider {
     if (this.series > this.longestSeries) this.longestSeries = this.series;
     this.series = 0;
     const tmp = this.createWordToUp(id, false);
-    //console.log("не угадано " + id);
     
     return WordsApi.uploadUserWord(tmp)
       .catch((err: Error) => { throw new Error(err.message) });
@@ -80,7 +79,6 @@ export class GameWordsProvider {
       }
       this.currWordsList.push(wordToUp);
     } else {
-      //console.log(this.currWordsList);
       wordToUp = this.updateWordItem(id, isGuessed, this.currWordsList[index]);
       this.currWordsList[index] = wordToUp;
     }
@@ -134,7 +132,6 @@ export class GameWordsProvider {
   }
   
   private isLearned(isGuessed: boolean, startLearned: boolean, series: number) {
-    //let newLearned: boolean;
    
     if (startLearned) {
       
@@ -170,7 +167,6 @@ export class GameWordsProvider {
       newWords: this.newWordsNumber,
       longestSeries: this.longestSeries,
     } as IGameStats;
-    // console.log(res);
     return res;
   }
 
@@ -184,7 +180,6 @@ export class GameWordsProvider {
     const now = new Date();
     const date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
     let newStat: IUserStats;
-    // console.log(date);
     return WordsApi.getUserStats()
       .then((data) => {  
         newStat = {...data};  
@@ -205,9 +200,7 @@ export class GameWordsProvider {
           newStat.optional.daystats.gamestats = [];
           newStat.optional.daystats.gamestats.push(this.createNewDayStats());
           
-          // console.log("новая статистика");
-          // console.log(data.optional.daystats);
-          // console.log(newStat);
+   
         }else{
           const startGameDayStatsInd = newStat.optional.daystats.gamestats.findIndex((item) => item.game === this.game);
           if(startGameDayStatsInd === -1) {
