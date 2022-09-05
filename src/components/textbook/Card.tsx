@@ -41,8 +41,8 @@ function Card(props: wordProps) {
   if (isLoggedIn) {
     stats = (
     <div className="word__stats">
-      <div title='Правильно угадано' className="word__stats-success">&#x2713; {word?.userWord?.optional?.correctAnswers}</div>
-      <div title='Неправильно угадано' className="word__stats-fail">&#10006; {word?.userWord?.optional?.wrongAnswers}</div>
+      <div title='Правильно угадано' className="word__stats-success">&#x2713; {word?.userWord?.optional?.correctAnswers || 0}</div>
+      <div title='Неправильно угадано' className="word__stats-fail">&#10006; {word?.userWord?.optional?.wrongAnswers || 0}</div>
     </div>)
     buttons = (
       <div className="word__interact">
