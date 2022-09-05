@@ -49,7 +49,7 @@ export function LineChart(props: {longStatsArray:ILongStats[]}){
     const labels = array.map((item) => item.date);
     const dataset = array.reduce((acc, item) => acc.length ? [...acc, acc[acc.length-1] + item.learnedWords] : [...acc, item.learnedWords], [] as number[]);
 
-    console.log(dataset);
+   
     const data = {
         labels,
         datasets: [

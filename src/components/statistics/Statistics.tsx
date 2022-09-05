@@ -8,12 +8,14 @@ import { GameStats } from "./GameStats";
 import { WordsStats } from "./WordsStats";
 import { LongStats } from "./LongStats";
 
+
 function Statistics() {
-  const isAuth = API.isAuth();
+ 
   const ctx = useContext(authContext);
-  if(ctx.isAuth !== isAuth){
-    ctx.changeIsAuth(isAuth);
-  }
+  const isAuth = ctx.isAuth;
+  // if(ctx.isAuth !== isAuth){
+  //   isAuth = ctx.isAuth;
+  // }
   
 
   const [stats, setStats] = useState({
@@ -45,15 +47,13 @@ function Statistics() {
   
 
   useEffect(() => {
-    console.log('use effect');
-    console.log("iaAuth" + isAuth);
+   
     let longStat: ILongStats[];
     if(isAuth){
-      console.log(isAuth);
+    
       API.getUserStats()
       .then((data) => {
-        console.log(data);
-        console.log('data');
+      
         setStats(data);
         longStat = [...data.optional.longstats.longStatsArray];
         const now = new Date();
