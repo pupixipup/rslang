@@ -36,8 +36,14 @@ function Card(props: wordProps) {
   let buttons = <div></div>;
 
   const [currentWord, setCurrentWord] = useState(word);
+  let stats = null;
 
   if (isLoggedIn) {
+    stats = (
+    <div className="word__stats">
+      <div title='Правильно угадано' className="word__stats-success">&#x2713; {word?.userWord?.optional?.correctAnswers}</div>
+      <div title='Неправильно угадано' className="word__stats-fail">&#10006; {word?.userWord?.optional?.wrongAnswers}</div>
+    </div>)
     buttons = (
       <div className="word__interact">
         <button
@@ -126,6 +132,7 @@ function Card(props: wordProps) {
           <div className="word__example-ru">{word?.textExampleTranslate}</div>
         </div>
         {buttons}
+        {stats}
       </div>
       <img className="word__image" src={link} alt={word?.word} />
     </div>
