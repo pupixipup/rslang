@@ -1,6 +1,6 @@
 import { API } from '../API/api';
 
-const playAudios = (sounds: (string | undefined)[], setState: React.Dispatch<React.SetStateAction<boolean>>) => {
+const playAudios = (sounds: string[], setState: React.Dispatch<React.SetStateAction<boolean>>) => {
   let index = 0;
   let audio = new Audio();
   audio.src = `${API.baseUrl}/${sounds[index]}`;

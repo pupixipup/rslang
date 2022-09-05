@@ -3,9 +3,9 @@ import icon from './assets/volume-up-interface-symbol_icon-icons.com_73337.svg';
 import playAudios from './playAudios';
 
 interface linkProps {
-  audioLink: string | undefined
-  audioMeaningLink: string | undefined
-  audioExampleLink: string | undefined
+  audioLink: string
+  audioMeaningLink: string
+  audioExampleLink: string
 }
 
 

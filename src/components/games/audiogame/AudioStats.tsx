@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { IUserWord } from '../../../common/interfaces';
-import WordAudio from '../../textbook/WordAudio';
+import AudioPlay from './AudioPlay';
 import './styles/AudioStats.scss';
 
 interface IGameStats {
@@ -24,11 +24,9 @@ function AudioStats() {
       {stats.solvedWords.map((word, i) => {
       return (
       <div key={`right-${word}${i}`} className="stats__rightwords-word stats-word">
-        <WordAudio
-            audioLink={word?.audio}
-            audioMeaningLink={undefined}
-            audioExampleLink={undefined}
-          />
+          <AudioPlay
+            audioLink={word!.audio}
+          /> 
         <div className="stats__rightwords-name word-name">
         {word.word}
         </div>
@@ -45,11 +43,9 @@ function AudioStats() {
       {stats.failedWords.map((word, i) =>  {
        return (
       <div key={`failed-${word}${i}`} className="stats__wrongwords-word stats-word">
-        <WordAudio
-            audioLink={word?.audio}
-            audioMeaningLink={undefined}
-            audioExampleLink={undefined}
-          />
+         <AudioPlay
+            audioLink={word!.audio}
+          /> 
         <div className="stats__wrongwords-name word-name">
         {word.word}
         </div>

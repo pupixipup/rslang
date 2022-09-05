@@ -36,6 +36,7 @@ export class audioGame {
     let page = MAX_PAGE;
     this.words = [...this.words, ...newWords] as IUserWord[];
     let iterationCount = 0;
+    if (this.location.section === 6) iterationCount = MAX_PAGE;
     while (this.words.length < this.wordsTotal && iterationCount < MAX_PAGE) {
       iterationCount += 1;
       if (page < 0) page = MAX_PAGE;
