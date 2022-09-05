@@ -3,7 +3,7 @@
 .home {
   height: 100%;
   &-wrapper {
-    padding: 80px 30px auto 30px;
+    padding: 80px 30px 0 30px;
     min-height: $min-content-height; 
     display: flex;
     max-width: $max-width-desktop;
@@ -16,6 +16,7 @@
     }
   }
   &-content {
+    align-self: start;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
