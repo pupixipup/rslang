@@ -4,6 +4,9 @@
     width: 40vw !important;
     height: 250px !important;
     margin:20px;
+    @include media-mobile{
+        width: 70vh !important;
+    }
 }
 .longstats-container{
     display: flex;

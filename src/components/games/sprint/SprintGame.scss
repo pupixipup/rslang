@@ -1,14 +1,12 @@
 @import '../../../style/abstract';
 .sprint {
-
   background-image: url(../../../assets/img/sprint-bg.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;
   height: 100%;
   &-wrapper {
-    padding: 0 50px;
-    padding-top: 1vh;
+    padding: 1vh 50px 0 50px;
     margin: 0 auto;
     max-width: $max-width-desktop;
     @include media-mobile() {
@@ -51,7 +49,7 @@
     margin: auto;
     margin-top: 10px;
     width: 600px;
-    height: 500px;
+    height: 60vh;
     border-radius: 15px;
     background: $bg-transparent;
     border: 1px solid #ffffff;
@@ -65,8 +63,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  height: 100px;
+  gap: 3vh;
+  height: 12vh;
 }
 .circle-block {
   display: flex;
@@ -94,7 +92,7 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    height: 80px;
+    height: 8vh;
     @include media-mobile() {
       height: 60px;
     }
@@ -107,7 +105,7 @@
     }
   }
   &-words {
-    height: 200px;
+    height: 25vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -127,7 +125,7 @@
     align-items: center;
     border-top: 30px;
     gap: 100px;
-    height: 120px;
+    height: 14vh;
     border-top: 2px dotted #ffffff;
     @include media-mobile() {
       justify-content: space-around;
