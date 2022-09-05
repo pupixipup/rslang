@@ -120,6 +120,8 @@ function Textbook() {
       setButtonsDisabled(true);
     }  else {
       setButtonsDisabled(false);
+    } if (hardWordsCounter === 0 && numbers.section === 6) {
+      setButtonsDisabled(true);
     }
     setWrapperClass(className);
   }, [hardWordsCounter, learntWordsCounter, numbers]);
