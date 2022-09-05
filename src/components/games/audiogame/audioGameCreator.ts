@@ -51,7 +51,6 @@ export class audioGame {
 
     const trimmedWords = gameUtils.trimArrayLength(this.words, this.wordsTotal);
     const filteredWords = gameUtils.filterRepeatedWords(trimmedWords);
-    console.log(filteredWords.length);
     return filteredWords;
     
   }

@@ -48,6 +48,12 @@ function Textbook() {
       Войдите, чтобы увидеть добавленные сложные слова
     </div>
   );
+  const addWordsWindow = (
+    <div className="textbook__login">
+     Начните изучать слова, чтобы они появились в этом разделе
+    </div>
+  );
+
 
   if (numbers.section !== 6) {
     pagination = (
@@ -72,40 +78,42 @@ function Textbook() {
       updateLocalWords([]);
       let words: wordsList;
       if (numbers.section === 6) {
-        words = API.isAuth() ? await WordsApi.getDifficultWords() : [];
-        console.log(words);
+        words = API.isAuth() ? await WordsApi.getDifficultWords().catch(() => {
+          ctx.changeIsAuth(false);
+        }) as wordsList : [];
       } else {
         if (API.isAuth()) {
           words = await WordsApi.getUserWords(
             numbers.page,
             numbers.section
-          );
+          ).catch(() => {
+            ctx.changeIsAuth(false);
+          }) as wordsList;
         } else {
-          words = await API.getWords(numbers.page, numbers.section);
+          words = await API.getWords(numbers.page, numbers.section).catch(() => {
+            ctx.changeIsAuth(false);
+          }) as wordsList;
         }
       }
       updateData(words);
       setLoadedState(!wordsAreLoaded);
   };
-    try {
       fetchData();
-    } catch {
-      ctx.changeIsAuth(false);
-      setIsLoggedIn(false);
-    }
     window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
-  }, [numbers]);
+  }, [numbers, isLoggedIn]);
 
   useEffect(() => {
     let className = 'textbook-wrapper'
-    if (hardWordsCounter === 20) {
+    if (hardWordsCounter === 20 && numbers.section !== 6) {
       className += ' allWordsHard';
     } 
-    if (learntWordsCounter === 20) {
+    if (learntWordsCounter === 20 && numbers.section !== 6) {
       className += ' allWordsLearnt';
       setButtonsDisabled(true);
     }  else {
       setButtonsDisabled(false);
+    } if (hardWordsCounter === 0 && numbers.section === 6) {
+      setButtonsDisabled(true);
     }
     setWrapperClass(className);
   }, [hardWordsCounter, learntWordsCounter, numbers]);
@@ -148,7 +156,8 @@ function Textbook() {
           </button>
         </div>
         <div className="textbook">
-          {!API.isAuth() && numbers.section === 6 ? loginWindow : ""}
+          {!API.isAuth() && numbers.section === 6 ? loginWindow : null}
+          {API.isAuth() && numbers.section === 6 && data.length === 0 ? addWordsWindow : null}
           <div className="words">
             {data?.map((word) => {
               return (

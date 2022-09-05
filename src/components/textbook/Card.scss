@@ -183,3 +183,31 @@ button:disabled {
     font-size: 18px;
   }
 }
+
+.word__stats {
+  padding-right: 5px;
+  display: flex;
+  justify-content: end;
+  margin-top: 15px;
+  gap: 15px;
+}
+
+.word__stats-success, .word__stats-fail {
+  font-size: 18px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.word__stats-success {
+color: rgb(120, 195, 162);
+}
+.word__stats-fail {
+  color: red;
+}
+
+.word.hard {
+  border: 2px solid rgba(red, .3);
+}
+.word.learnt {
+  border: 2px solid rgba(green, .2);
+}
