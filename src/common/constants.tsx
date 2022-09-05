@@ -9,8 +9,7 @@ import { Sprint } from "../components/games/sprint/Sprint";
 import AudioStats from "../components/games/audiogame/AudioStats";
 import About from "../components/about/About";
 
-export const BASELINK = "http://localhost";
-export const PORT = "5500";
+export const BASELINK = "https://rs-lang-superteam.herokuapp.com";
 export const RESERVE_TIME = 5000;
 export const WORD_PER_PAGE = 20;
 export const NUMBER_OF_PAGES_IN_GROUP = 29;
