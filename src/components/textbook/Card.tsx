@@ -101,7 +101,8 @@ function Card(props: wordProps) {
   }
 
   return (
-    <div className="word">
+    <div className={`word ${numbers.section !== 6 ? currentWord.userWord?.difficulty : ''} ${numbers.section !== 6 ? currentWord.userWord?.optional?.learnt ? 'learnt' : 'not-learnt' : ''}`
+    }>
       <div className="word__desc">
         <div className="word__word">
           <div className="word__word-name">{word?.word}</div>
