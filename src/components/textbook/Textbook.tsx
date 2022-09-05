@@ -162,7 +162,8 @@ function Textbook() {
           </button>
         </div>
         <div className="textbook">
-          {!API.isAuth() && numbers.section === 6 ? loginWindow : API.isAuth() && numbers.section === 6 && localWords.length === 0 ? addWordsWindow : null}
+          {!API.isAuth() && numbers.section === 6 ? loginWindow : null}
+          {API.isAuth() && numbers.section === 6 && data.length === 0 ? addWordsWindow : null}
           <div className="words">
             {data?.map((word) => {
               return (
