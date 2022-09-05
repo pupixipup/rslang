@@ -98,11 +98,7 @@ function Textbook() {
       updateData(words);
       setLoadedState(!wordsAreLoaded);
   };
-    try {
       fetchData();
-    } catch {
-      ctx.changeIsAuth(false);
-    }
     window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
   }, [numbers, isLoggedIn]);
 

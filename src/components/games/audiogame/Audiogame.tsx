@@ -76,7 +76,7 @@ function goNextWord(word: IUserWord) {
 useEffect(() => {
   const fetchWords = async () => {
     const data = await game.getFullWordlist().catch(() => {
-      ctx.changeIsAuth(isLoggedIn);
+      ctx.changeIsAuth(false);
     });
     game.chunkedWords = gameUtils.chunkArray(data as IUserWord[], 4);
     setWordsRow(0);
