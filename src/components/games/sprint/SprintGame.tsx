@@ -42,7 +42,7 @@ export function SprintGame () {
       SprintApi.setPage(state.page);
       if(API.isAuth()) {
         for(let i = SprintApi.page; i >= 0; i--) {
-          await wordsProvider.getUserWordList(SprintApi.group, i).then((data) => SprintApi.setWordsUser(data));
+          await wordsProvider.getUserWordList(SprintApi.group, i).then((data) => SprintApi.setWordsUser(data)).catch(() => ctx.changeIsAuth(false));
         }
         setWordEn(SprintApi.wordsEn);
         setWordRu(SprintApi.wordsRu);
@@ -52,23 +52,14 @@ export function SprintGame () {
         }
         setWordEn(SprintApi.wordsEn);
         setWordRu(SprintApi.wordsRu);
-        console.log(SprintApi.wordsAll);
       }
     }
-    try {
-      fetchData();
-    } catch {
-      ctx.changeIsAuth(false);
-    }
+    fetchData();
   }, []);
 
   useEffect(() => {
-    try {
-      if (!time && API.isAuth()) {
-        wordsProvider.uploadStats();
-      }
-    } catch {
-      ctx.changeIsAuth(false);
+    if (!time && API.isAuth()) {
+      wordsProvider.uploadStats().catch(() => ctx.changeIsAuth(false));
     }
   });
 
@@ -95,28 +86,20 @@ export function SprintGame () {
   };
 
   const isGuessed = async (index: number) => {
-    try {
-      if(API.isAuth()) {
-        await wordsProvider.guessed(SprintApi.wordsAllUser[index]._id);
-        setGuessedWord(() => (guessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
-      } else {
-        setGuessedWord(() => (guessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
-      }
-    } catch {
-      ctx.changeIsAuth(false);
+    if(API.isAuth()) {
+      await wordsProvider.guessed(SprintApi.wordsAllUser[index]._id).catch(() => ctx.changeIsAuth(false));
+      setGuessedWord(() => (guessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
+    } else {
+      setGuessedWord(() => (guessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
     }
   }
 
   const isNotGuessed = async (index: number) => {
-    try {
-      if(API.isAuth()) {
-        await wordsProvider.notGuessed(SprintApi.wordsAllUser[index]._id);
-        setNotGuessedWord(() => (notGuessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
-      } else {
-        setNotGuessedWord(() => (notGuessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
-      }
-    } catch {
-      ctx.changeIsAuth(false);
+    if(API.isAuth()) {
+      await wordsProvider.notGuessed(SprintApi.wordsAllUser[index]._id).catch(() => ctx.changeIsAuth(false));
+      setNotGuessedWord(() => (notGuessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
+    } else {
+      setNotGuessedWord(() => (notGuessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
     }
   };
   const playAudioCorrect = () => {
@@ -201,39 +184,41 @@ export function SprintGame () {
 
 
   return time ? (
-    <div className='sprint-wrapper'>
-      <div className="sprint-header">
-        <Timer updateTime={updateTime}/>
-        <div className="sprint-total">{totalPoints}</div>
-      </div>
-      <div className='sprint-card'>
-        <div className="card-header">
-          <div className="circle-block">
-            <div className="circle"></div>
-            <div className="circle"></div>
-            <div className="circle"></div>
+    <div className="sprint">
+      <div className='sprint-wrapper'>
+        <div className="sprint-header">
+          <Timer updateTime={updateTime}/>
+          <div className="sprint-total">{totalPoints}</div>
+        </div>
+        <div className='sprint-card'>
+          <div className="card-header">
+            <div className="circle-block">
+              <div className="circle"></div>
+              <div className="circle"></div>
+              <div className="circle"></div>
+            </div>
+            <div className="points">
+              {`+${levelPoints[levelIndex]} очков за слово`}
+            </div>
           </div>
-          <div className="points">
-            {`+${levelPoints[levelIndex]} очков за слово`}
+          <div className="card-star">
+            <img className='card-star-img active-star' src={star} alt="star" />
+            <img className='card-star-img' src={star} alt="star" />
+            <img className='card-star-img' src={star} alt="star" />
+            <img className='card-star-img' src={star} alt="star" />
           </div>
-        </div>
-        <div className="card-star">
-          <img className='card-star-img active-star' src={star} alt="star" />
-          <img className='card-star-img' src={star} alt="star" />
-          <img className='card-star-img' src={star} alt="star" />
-          <img className='card-star-img' src={star} alt="star" />
-        </div>
-        <div className="card-words">
-          <div className="card-word word-en">{wordEn[index]}</div>
-          <div className="card-word word-ru">{wordRu[indexRu]}</div>
-        </div>
-        <div className="card-buttons">
-          <button className='button btn-false' onClick={() => {
-            isWrong();
-          }}>Неверно</button>
-          <button className='button btn-true' onClick={() => {
-            isRight();
-            }}>Верно</button>
+          <div className="card-words">
+            <div className="card-word word-en">{wordEn[index]}</div>
+            <div className="card-word word-ru">{wordRu[indexRu]}</div>
+          </div>
+          <div className="card-buttons">
+            <button className='button btn-false' onClick={() => {
+              isWrong();
+            }}>Неверно</button>
+            <button className='button btn-true' onClick={() => {
+              isRight();
+              }}>Верно</button>
+          </div>
         </div>
       </div>
     </div>
