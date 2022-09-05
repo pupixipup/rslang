@@ -9,7 +9,6 @@
   background-size: cover;
   @include media-mobile {
     padding: 100px 10px;
-    min-height: $min-content-height-mobile; 
   }
 }
 
@@ -21,14 +20,13 @@
   justify-content: center;
   gap: 10px;
   margin: 0 auto;
-  width: 400px;
+  max-width: 400px;
   height: 300px;
   background: rgba(255, 255, 255, 0.27);
   border-radius: 21px;
   border: 2px solid #ffffff;
   @include media-mobile {
     padding: 10px;
-    width: 100%;
   }
 }
 .auth__block {
