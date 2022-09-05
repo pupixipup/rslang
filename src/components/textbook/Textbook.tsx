@@ -80,7 +80,6 @@ function Textbook() {
       if (numbers.section === 6) {
         words = API.isAuth() ? await WordsApi.getDifficultWords().catch(() => {
           ctx.changeIsAuth(false);
-          setIsLoggedIn(false);
         }) as wordsList : [];
       } else {
         if (API.isAuth()) {
@@ -89,12 +88,10 @@ function Textbook() {
             numbers.section
           ).catch(() => {
             ctx.changeIsAuth(false);
-            setIsLoggedIn(false);
           }) as wordsList;
         } else {
           words = await API.getWords(numbers.page, numbers.section).catch(() => {
             ctx.changeIsAuth(false);
-            setIsLoggedIn(false);
           }) as wordsList;
         }
       }
@@ -105,17 +102,16 @@ function Textbook() {
       fetchData();
     } catch {
       ctx.changeIsAuth(false);
-      setIsLoggedIn(false);
     }
     window.localStorage.setItem("wordsLocation", JSON.stringify(numbers));
-  }, [numbers]);
+  }, [numbers, isLoggedIn]);
 
   useEffect(() => {
     let className = 'textbook-wrapper'
-    if (hardWordsCounter === 20) {
+    if (hardWordsCounter === 20 && numbers.section !== 6) {
       className += ' allWordsHard';
     } 
-    if (learntWordsCounter === 20) {
+    if (learntWordsCounter === 20 && numbers.section !== 6) {
       className += ' allWordsLearnt';
       setButtonsDisabled(true);
     }  else {

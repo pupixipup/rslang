@@ -38,6 +38,10 @@ function Card(props: wordProps) {
   const [currentWord, setCurrentWord] = useState(word);
   let stats = null;
 
+  useEffect(() => {
+    setCurrentWord(word);
+  }, [word]);
+
   if (isLoggedIn) {
     stats = (
     <div className="word__stats">
@@ -52,17 +56,17 @@ function Card(props: wordProps) {
             const newLocalWord = wordUtils.createLocalDifficultyWord(currentWord);
             wordUtils.updateLocalWord(localWords, newLocalWord, updateLocalWords);
             WordsApi.setWord(newLocalWord._id, newLocalWord.userWord, newLocalWord.isUserWord);
-            setCurrentWord({
-              ...currentWord,
-              userWord: newLocalWord.userWord,
-            });
-              if (numbers.section === 6) {
-                updateWords(
-                  (wordsArray as IUserWord[]).filter(
-                    (element) => element._id !== (currentWord as IUserWord)._id
+            if (numbers.section === 6) {
+              updateWords(
+                (wordsArray as IUserWord[]).filter(
+                  (element) => element._id !== (currentWord as IUserWord)._id
                   )
-                );
-              }
+                  );
+                }
+                setCurrentWord({
+                  ...currentWord,
+                  userWord: newLocalWord.userWord,
+                });
           }}
         >
           {(currentWord as IUserWord).userWord?.difficulty === "hard" || numbers.section === 6
