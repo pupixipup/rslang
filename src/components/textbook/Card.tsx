@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import "./Card.scss";
 import WordAudio from "./WordAudio";
@@ -100,9 +100,19 @@ function Card(props: wordProps) {
     );
   }
 
+  let [wordClass, setWordClass] = useState('word');
+  useEffect(() => {
+    let className = 'word';
+    if (currentWord.userWord?.difficulty === 'hard' && numbers.section !== 6) {
+      className += ' hard';
+    } else if (currentWord.userWord?.optional?.learnt && numbers.section !== 6) {
+      className += ' learnt';
+    }
+    setWordClass(className);
+  }, [numbers, currentWord]);
+
   return (
-    <div className={`word ${numbers.section !== 6 ? currentWord.userWord?.difficulty : ''} ${numbers.section !== 6 ? currentWord.userWord?.optional?.learnt ? 'learnt' : 'not-learnt' : ''}`
-    }>
+    <div className={wordClass}>
       <div className="word__desc">
         <div className="word__word">
           <div className="word__word-name">{word?.word}</div>
