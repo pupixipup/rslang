@@ -42,7 +42,7 @@ export function SprintGame () {
       SprintApi.setPage(state.page);
       if(API.isAuth()) {
         for(let i = SprintApi.page; i >= 0; i--) {
-          await wordsProvider.getUserWordList(SprintApi.group, i).then((data) => SprintApi.setWordsUser(data));
+          await wordsProvider.getUserWordList(SprintApi.group, i).then((data) => SprintApi.setWordsUser(data)).catch(() => ctx.changeIsAuth(false));
         }
         setWordEn(SprintApi.wordsEn);
         setWordRu(SprintApi.wordsRu);
@@ -55,20 +55,12 @@ export function SprintGame () {
         console.log(SprintApi.wordsAll);
       }
     }
-    try {
-      fetchData();
-    } catch {
-      ctx.changeIsAuth(false);
-    }
+    fetchData();
   }, []);
 
   useEffect(() => {
-    try {
-      if (!time && API.isAuth()) {
-        wordsProvider.uploadStats();
-      }
-    } catch {
-      ctx.changeIsAuth(false);
+    if (!time && API.isAuth()) {
+      wordsProvider.uploadStats().catch(() => ctx.changeIsAuth(false));
     }
   });
 
@@ -95,28 +87,20 @@ export function SprintGame () {
   };
 
   const isGuessed = async (index: number) => {
-    try {
-      if(API.isAuth()) {
-        await wordsProvider.guessed(SprintApi.wordsAllUser[index]._id);
-        setGuessedWord(() => (guessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
-      } else {
-        setGuessedWord(() => (guessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
-      }
-    } catch {
-      ctx.changeIsAuth(false);
+    if(API.isAuth()) {
+      await wordsProvider.guessed(SprintApi.wordsAllUser[index]._id).catch(() => ctx.changeIsAuth(false));
+      setGuessedWord(() => (guessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
+    } else {
+      setGuessedWord(() => (guessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
     }
   }
 
   const isNotGuessed = async (index: number) => {
-    try {
-      if(API.isAuth()) {
-        await wordsProvider.notGuessed(SprintApi.wordsAllUser[index]._id);
-        setNotGuessedWord(() => (notGuessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
-      } else {
-        setNotGuessedWord(() => (notGuessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
-      }
-    } catch {
-      ctx.changeIsAuth(false);
+    if(API.isAuth()) {
+      await wordsProvider.notGuessed(SprintApi.wordsAllUser[index]._id).catch(() => ctx.changeIsAuth(false));
+      setNotGuessedWord(() => (notGuessedWord as IUserWord[]).concat(SprintApi.wordsAllUser[index]));
+    } else {
+      setNotGuessedWord(() => (notGuessedWord as IWord[]).concat(SprintApi.wordsAll[index]));
     }
   };
   const playAudioCorrect = () => {
