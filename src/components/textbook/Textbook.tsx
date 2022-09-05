@@ -72,16 +72,24 @@ function Textbook() {
       updateLocalWords([]);
       let words: wordsList;
       if (numbers.section === 6) {
-        words = API.isAuth() ? await WordsApi.getDifficultWords() : [];
-        console.log(words);
+        words = API.isAuth() ? await WordsApi.getDifficultWords().catch(() => {
+          ctx.changeIsAuth(false);
+          setIsLoggedIn(false);
+        }) as wordsList : [];
       } else {
         if (API.isAuth()) {
           words = await WordsApi.getUserWords(
             numbers.page,
             numbers.section
-          );
+          ).catch(() => {
+            ctx.changeIsAuth(false);
+            setIsLoggedIn(false);
+          }) as wordsList;
         } else {
-          words = await API.getWords(numbers.page, numbers.section);
+          words = await API.getWords(numbers.page, numbers.section).catch(() => {
+            ctx.changeIsAuth(false);
+            setIsLoggedIn(false);
+          }) as wordsList;
         }
       }
       updateData(words);
